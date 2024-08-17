@@ -3,7 +3,10 @@ import { getStaticDir } from "@utils/env";
 export const favIconUrl = `${getStaticDir()}/assets/icons/favicon.svg`;
 export const favIconPngUrl = `${getStaticDir()}/assets/icons/apple-touch-icon.png`;
 
-export const repoUrl = "https://github.com/LemmyNet";
+export const statusUrl = "https://status.cyberbus.net";
+export const frontendRepo = "https://github.com/cyberbus-net/cyberbus-frontend";
+export const backendRepo = "https://github.com/cyberbus-net/cyberbus-backend";
+
 export const joinLemmyUrl = "https://join-lemmy.org";
 export const donateLemmyUrl = `${joinLemmyUrl}/donate`;
 export const docsUrl = `${joinLemmyUrl}/docs/en/index.html`;
