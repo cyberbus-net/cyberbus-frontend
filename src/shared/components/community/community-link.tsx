@@ -46,7 +46,7 @@ export class CommunityLink extends Component<CommunityLinkProps, any> {
       </Link>
     ) : (
       <a title={title} className={classes} href={link} rel={relTags}>
-        {this.avatarAndName(title, serverStr)}
+        c/{this.avatarAndName(title, serverStr)}
       </a>
     );
   }
