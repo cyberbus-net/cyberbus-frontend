@@ -844,11 +844,6 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                   {format(cakeDate(pv.person.published), "PPP")}
                 </span>
               </div>
-              {!UserService.Instance.myUserInfo && (
-                <div className="alert alert-info" role="alert">
-                  {I18NextService.i18n.t("profile_not_logged_in_alert")}
-                </div>
-              )}
             </div>
           </div>
         </div>

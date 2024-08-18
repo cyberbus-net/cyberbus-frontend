@@ -1,4 +1,4 @@
-import { getQueryString, hostname } from "@utils/helpers";
+import { getQueryString } from "@utils/helpers";
 import { amAdmin, amMod, amTopMod } from "@utils/roles";
 import { Component, InfernoNode, linkEvent } from "inferno";
 import { T } from "inferno-i18next-dess";
@@ -141,7 +141,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
   sidebar() {
     const myUserInfo = UserService.Instance.myUserInfo;
     const {
-      community: { name, actor_id, id, posting_restricted_to_mods, visibility },
+      community: { id, posting_restricted_to_mods, visibility },
       counts,
       banned_from_community,
     } = this.props.community_view;
@@ -163,19 +163,6 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
                   {this.canPost && this.createPost()}
                   {myUserInfo && this.blockCommunity()}
                 </>
-              )}
-              {!myUserInfo && (
-                <div className="alert alert-info" role="alert">
-                  <T
-                    i18nKey="community_not_logged_in_alert"
-                    interpolation={{
-                      community: name,
-                      instance: hostname(actor_id),
-                    }}
-                  >
-                    #<code className="user-select-all">#</code>#
-                  </T>
-                </div>
               )}
             </div>
           </section>
