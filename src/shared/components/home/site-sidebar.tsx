@@ -4,7 +4,6 @@ import { PersonView, Site, SiteAggregates } from "lemmy-js-client";
 import { mdToHtml } from "../../markdown";
 import { I18NextService } from "../../services";
 import { Badges } from "../common/badges";
-import { BannerIconHeader } from "../common/banner-icon-header";
 import { Icon } from "../common/icon";
 import { PersonListing } from "../person/person-listing";
 import { tippyMixin } from "../mixins/tippy-mixin";
@@ -32,24 +31,7 @@ export class SiteSidebar extends Component<SiteSidebarProps, SiteSidebarState> {
   }
 
   render() {
-    return (
-      <div className="site-sidebar accordion">
-        <section id="sidebarInfo" className="card border-secondary mb-3">
-          <header className="card-header" id="sidebarInfoHeader">
-            {this.siteName()}
-            {!this.state.collapsed && (
-              <BannerIconHeader banner={this.props.site.banner} />
-            )}
-          </header>
-
-          {!this.state.collapsed && (
-            <div id="sidebarInfoBody" aria-labelledby="sidebarInfoHeader">
-              <div className="card-body">{this.siteInfo()}</div>
-            </div>
-          )}
-        </section>
-      </div>
-    );
+    return <div className="site-sidebar accordion"></div>;
   }
 
   siteName() {
