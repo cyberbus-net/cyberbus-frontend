@@ -5,7 +5,6 @@ import { amAdmin, canCreateCommunity } from "@utils/roles";
 import { Component, createRef, linkEvent } from "inferno";
 import { NavLink } from "inferno-router";
 import { GetSiteResponse } from "lemmy-js-client";
-import { donateLemmyUrl } from "../../config";
 import {
   I18NextService,
   UserService,
@@ -239,18 +238,6 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </NavLink>
                 </li>
               )}
-              <li className="nav-item">
-                <a
-                  className="nav-link d-inline-flex align-items-center d-md-inline-block"
-                  title={I18NextService.i18n.t("support_lemmy")}
-                  href={donateLemmyUrl}
-                >
-                  <Icon icon="heart" classes="small" />
-                  <span className="d-inline ms-1 d-md-none ms-md-0">
-                    {I18NextService.i18n.t("support_lemmy")}
-                  </span>
-                </a>
-              </li>
             </ul>
             <ul id="navbarIcons" className="navbar-nav">
               <li id="navSearch" className="nav-item">
