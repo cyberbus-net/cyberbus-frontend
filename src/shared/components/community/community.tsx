@@ -1,6 +1,5 @@
 import {
   commentsToFlatNodes,
-  communityRSSUrl,
   editComment,
   editPost,
   editWith,
@@ -85,7 +84,7 @@ import {
   SuccessResponse,
   TransferCommunity,
 } from "lemmy-js-client";
-import { fetchLimit, relTags } from "../../config";
+import { fetchLimit } from "../../config";
 import {
   CommentViewType,
   DataType,
@@ -103,7 +102,6 @@ import { tippyMixin } from "../mixins/tippy-mixin";
 import { toast } from "../../toast";
 import { CommentNodes } from "../comment/comment-nodes";
 import { BannerIconHeader } from "../common/banner-icon-header";
-import { DataTypeSelect } from "../common/data-type-select";
 import { HtmlTags } from "../common/html-tags";
 import { Icon } from "../common/icon";
 import { SortSelect } from "../common/sort-select";
@@ -118,7 +116,6 @@ import {
 } from "../common/loading-skeleton";
 import { Sidebar } from "./sidebar";
 import { IRoutePropsWithFetch } from "../../routes";
-import PostHiddenSelect from "../common/post-hidden-select";
 import { isBrowser } from "@utils/browser";
 import { LoadingEllipses } from "../common/loading-ellipses";
 
@@ -604,45 +601,12 @@ export class Community extends Component<CommunityRouteProps, State> {
   }
 
   selects() {
-    const res =
-      this.state.communityRes.state === "success" &&
-      this.state.communityRes.data;
-    const { dataType, sort, showHidden } = this.props;
-    const communityRss = res
-      ? communityRSSUrl(res.community_view.community.actor_id, sort)
-      : undefined;
-
+    const { sort } = this.props;
     return (
       <div className="mb-3">
-        <span className="me-3">
-          <DataTypeSelect
-            type_={dataType}
-            onChange={this.handleDataTypeChange}
-          />
-        </span>
-        {dataType === DataType.Post && UserService.Instance.myUserInfo && (
-          <span className="me-3">
-            <PostHiddenSelect
-              showHidden={showHidden}
-              onShowHiddenChange={this.handleShowHiddenChange}
-            />
-          </span>
-        )}
         <span className="me-2">
           <SortSelect sort={sort} onChange={this.handleSortChange} />
         </span>
-        {communityRss && (
-          <>
-            <a href={communityRss} title="RSS" rel={relTags}>
-              <Icon icon="rss" classes="text-muted small" />
-            </a>
-            <link
-              rel="alternate"
-              type="application/atom+xml"
-              href={communityRss}
-            />
-          </>
-        )}
       </div>
     );
   }

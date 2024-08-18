@@ -6,7 +6,6 @@ import {
   enableDownvotes,
   enableNsfw,
   getDataTypeString,
-  myAuth,
   postToCommentSortType,
   setIsoData,
   showLocal,
@@ -71,7 +70,7 @@ import {
   SuccessResponse,
   TransferCommunity,
 } from "lemmy-js-client";
-import { fetchLimit, relTags } from "../../config";
+import { fetchLimit } from "../../config";
 import {
   CommentViewType,
   DataType,
@@ -89,10 +88,8 @@ import {
 import { tippyMixin } from "../mixins/tippy-mixin";
 import { toast } from "../../toast";
 import { CommentNodes } from "../comment/comment-nodes";
-import { DataTypeSelect } from "../common/data-type-select";
 import { HtmlTags } from "../common/html-tags";
 import { Icon } from "../common/icon";
-import { ListingTypeSelect } from "../common/listing-type-select";
 import { SortSelect } from "../common/sort-select";
 import { CommunityLink } from "../community/community-link";
 import { PostListings } from "../post/post-listings";
@@ -105,7 +102,6 @@ import {
 } from "../common/loading-skeleton";
 import { RouteComponentProps } from "inferno-router/dist/Route";
 import { IRoutePropsWithFetch } from "../../routes";
-import PostHiddenSelect from "../common/post-hidden-select";
 import { isBrowser, snapToTop } from "@utils/browser";
 
 interface HomeState {
@@ -131,38 +127,6 @@ type HomeData = RouteDataResponse<{
   postsRes: GetPostsResponse;
   commentsRes: GetCommentsResponse;
 }>;
-
-function getRss(listingType: ListingType, sort: SortType) {
-  let rss: string | undefined = undefined;
-
-  const queryString = getQueryString({ sort });
-  switch (listingType) {
-    case "All": {
-      rss = "/feeds/all.xml" + queryString;
-      break;
-    }
-    case "Local": {
-      rss = "/feeds/local.xml" + queryString;
-      break;
-    }
-    case "Subscribed": {
-      const auth = myAuth();
-      rss = auth ? `/feeds/front/${auth}.xml${queryString}` : undefined;
-      break;
-    }
-  }
-
-  return (
-    rss && (
-      <>
-        <a href={rss} rel={relTags} title="RSS">
-          <Icon icon="rss" classes="text-muted small" />
-        </a>
-        <link rel="alternate" type="application/atom+xml" href={rss} />
-      </>
-    )
-  );
-}
 
 function getDataTypeFromQuery(type?: string): DataType {
   return type ? DataType[type] : DataType.Post;
@@ -696,44 +660,12 @@ export class Home extends Component<HomeRouteProps, HomeState> {
   }
 
   get selects() {
-    const { listingType, dataType, sort, showHidden } = this.props;
+    const { sort } = this.props;
 
     return (
       <div className="row align-items-center mb-3 g-3">
         <div className="col-auto">
-          <DataTypeSelect
-            type_={dataType}
-            onChange={this.handleDataTypeChange}
-          />
-        </div>
-        {dataType === DataType.Post && UserService.Instance.myUserInfo && (
-          <div className="col-auto">
-            <PostHiddenSelect
-              showHidden={showHidden}
-              onShowHiddenChange={this.handleShowHiddenChange}
-            />
-          </div>
-        )}
-        <div className="col-auto">
-          <ListingTypeSelect
-            type_={
-              listingType ??
-              this.state.siteRes.site_view.local_site.default_post_listing_type
-            }
-            showLocal={showLocal(this.isoData)}
-            showSubscribed
-            onChange={this.handleListingTypeChange}
-          />
-        </div>
-        <div className="col-auto">
           <SortSelect sort={sort} onChange={this.handleSortChange} />
-        </div>
-        <div className="col-auto ps-0">
-          {getRss(
-            listingType ??
-              this.state.siteRes.site_view.local_site.default_post_listing_type,
-            sort,
-          )}
         </div>
       </div>
     );
