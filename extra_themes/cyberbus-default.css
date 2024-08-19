@@ -11011,3 +11011,8 @@ a.text-dark:focus {
 }
 
 /* special config */
+
+.post-listing:hover {
+  background-color: #f7f7f9;
+  border-radius: var(--bs-border-radius);
+}
