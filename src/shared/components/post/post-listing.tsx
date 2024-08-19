@@ -210,7 +210,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   body() {
     const body = this.postView.post.body;
     return body ? (
-      <article id="postContent" className="col-12 card my-2 p-2">
+      <article className="col-12 my-2 p-2">
         {this.state.viewSource ? (
           <pre>{body}</pre>
         ) : (
