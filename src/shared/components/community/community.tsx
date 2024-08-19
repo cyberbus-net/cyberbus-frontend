@@ -415,7 +415,7 @@ export class Community extends Component<CommunityRouteProps, State> {
     return (
       <div className="community container-lg">
         <div className="row">
-          <main className="col-12 col-md-8 col-lg-9" ref={this.mainContentRef}>
+          <main className="col-12 col-md-8 col-lg-8" ref={this.mainContentRef}>
             {this.renderCommunity()}
             {this.selects()}
             {this.listings()}
@@ -424,7 +424,7 @@ export class Community extends Component<CommunityRouteProps, State> {
               onNext={this.handlePageNext}
             />
           </main>
-          <aside className="d-none d-md-block col-md-4 col-lg-3">
+          <aside className="d-none d-md-block col-md-4 col-lg-4">
             {this.sidebar()}
           </aside>
         </div>

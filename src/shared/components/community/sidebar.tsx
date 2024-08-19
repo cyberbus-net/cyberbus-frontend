@@ -148,60 +148,66 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
     return (
       <aside className="mb-3">
         <div id="sidebarContainer">
-          <section id="sidebarMain" className="card border-secondary mb-3">
-            <div className="card-body">
-              {this.communityTitle()}
-              {this.props.editable && this.adminButtons()}
-              {!banned_from_community && (
-                <>
-                  <SubscribeButton
-                    communityView={this.props.community_view}
-                    onFollow={linkEvent(this, this.handleFollowCommunity)}
-                    onUnFollow={linkEvent(this, this.handleUnfollowCommunity)}
-                    loading={this.state.followCommunityLoading}
-                  />
-                  {this.canPost && this.createPost()}
-                  {myUserInfo && this.blockCommunity()}
-                </>
-              )}
-            </div>
-          </section>
-          <section id="sidebarInfo" className="card border-secondary mb-3">
-            <div className="card-body">
-              {posting_restricted_to_mods && (
-                <div
-                  className="alert alert-warning text-sm-start text-xs-center"
-                  role="alert"
-                >
-                  <Icon
-                    icon="lock"
-                    inline
-                    classes="me-sm-2 mx-auto d-sm-inline d-block"
-                  />
-                  <T i18nKey="community_locked_message" className="d-inline">
-                    #<strong className="fw-bold">#</strong>#
-                  </T>
-                </div>
-              )}
-              {banned_from_community && (
-                <div
-                  className="alert alert-danger text-sm-start text-xs-center"
-                  role="alert"
-                >
-                  <Icon
-                    icon="ban"
-                    inline
-                    classes="me-sm-2 mx-auto d-sm-inline d-block"
-                  />
-                  <T i18nKey="banned_from_community_blurb" className="d-inline">
-                    #<strong className="fw-bold">#</strong>#
-                  </T>
-                </div>
-              )}
-              {this.description()}
-              <Badges communityId={id} counts={counts} />
-              {this.mods()}
-            </div>
+          <section id="sidebarMain" className="card mb-3">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">
+                {this.communityTitle()}
+                <Badges communityId={id} counts={counts} />
+              </li>
+              <li className="list-group-item">
+                {this.props.editable && this.adminButtons()}
+                {!banned_from_community && (
+                  <>
+                    <SubscribeButton
+                      communityView={this.props.community_view}
+                      onFollow={linkEvent(this, this.handleFollowCommunity)}
+                      onUnFollow={linkEvent(this, this.handleUnfollowCommunity)}
+                      loading={this.state.followCommunityLoading}
+                    />
+                    {this.canPost && this.createPost()}
+                    {myUserInfo && this.blockCommunity()}
+                  </>
+                )}
+              </li>
+
+              <li className="list-group-item">
+                {posting_restricted_to_mods && (
+                  <div
+                    className="alert alert-warning text-sm-start text-xs-center"
+                    role="alert"
+                  >
+                    <Icon
+                      icon="lock"
+                      inline
+                      classes="me-sm-2 mx-auto d-sm-inline d-block"
+                    />
+                    <T i18nKey="community_locked_message" className="d-inline">
+                      #<strong className="fw-bold">#</strong>#
+                    </T>
+                  </div>
+                )}
+                {banned_from_community && (
+                  <div
+                    className="alert alert-danger text-sm-start text-xs-center"
+                    role="alert"
+                  >
+                    <Icon
+                      icon="ban"
+                      inline
+                      classes="me-sm-2 mx-auto d-sm-inline d-block"
+                    />
+                    <T
+                      i18nKey="banned_from_community_blurb"
+                      className="d-inline"
+                    >
+                      #<strong className="fw-bold">#</strong>#
+                    </T>
+                  </div>
+                )}
+                {this.description()}
+              </li>
+              <li className="list-group-item">{this.mods()}</li>
+            </ul>
           </section>
         </div>
       </aside>

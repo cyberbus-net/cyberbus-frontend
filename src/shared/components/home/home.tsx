@@ -368,7 +368,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
         />
         {site_setup && (
           <div className="row">
-            <main role="main" className="col-12 col-md-8 col-lg-9">
+            <main role="main" className="col-12 col-md-8 col-lg-8">
               {tagline && (
                 <div
                   id="tagline"
@@ -380,7 +380,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
               <div className="d-block d-md-none">{this.mobileView}</div>
               {this.posts}
             </main>
-            <aside className="d-none d-md-block col-md-4 col-lg-3">
+            <aside className="d-none d-md-block col-md-4 col-lg-4">
               {this.mySidebar}
             </aside>
           </div>
@@ -456,10 +456,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
         />
         {this.hasFollows && (
           <div className="accordion">
-            <section
-              id="sidebarSubscribed"
-              className="card border-secondary mb-3"
-            >
+            <section id="sidebarSubscribed" className="card mb-3">
               {this.subscribedCommunities(false)}
             </section>
           </div>
