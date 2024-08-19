@@ -112,7 +112,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     imageExpanded: false,
     viewSource: false,
     showAdvanced: false,
-    showBody: false,
+    showBody: true,
     loading: false,
   };
 
@@ -492,15 +492,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               this.postLink
             )}
           </h1>
-
-          {/**
-           * If there is (a) a URL and an embed title, or (b) a post body, and
-           * we were not told to show the body by the parent component, show the
-           * MetadataCard/body toggle.
-           */}
-          {!this.props.showBody &&
-            ((post.url && post.embed_title) || post.body) &&
-            this.showPreviewButton()}
 
           {post.removed && (
             <small className="ms-2 badge text-bg-secondary">
