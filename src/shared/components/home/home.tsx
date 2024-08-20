@@ -554,6 +554,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
       <div className="main-content-wrapper">
         <div>
           {this.selects}
+          <hr className="my-2" />
           {this.listings}
           <PaginatorCursor
             nextPage={this.getNextPage}
@@ -660,7 +661,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
     const { sort } = this.props;
 
     return (
-      <div className="row align-items-center mb-3 g-3">
+      <div className="row align-items-center">
         <div className="col-auto">
           <SortSelect sort={sort} onChange={this.handleSortChange} />
         </div>
