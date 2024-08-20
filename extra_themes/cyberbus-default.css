@@ -36,6 +36,12 @@
   --bs-border-radius-xxl: 2rem;
   --bs-border-radius-2xl: var(--bs-border-radius-xxl);
   --bs-border-radius-pill: 50rem;
+  --interface-gray: #cccccc;
+  --element-gray: #e6e6e6;
+  --color-neutral-content: #333d42;
+  --color-neutral-content-weak: #5c6c74;
+  --color-neutral-content-disabled: #d6d6d6;
+  --color-neutral-content-strong: #181c1f;
 }
 
 *,
@@ -177,7 +183,12 @@ a {
 
 a:hover {
   color: #4709ac;
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #4709ac;
+  text-decoration: none;
 }
 
 a:not([href]) {
@@ -415,7 +426,8 @@ h4,
 
 h5,
 .h5 {
-  font-size: 1.09375rem;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
 }
 
 h6,
@@ -456,7 +468,7 @@ hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
   border: 0;
-  border-top: 1px solid rgba(73, 80, 87, 0.25);
+  border-top: 1px solid var(--element-gray);
 }
 
 small,
@@ -2206,11 +2218,19 @@ pre code {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 16px 12px;
-  border: var(--bs-border-width) solid var(--bs-border-color);
+  border: var(--bs-border-width) solid var(--bs-body-bg);
   border-radius: var(--bs-border-radius);
   transition:
     border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
+}
+
+.form-select:hover {
+  background-color: var(--element-gray);
+}
+
+.form-select:focus {
+  outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4641,6 +4661,8 @@ input[type="button"].btn-block {
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
+  height: 3.625rem;
+  border-bottom: 1px solid var(--interface-gray);
 }
 
 .navbar .container,
@@ -11015,4 +11037,16 @@ a.text-dark:focus {
 .post-listing:hover {
   background-color: #f7f7f9;
   border-radius: var(--bs-border-radius);
+}
+
+.text-neutral-content {
+  color: var(--color-neutral-content);
+}
+
+a.text-neutral-content:hover {
+  color: var(--color-neutral-content);
+}
+
+a.text-neutral-content:visited {
+  color: var(--color-neutral-content-weak);
 }

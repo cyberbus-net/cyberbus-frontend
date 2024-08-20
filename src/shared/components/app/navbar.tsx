@@ -96,9 +96,9 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
     const siteView = this.props.siteRes?.site_view;
     const person = UserService.Instance.myUserInfo?.local_user_view.person;
     return (
-      <div className="shadow-sm">
+      <div className="">
         <nav
-          className="navbar navbar-expand-md navbar-light p-0 px-3 container-lg"
+          className="navbar navbar-expand-md navbar-light p-0 px-3"
           id="navbar"
         >
           <NavLink
