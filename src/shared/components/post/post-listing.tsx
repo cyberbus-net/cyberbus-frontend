@@ -175,35 +175,40 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const post = this.postView.post;
 
     return (
-      <div className="post-listing mt-2">
-        {!this.state.showEdit ? (
-          <>
-            {this.listing()}
-            {this.state.imageExpanded && !this.props.hideImage && this.img}
-            {this.showBody &&
-              post.url &&
-              isMagnetLink(post.url) &&
-              this.torrentHelp()}
-            {this.showBody && post.url && post.embed_title && (
-              <MetadataCard post={post} />
-            )}
-            {this.showBody && this.body()}
-          </>
-        ) : (
-          <PostForm
-            post_view={this.postView}
-            crossPosts={this.props.crossPosts}
-            onEdit={this.handleEditPost}
-            onCancel={this.handleEditCancel}
-            enableNsfw={this.props.enableNsfw}
-            enableDownvotes={this.props.enableDownvotes}
-            voteDisplayMode={this.props.voteDisplayMode}
-            allLanguages={this.props.allLanguages}
-            siteLanguages={this.props.siteLanguages}
-            loading={this.state.loading}
-          />
-        )}
-      </div>
+      <a
+        href={`/post/${post.id}`}
+        className="text-neutral-content visited:text-neutral-content-weak"
+      >
+        <div className="post-listing mt-2">
+          {!this.state.showEdit ? (
+            <>
+              {this.listing()}
+              {this.state.imageExpanded && !this.props.hideImage && this.img}
+              {this.showBody &&
+                post.url &&
+                isMagnetLink(post.url) &&
+                this.torrentHelp()}
+              {this.showBody && post.url && post.embed_title && (
+                <MetadataCard post={post} />
+              )}
+              {this.showBody && this.body()}
+            </>
+          ) : (
+            <PostForm
+              post_view={this.postView}
+              crossPosts={this.props.crossPosts}
+              onEdit={this.handleEditPost}
+              onCancel={this.handleEditCancel}
+              enableNsfw={this.props.enableNsfw}
+              enableDownvotes={this.props.enableDownvotes}
+              voteDisplayMode={this.props.voteDisplayMode}
+              allLanguages={this.props.allLanguages}
+              siteLanguages={this.props.siteLanguages}
+              loading={this.state.loading}
+            />
+          )}
+        </div>
+      </a>
     );
   }
 
@@ -475,23 +480,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return (
       <>
         <div className="post-title">
-          <h1 className="h5 d-inline text-break">
-            {url && this.props.showBody ? (
-              <a
-                className={
-                  !post.featured_community && !post.featured_local
-                    ? "link-dark"
-                    : "link-primary"
-                }
-                href={url}
-                title={url}
-                rel={relTags}
-                dangerouslySetInnerHTML={mdToHtmlInline(post.name)}
-              ></a>
-            ) : (
-              this.postLink
-            )}
-          </h1>
+          <h1 className="h5 mb-2 d-inline text-break">{post.name}</h1>
 
           {post.removed && (
             <small className="ms-2 badge text-bg-secondary">
