@@ -207,6 +207,8 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               loading={this.state.loading}
             />
           )}
+          {this.commentsLine()}
+          {this.duplicatesLine()}
         </div>
       </a>
     );
@@ -424,7 +426,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const pv = this.postView;
 
     return (
-      <div className="small mb-1 mb-md-0">
+      <div className="mb-1 mb-md-0">
         <PersonListing person={pv.creator} />
         <UserBadges
           classNames="ms-1"
@@ -448,7 +450,24 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             }
           </span>
         )}{" "}
-        · <MomentTime published={pv.post.published} updated={pv.post.updated} />
+        <span className="h6"> · </span>
+        <MomentTime published={pv.post.published} updated={pv.post.updated} />
+      </div>
+    );
+  }
+
+  createdLineForPostListing() {
+    const pv = this.postView;
+
+    return (
+      <div className="mb-1 mb-md-0">
+        {this.props.showCommunity && (
+          <>
+            <CommunityLink community={pv.community} />
+          </>
+        )}
+        <span className="h6"> · </span>
+        <MomentTime published={pv.post.published} updated={pv.post.updated} />
       </div>
     );
   }
@@ -595,39 +614,38 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   }
 
   commentsLine(mobile = false) {
+    const { showBody, onPostVote, enableDownvotes, voteDisplayMode } =
+      this.props;
     const {
-      admins,
-      moderators,
-      showBody,
-      onPostVote,
-      enableDownvotes,
-      voteDisplayMode,
-    } = this.props;
-    const {
-      post: { ap_id, id, body },
+      post: { id, body },
       my_vote,
       counts,
     } = this.postView;
 
     return (
-      <div className="d-flex align-items-center justify-content-start flex-wrap text-muted">
+      <div className="d-flex align-items-center justify-content-start flex-wrap">
+        {this.isInteractable && (
+          <VoteButtons
+            voteContentType={VoteContentType.Post}
+            id={this.postView.post.id}
+            onVote={this.props.onPostVote}
+            enableDownvotes={this.props.enableDownvotes}
+            voteDisplayMode={this.props.voteDisplayMode}
+            counts={this.postView.counts}
+            myVote={this.postView.my_vote}
+          />
+        )}
         {this.commentsButton}
         {canShare() && (
           <button
-            className="btn btn-sm btn-link btn-animate text-muted py-0"
+            className="btn btn-lg btn-link btn-animate text-muted py-0"
             onClick={linkEvent(this, this.handleShare)}
             type="button"
           >
             <Icon icon="share" inline />
           </button>
         )}
-        <a
-          className="btn btn-sm btn-link btn-animate text-muted py-0"
-          title={I18NextService.i18n.t("link")}
-          href={ap_id}
-        >
-          <Icon icon="fedilink" inline />
-        </a>
+
         {mobile && this.isInteractable && (
           <VoteButtonsCompact
             voteContentType={VoteContentType.Post}
@@ -641,32 +659,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         )}
 
         {showBody && body && this.viewSourceButton}
-
-        {UserService.Instance.myUserInfo && this.isInteractable && (
-          <PostActionDropdown
-            postView={this.postView}
-            admins={admins}
-            moderators={moderators}
-            crossPostParams={this.crossPostParams}
-            onSave={this.handleSavePost}
-            onReport={this.handleReport}
-            onBlock={this.handleBlockPerson}
-            onEdit={this.handleEditClick}
-            onDelete={this.handleDeletePost}
-            onLock={this.handleModLock}
-            onFeatureCommunity={this.handleModFeaturePostCommunity}
-            onFeatureLocal={this.handleModFeaturePostLocal}
-            onRemove={this.handleRemove}
-            onBanFromCommunity={this.handleModBanFromCommunity}
-            onAppointCommunityMod={this.handleAppointCommunityMod}
-            onTransferCommunity={this.handleTransferCommunity}
-            onBanFromSite={this.handleModBanFromSite}
-            onPurgeUser={this.handlePurgePerson}
-            onPurgeContent={this.handlePurgePost}
-            onAppointAdmin={this.handleAppointAdmin}
-            onHidePost={this.handleHidePost}
-          />
-        )}
       </div>
     );
   }
@@ -688,7 +680,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
     return (
       <Link
-        className="btn btn-link btn-sm text-muted ps-0"
+        className="post-button font-weight-bold post-button-background mr-sm-3"
         title={title}
         to={`/post/${pv.post.id}?scrollToComments=true`}
         data-tippy-content={title}
@@ -718,7 +710,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get viewSourceButton() {
     return (
       <button
-        className="btn btn-sm btn-link btn-animate text-muted py-0"
+        className="btn btn-lg btn-link btn-animate text-muted py-0"
         onClick={linkEvent(this, this.handleViewSource)}
         data-tippy-content={I18NextService.i18n.t("view_source")}
         aria-label={I18NextService.i18n.t("view_source")}
@@ -748,7 +740,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return (
       <button
         type="button"
-        className="btn btn-sm btn-link link-dark link-opacity-75 link-opacity-100-hover py-0 align-baseline"
+        className="btn btn-lg btn-link link-dark link-opacity-75 link-opacity-100-hover py-0 align-baseline"
         onClick={linkEvent(this, this.handleShowBody)}
       >
         <Icon
@@ -766,7 +758,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         <div className="d-block d-sm-none">
           <article className="row post-container">
             <div className="col-12">
-              {this.createdLine()}
+              {this.createdLineForPostListing()}
 
               {/* If it has a thumbnail, do a right aligned thumbnail */}
               {this.mobileThumbnail()}
@@ -780,35 +772,53 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {/* The larger view*/}
         <div className="d-none d-sm-block">
           <article className="row post-container">
-            {this.isInteractable && (
-              <div className="col flex-grow-0">
-                <VoteButtons
-                  voteContentType={VoteContentType.Post}
-                  id={this.postView.post.id}
-                  onVote={this.props.onPostVote}
-                  enableDownvotes={this.props.enableDownvotes}
-                  voteDisplayMode={this.props.voteDisplayMode}
-                  counts={this.postView.counts}
-                  myVote={this.postView.my_vote}
-                />
-              </div>
-            )}
             <div className="col flex-grow-1">
               <div className="row">
-                <div className="col flex-grow-0 px-0">
-                  <div className="">{this.thumbnail()}</div>
-                </div>
                 <div className="col flex-grow-1">
+                  <div className="d-flex post-listing-nav-bar min-h-2rem">
+                    {this.createdLineForPostListing()}
+                    {this.showMoreButtons()}
+                  </div>
                   {this.postTitleLine()}
-                  {this.createdLine()}
-                  {this.commentsLine()}
-                  {this.duplicatesLine()}
                 </div>
               </div>
             </div>
           </article>
         </div>
       </>
+    );
+  }
+
+  showMoreButtons() {
+    const { admins, moderators } = this.props;
+    return (
+      <div className="d-flex align-items-center justify-content-start flex-wrap text-muted">
+        {UserService.Instance.myUserInfo && this.isInteractable && (
+          <PostActionDropdown
+            postView={this.postView}
+            admins={admins}
+            moderators={moderators}
+            crossPostParams={this.crossPostParams}
+            onSave={this.handleSavePost}
+            onReport={this.handleReport}
+            onBlock={this.handleBlockPerson}
+            onEdit={this.handleEditClick}
+            onDelete={this.handleDeletePost}
+            onLock={this.handleModLock}
+            onFeatureCommunity={this.handleModFeaturePostCommunity}
+            onFeatureLocal={this.handleModFeaturePostLocal}
+            onRemove={this.handleRemove}
+            onBanFromCommunity={this.handleModBanFromCommunity}
+            onAppointCommunityMod={this.handleAppointCommunityMod}
+            onTransferCommunity={this.handleTransferCommunity}
+            onBanFromSite={this.handleModBanFromSite}
+            onPurgeUser={this.handlePurgePerson}
+            onPurgeContent={this.handlePurgePost}
+            onAppointAdmin={this.handleAppointAdmin}
+            onHidePost={this.handleHidePost}
+          />
+        )}
+      </div>
     );
   }
 

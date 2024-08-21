@@ -38,10 +38,13 @@
   --bs-border-radius-pill: 50rem;
   --interface-gray: #cccccc;
   --element-gray: #e6e6e6;
+  --button-gray: #e5ebee;
+  --button-hover-gray: #dbe4e9;
   --color-neutral-content: #333d42;
   --color-neutral-content-weak: #5c6c74;
   --color-neutral-content-disabled: #d6d6d6;
   --color-neutral-content-strong: #181c1f;
+  --color-indicator: #000000;
 }
 
 *,
@@ -3418,12 +3421,12 @@ fieldset:disabled a.btn {
 
 .btn-link:hover {
   color: #4709ac;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .btn-link:focus,
 .btn-link.focus {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .btn-link:disabled,
@@ -9023,7 +9026,7 @@ button.bg-dark:focus {
 
   .mr-sm-3,
   .mx-sm-3 {
-    margin-right: 1rem !important;
+    margin-right: 0.75rem !important;
   }
 
   .mb-sm-3,
@@ -11068,4 +11071,38 @@ a.text-neutral-content:visited {
   font-size: 1.125rem;
   line-height: 1.5rem;
   font-weight: 600;
+}
+
+.post-button {
+  font-size: 0.75rem / 1rem !important;
+  line-height: 2rem !important;
+  color: var(--color-indicator) !important;
+  font: var(--font-family-sans-serif);
+}
+
+.post-button-background {
+  box-shadow: var(--button-shadow);
+  box-sizing: border-box;
+  color: var(--color-indicator);
+  cursor: pointer;
+  display: inline-block;
+  height: 2rem;
+  line-height: calc(
+    var(--button-height) - (2 * var(--button-border-width, 0px))
+  );
+  text-align: center;
+  text-overflow: ellipsis;
+  outline-offset: 0px;
+  background: var(--button-gray);
+  border-radius: 0.8rem;
+  border: var(--button-border-width, 0) solid
+    var(--button-border-color, transparent);
+  overflow: hidden;
+  padding: 0 0.75rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.post-button-background:hover {
+  background: var(--button-hover-gray);
 }
