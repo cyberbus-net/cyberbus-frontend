@@ -40,6 +40,7 @@ import { mdToHtml, mdToHtmlInline } from "../../markdown";
 import { I18NextService, UserService } from "../../services";
 import { tippyMixin } from "../mixins/tippy-mixin";
 import { Icon } from "../common/icon";
+import { BigIcon } from "../common/big-icon";
 import { MomentTime } from "../common/moment-time";
 import { PictrsImage } from "../common/pictrs-image";
 import { UserBadges } from "../common/user-badges";
@@ -179,7 +180,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         href={`/post/${post.id}`}
         className="text-neutral-content visited:text-neutral-content-weak"
       >
-        <div className="post-listing mt-2">
+        <div className="post-listing mt-1">
           {!this.state.showEdit ? (
             <>
               {this.listing()}
@@ -217,7 +218,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   body() {
     const body = this.postView.post.body;
     return body ? (
-      <article className="col-12 my-2 p-2">
+      <article className="my-2">
         {this.state.viewSource ? (
           <pre>{body}</pre>
         ) : (
@@ -686,7 +687,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         data-tippy-content={title}
         onClick={this.props.onScrollIntoCommentsClick}
       >
-        <Icon icon="message-square" classes="me-1" inline />
+        <BigIcon icon="message-square" classes="me-1" inline />
         {pv.counts.comments}
         {this.unreadCount && (
           <>
@@ -772,9 +773,9 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {/* The larger view*/}
         <div className="d-none d-sm-block">
           <article className="row post-container">
-            <div className="col flex-grow-1">
+            <div className="flex-grow-1">
               <div className="row">
-                <div className="col flex-grow-1">
+                <div className="flex-grow-1">
                   <div className="d-flex post-listing-nav-bar min-h-2rem">
                     {this.createdLineForPostListing()}
                     {this.showMoreButtons()}

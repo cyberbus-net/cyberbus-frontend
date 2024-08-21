@@ -261,6 +261,8 @@ label {
 
 button {
   border-radius: 0;
+  border: 0;
+  background-color: transparent;
 }
 
 button:focus {
@@ -11041,6 +11043,10 @@ a.text-dark:focus {
 
 /* special config */
 
+.post-listing {
+  padding: 0.25rem 1rem !important;
+}
+
 .post-listing:hover {
   background-color: #f7f7f9;
   border-radius: var(--bs-border-radius);
@@ -11073,11 +11079,38 @@ a.text-neutral-content:visited {
   font-weight: 600;
 }
 
+.vote-button {
+  height: 2rem !important;
+  width: 1.5rem !important;
+  padding: 0 !important;
+}
+
+.big-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-flex;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+  vertical-align: middle;
+  align-self: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .post-button {
   font-size: 0.75rem / 1rem !important;
   line-height: 2rem !important;
   color: var(--color-indicator) !important;
   font: var(--font-family-sans-serif);
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background-color: transparent !important;
 }
 
 .post-button-background {
@@ -11093,7 +11126,7 @@ a.text-neutral-content:visited {
   text-align: center;
   text-overflow: ellipsis;
   outline-offset: 0px;
-  background: var(--button-gray);
+  background: var(--button-gray) !important;
   border-radius: 0.8rem;
   border: var(--button-border-width, 0) solid
     var(--button-border-color, transparent);
@@ -11103,6 +11136,9 @@ a.text-neutral-content:visited {
   white-space: nowrap;
 }
 
+.vote-indicator {
+  padding: 0 0.5rem;
+}
 .post-button-background:hover {
-  background: var(--button-hover-gray);
+  background: var(--button-hover-gray) !important;
 }
