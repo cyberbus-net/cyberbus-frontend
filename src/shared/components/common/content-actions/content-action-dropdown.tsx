@@ -2,7 +2,6 @@ import { Component } from "inferno";
 import { I18NextService, UserService } from "../../../services";
 import { Icon } from "../icon";
 import { CrossPostParams } from "@utils/types";
-import CrossPostButton from "./cross-post-button";
 import { CommunityModeratorView, PersonView, PostView } from "lemmy-js-client";
 import {
   amAdmin,
@@ -192,16 +191,6 @@ export default class ContentActionDropdown extends Component<
             noLoading
           />
         )}
-        <ActionButton
-          onClick={onSave}
-          inline
-          icon="star"
-          label={I18NextService.i18n.t(saved ? "unsave" : "save")}
-          iconClass={classNames({ "text-warning": saved })}
-        />
-        {type === "post" && (
-          <CrossPostButton {...this.props.crossPostParams!} />
-        )}
 
         <div className="dropdown">
           <button
@@ -219,6 +208,14 @@ export default class ContentActionDropdown extends Component<
           <ul className="dropdown-menu" id={dropdownId}>
             {this.state.dropdownOpenedOnce && (
               <>
+                <li>
+                  <ActionButton
+                    icon="star"
+                    label={I18NextService.i18n.t(saved ? "unsave" : "save")}
+                    onClick={onSave}
+                    iconClass={classNames({ "text-warning": saved })}
+                  />
+                </li>
                 {type === "post" && (
                   <li>
                     <ActionButton

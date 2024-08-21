@@ -432,7 +432,7 @@ h5,
 
 h6,
 .h6 {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
 }
 
 .lead {
@@ -8495,6 +8495,10 @@ button.bg-dark:focus {
   min-height: 100vh !important;
 }
 
+.min-h-2rem {
+  min-height: 2rem !important;
+}
+
 .vw-100 {
   width: 100vw !important;
 }
@@ -11049,4 +11053,19 @@ a.text-neutral-content:hover {
 
 a.text-neutral-content:visited {
   color: var(--color-neutral-content-weak);
+}
+
+.moment-time {
+  font-size: 0.75rem;
+}
+
+.post-listing-nav-bar {
+  justify-content: space-between;
+  line-height: 2rem;
+}
+
+.post-title {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 600;
 }
