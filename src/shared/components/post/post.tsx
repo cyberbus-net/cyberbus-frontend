@@ -576,6 +576,7 @@ export class Post extends Component<PostRouteProps, PostState> {
                 onMarkPostAsRead={() => {}}
                 onHidePost={this.handleHidePost}
                 onScrollIntoCommentsClick={this.handleScrollIntoCommentsClick}
+                showFull={true}
               />
               <div ref={this.commentSectionRef} className="mb-2" />
 

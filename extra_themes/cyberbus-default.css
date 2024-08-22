@@ -674,13 +674,13 @@ pre code {
 }
 
 .row {
-  --bs-gutter-x: 1.5rem;
+  /* --bs-gutter-x: 1.5rem; */
   --bs-gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
   margin-top: calc(-1 * var(--bs-gutter-y));
-  margin-right: calc(-0.5 * var(--bs-gutter-x));
-  margin-left: calc(-0.5 * var(--bs-gutter-x));
+  /* margin-right: calc(-0.5 * var(--bs-gutter-x)); */
+  /* margin-left: calc(-0.5 * var(--bs-gutter-x)); */
 }
 
 .row > * {
@@ -788,6 +788,17 @@ pre code {
   flex-grow: 1;
   min-width: 0;
   max-width: 100%;
+}
+
+.col-for-badge {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  position: relative;
+  width: 100%;
+  padding-right: 0.2rem !important;
+  padding-left: 0.2rem !important;
+  flex: 1 0 0%;
 }
 
 .row-cols-1 > * {
@@ -10855,7 +10866,7 @@ a.text-success:focus {
 }
 
 .text-info {
-  color: #00a846 !important;
+  color: var(--indigo) !important;
 }
 
 a.text-info:hover,
@@ -11047,6 +11058,10 @@ a.text-dark:focus {
   padding: 0.25rem 1rem !important;
 }
 
+.post-listing-full {
+  padding: 0.25rem 1rem !important;
+}
+
 .post-listing:hover {
   background-color: #f7f7f9;
   border-radius: var(--bs-border-radius);
@@ -11083,6 +11098,7 @@ a.text-neutral-content:visited {
   height: 2rem !important;
   width: 1.5rem !important;
   padding: 0 !important;
+  outline: none !important;
 }
 
 .big-icon {

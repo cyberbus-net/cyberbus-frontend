@@ -51,7 +51,7 @@ export class UserBadges extends Component<UserBadgesProps> {
           )}
         >
           {this.props.isBanned && (
-            <span className="col">
+            <span className="col-for-badge">
               {getRoleLabelPill({
                 label: I18NextService.i18n.t("banned"),
                 tooltip: I18NextService.i18n.t("banned"),
@@ -61,7 +61,7 @@ export class UserBadges extends Component<UserBadgesProps> {
             </span>
           )}
           {this.props.isDeleted && (
-            <span className="col">
+            <span className="col-for-badge">
               {getRoleLabelPill({
                 label: I18NextService.i18n.t("deleted"),
                 tooltip: I18NextService.i18n.t("deleted"),
@@ -72,7 +72,7 @@ export class UserBadges extends Component<UserBadgesProps> {
           )}
 
           {this.props.isPostCreator && (
-            <span className="col">
+            <span className="col-for-badge">
               {getRoleLabelPill({
                 label: I18NextService.i18n.t("op").toUpperCase(),
                 tooltip: I18NextService.i18n.t("creator"),
@@ -82,7 +82,7 @@ export class UserBadges extends Component<UserBadgesProps> {
             </span>
           )}
           {this.props.isMod && (
-            <span className="col">
+            <span className="col-for-badge">
               {getRoleLabelPill({
                 label: I18NextService.i18n.t("mod"),
                 tooltip: I18NextService.i18n.t("mod"),
@@ -91,7 +91,7 @@ export class UserBadges extends Component<UserBadgesProps> {
             </span>
           )}
           {this.props.isAdmin && (
-            <span className="col">
+            <span className="col-for-badge">
               {getRoleLabelPill({
                 label: I18NextService.i18n.t("admin"),
                 tooltip: I18NextService.i18n.t("admin"),
@@ -100,7 +100,7 @@ export class UserBadges extends Component<UserBadgesProps> {
             </span>
           )}
           {this.props.isBot && (
-            <span className="col">
+            <span className="col-for-badge">
               {getRoleLabelPill({
                 label: I18NextService.i18n.t("bot_account").toLowerCase(),
                 tooltip: I18NextService.i18n.t("bot_account"),

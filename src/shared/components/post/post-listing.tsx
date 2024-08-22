@@ -58,6 +58,8 @@ import isMagnetLink, {
   extractMagnetLinkDownloadName,
 } from "@utils/media/is-magnet-link";
 
+const postTruncateAtLines = 8;
+
 type PostListingState = {
   showEdit: boolean;
   imageExpanded: boolean;
@@ -84,6 +86,7 @@ interface PostListingProps {
   voteDisplayMode: LocalUserVoteDisplayMode;
   enableNsfw?: boolean;
   viewOnly?: boolean;
+  showFull?: boolean;
   onPostEdit(form: EditPost): Promise<RequestState<PostResponse>>;
   onPostVote(form: CreatePostLike): Promise<RequestState<PostResponse>>;
   onPostReport(form: CreatePostReport): Promise<void>;
@@ -175,15 +178,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   render() {
     const post = this.postView.post;
 
-    return (
-      <a
-        href={`/post/${post.id}`}
-        className="text-neutral-content visited:text-neutral-content-weak"
-      >
-        <div className="post-listing mt-1">
+    // render full post content
+    if (this.props.showFull) {
+      return (
+        <div className="post-listing-full mt-1">
           {!this.state.showEdit ? (
             <>
-              {this.listing()}
+              {this.postTitleFull()}
               {this.state.imageExpanded && !this.props.hideImage && this.img}
               {this.showBody &&
                 post.url &&
@@ -211,12 +212,217 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           {this.commentsLine()}
           {this.duplicatesLine()}
         </div>
-      </a>
+      );
+    }
+
+    // render post-listing's post
+    return (
+      <div className="post-listing mt-1">
+        {!this.state.showEdit ? (
+          <>
+            {this.postTitle()}
+            <a
+              href={`/post/${post.id}`}
+              className="text-neutral-content visited:text-neutral-content-weak"
+            >
+              {this.state.imageExpanded && !this.props.hideImage && this.img}
+              {this.showBody &&
+                post.url &&
+                isMagnetLink(post.url) &&
+                this.torrentHelp()}
+              {this.showBody && post.url && post.embed_title && (
+                <MetadataCard post={post} />
+              )}
+              {this.showBody && this.body()}
+            </a>
+          </>
+        ) : (
+          <a
+            href={`/post/${post.id}`}
+            className="text-neutral-content visited:text-neutral-content-weak"
+          >
+            <PostForm
+              post_view={this.postView}
+              crossPosts={this.props.crossPosts}
+              onEdit={this.handleEditPost}
+              onCancel={this.handleEditCancel}
+              enableNsfw={this.props.enableNsfw}
+              enableDownvotes={this.props.enableDownvotes}
+              voteDisplayMode={this.props.voteDisplayMode}
+              allLanguages={this.props.allLanguages}
+              siteLanguages={this.props.siteLanguages}
+              loading={this.state.loading}
+            />
+          </a>
+        )}
+        {this.commentsLine()}
+        {this.duplicatesLine()}
+      </div>
     );
   }
 
+  replaceTrailingNewline(input: string): string {
+    const newlineRegex = /(\r\n|\n|\r)$/;
+    return input.replace(newlineRegex, "...");
+  }
+
+  truncateAtNLine(body: string | undefined, nline: number): string {
+    // Handle undefined or null body
+    if (body === undefined || body === null) {
+      return "";
+    }
+    const markdownCodeBlockStart = "```";
+    const markdownCodeBlockEnd = "```";
+
+    let lineCount = 0;
+    let inCodeBlock = false;
+    let inBlockquote = false;
+    let inList = false;
+    let inTable = false;
+    let result = "";
+    let i = 0;
+
+    while (i < body.length) {
+      const remainingText = body.substring(i);
+
+      // Find indices for line breaks, code block start, code block end, blockquote start, list start, and table start
+      const nextLineBreakIndex = remainingText.search(/(?:\r\n|\r|\n)/);
+      const nextCodeBlockStartIndex = remainingText.indexOf(
+        markdownCodeBlockStart,
+      );
+      const nextCodeBlockEndIndex = remainingText.indexOf(markdownCodeBlockEnd);
+      const nextBlockquoteStartIndex = remainingText.indexOf(">");
+      const nextListStartIndex = remainingText.search(
+        /^(?:\s*[\*\-\+]\s|\s*\d+\.\s)/m,
+      );
+      const nextTableStartIndex = remainingText.indexOf("|");
+
+      if (
+        nextLineBreakIndex === -1 &&
+        nextCodeBlockStartIndex === -1 &&
+        nextCodeBlockEndIndex === -1 &&
+        nextBlockquoteStartIndex === -1 &&
+        nextListStartIndex === -1 &&
+        nextTableStartIndex === -1
+      ) {
+        // No more significant syntax elements
+        result += remainingText;
+        break;
+      }
+
+      if (inCodeBlock) {
+        // Handle text within code block
+        if (nextCodeBlockEndIndex !== -1) {
+          // Found the end of the code block
+          result += remainingText.substring(
+            0,
+            nextCodeBlockEndIndex + markdownCodeBlockEnd.length,
+          );
+          i += nextCodeBlockEndIndex + markdownCodeBlockEnd.length;
+          inCodeBlock = false;
+        } else {
+          // Continue within the code block
+          result += remainingText;
+          break;
+        }
+      } else if (inBlockquote || inList || inTable) {
+        // Handle text within blockquote, list, or table
+        const nextSyntaxEnd = Math.min(
+          nextLineBreakIndex === -1 ? Infinity : nextLineBreakIndex,
+          nextBlockquoteStartIndex === -1 ? Infinity : nextBlockquoteStartIndex,
+          nextListStartIndex === -1 ? Infinity : nextListStartIndex,
+          nextTableStartIndex === -1 ? Infinity : nextTableStartIndex,
+        );
+        if (nextSyntaxEnd === Infinity) {
+          result += remainingText;
+          break;
+        }
+        result += remainingText.substring(0, nextSyntaxEnd);
+        i += nextSyntaxEnd;
+        if (nextLineBreakIndex === nextSyntaxEnd) {
+          lineCount++;
+          if (lineCount === nline) {
+            break;
+          }
+        }
+      } else {
+        // Handle text outside of code block
+        if (
+          nextCodeBlockStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 ||
+            nextCodeBlockStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a code block
+          result += remainingText.substring(
+            0,
+            nextCodeBlockStartIndex + markdownCodeBlockStart.length,
+          );
+          i += nextCodeBlockStartIndex + markdownCodeBlockStart.length;
+          inCodeBlock = true;
+        } else if (nextLineBreakIndex !== -1) {
+          // Found a line break
+          lineCount++;
+          if (lineCount === nline) {
+            result += remainingText.substring(0, nextLineBreakIndex + 1);
+            break;
+          }
+          result += remainingText.substring(0, nextLineBreakIndex + 1);
+          i += nextLineBreakIndex + 1;
+        } else if (
+          nextBlockquoteStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 ||
+            nextBlockquoteStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a blockquote
+          result += remainingText.substring(0, nextBlockquoteStartIndex + 1); // include the '>' character
+          i += nextBlockquoteStartIndex + 1;
+          inBlockquote = true;
+        } else if (
+          nextListStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 || nextListStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a list
+          result += remainingText.substring(
+            0,
+            nextListStartIndex +
+              remainingText.substring(nextListStartIndex).search(/\n/) +
+              1,
+          );
+          i +=
+            nextListStartIndex +
+            remainingText.substring(nextListStartIndex).search(/\n/) +
+            1;
+          inList = true;
+        } else if (
+          nextTableStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 ||
+            nextTableStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a table
+          result += remainingText.substring(
+            0,
+            remainingText.indexOf("\n", nextTableStartIndex) + 1,
+          );
+          i += remainingText.indexOf("\n", nextTableStartIndex) + 1;
+          inTable = true;
+        }
+      }
+    }
+
+    // If less than nline breaks, return the whole body
+    if (lineCount >= nline) {
+      return this.replaceTrailingNewline(result);
+    }
+    return result;
+  }
+
   body() {
-    const body = this.postView.post.body;
+    var body;
+    if (this.props.showFull) {
+      body = this.postView.post.body;
+    } else {
+      body = this.truncateAtNLine(this.postView.post.body, postTruncateAtLines);
+    }
     return body ? (
       <article className="my-2">
         {this.state.viewSource ? (
@@ -438,7 +644,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {this.props.showCommunity && (
           <>
             {" "}
-            {I18NextService.i18n.t("to")}{" "}
+            {I18NextService.i18n.t("@")}{" "}
             <CommunityLink community={pv.community} />
           </>
         )}
@@ -461,7 +667,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const pv = this.postView;
 
     return (
-      <div className="mb-1 mb-md-0">
+      <div className="mb-1 mb-md-0 h6">
         {this.props.showCommunity && (
           <>
             <CommunityLink community={pv.community} />
@@ -752,7 +958,54 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     );
   }
 
-  listing() {
+  postTitleFull() {
+    const post = this.postView.post;
+
+    return (
+      <>
+        {/* The mobile view*/}
+        <div className="d-block d-sm-none">
+          <article className="row post-container">
+            <div className="col-12">
+              {this.createdLine()}
+
+              {/* If it has a thumbnail, do a right aligned thumbnail */}
+              {this.mobileThumbnail()}
+
+              {this.commentsLine(true)}
+              {this.duplicatesLine()}
+            </div>
+          </article>
+        </div>
+
+        {/* The larger view*/}
+        <div className="d-none d-sm-block">
+          <article className="row post-container">
+            <div className="flex-grow-1">
+              <div className="row">
+                <div className="flex-grow-1">
+                  <div className="d-flex post-listing-nav-bar min-h-2rem">
+                    {this.createdLine()}
+                    {this.showMoreButtons()}
+                  </div>
+                  <a
+                    href={`/post/${post.id}`}
+                    className="text-neutral-content visited:text-neutral-content-weak"
+                  >
+                    {this.postTitleLine()}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </>
+    );
+  }
+
+  postTitle() {
+    const post = this.postView.post;
+
     return (
       <>
         {/* The mobile view*/}
@@ -780,7 +1033,12 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
                     {this.createdLineForPostListing()}
                     {this.showMoreButtons()}
                   </div>
-                  {this.postTitleLine()}
+                  <a
+                    href={`/post/${post.id}`}
+                    className="text-neutral-content visited:text-neutral-content-weak"
+                  >
+                    {this.postTitleLine()}
+                  </a>
                 </div>
               </div>
             </div>

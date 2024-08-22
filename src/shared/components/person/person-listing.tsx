@@ -43,7 +43,7 @@ export class PersonListing extends Component<PersonListingProps, any> {
     }
 
     const classes = classNames(
-      "person-listing d-inline-flex align-items-baseline",
+      "person-listing d-inline-flex align-items-baseline h6",
       {
         "text-muted": this.props.muted,
         "text-info": !this.props.muted,
