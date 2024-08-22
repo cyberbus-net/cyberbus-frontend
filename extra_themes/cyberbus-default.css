@@ -10855,7 +10855,7 @@ a.text-success:focus {
 }
 
 .text-info {
-  color: #007bff !important;
+  color: #00a846 !important;
 }
 
 a.text-info:hover,
@@ -10873,7 +10873,7 @@ a.text-warning:focus {
 }
 
 .text-danger {
-  color: #33077c !important;
+  color: #dc3545 !important;
 }
 
 a.text-danger:hover,
@@ -11127,7 +11127,7 @@ a.text-neutral-content:visited {
   text-overflow: ellipsis;
   outline-offset: 0px;
   background: var(--button-gray) !important;
-  border-radius: 0.8rem;
+  border-radius: 4rem;
   border: var(--button-border-width, 0) solid
     var(--button-border-color, transparent);
   overflow: hidden;

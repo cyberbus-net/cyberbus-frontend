@@ -687,7 +687,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         data-tippy-content={title}
         onClick={this.props.onScrollIntoCommentsClick}
       >
-        <BigIcon icon="message-square" classes="me-1" inline />
+        <BigIcon icon="message-square" classes="me-1 text-muted" inline />
         {pv.counts.comments}
         {this.unreadCount && (
           <>
