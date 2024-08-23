@@ -43,7 +43,7 @@ export class PersonListing extends Component<PersonListingProps, any> {
     }
 
     const classes = classNames(
-      "person-listing d-inline-flex align-items-baseline h6",
+      "person-listing d-inline-flex align-items-baseline ",
       {
         "text-muted": this.props.muted,
         "text-info": !this.props.muted,
@@ -76,6 +76,7 @@ export class PersonListing extends Component<PersonListingProps, any> {
             <PictrsImage
               src={avatar ?? `${getStaticDir()}/assets/icons/icon-96x96.png`}
               icon
+              userAvatar={true}
             />
           )}
         <span>{name}</span>

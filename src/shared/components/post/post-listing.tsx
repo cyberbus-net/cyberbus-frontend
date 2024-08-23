@@ -667,7 +667,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const pv = this.postView;
 
     return (
-      <div className="mb-1 mb-md-0 h6">
+      <div className="mb-1 mb-md-0">
         {this.props.showCommunity && (
           <>
             <CommunityLink community={pv.community} />

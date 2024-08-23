@@ -11085,7 +11085,6 @@ a.text-neutral-content:visited {
 
 .post-listing-nav-bar {
   justify-content: space-between;
-  line-height: 2rem;
 }
 
 .post-title {
@@ -11157,4 +11156,18 @@ a.text-neutral-content:visited {
 }
 .post-button-background:hover {
   background: var(--button-hover-gray) !important;
+}
+
+.person-listing {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #495057;
+}
+
+.user-avatar {
+  width: 2rem;
+  height: 2rem;
 }
