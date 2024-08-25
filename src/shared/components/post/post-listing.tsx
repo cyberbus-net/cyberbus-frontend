@@ -647,15 +647,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             {I18NextService.i18n.t("@")}{" "}
             <CommunityLink community={pv.community} />
           </>
-        )}
-        {pv.post.language_id !== 0 && (
-          <span className="mx-1 badge text-bg-light">
-            {
-              this.props.allLanguages.find(
-                lang => lang.id === pv.post.language_id,
-              )?.name
-            }
-          </span>
         )}{" "}
         <span className="h6"> · </span>
         <MomentTime published={pv.post.published} updated={pv.post.updated} />
@@ -830,7 +821,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     } = this.postView;
 
     return (
-      <div className="d-flex align-items-center justify-content-start flex-wrap">
+      <div className="d-flex align-items-center justify-content-start flex-wrap mt-2">
         {this.isInteractable && (
           <VoteButtons
             voteContentType={VoteContentType.Post}

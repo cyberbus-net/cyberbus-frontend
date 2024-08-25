@@ -19,7 +19,6 @@ import { tippyMixin } from "../mixins/tippy-mixin";
 import { pictrsDeleteToast, toast } from "../../toast";
 import { EmojiPicker } from "./emoji-picker";
 import { Icon, Spinner } from "./icon";
-import { LanguageSelect } from "./language-select";
 import ProgressBar from "./progress-bar";
 import validUrl from "@utils/helpers/valid-url";
 interface MarkdownTextAreaProps {
@@ -113,8 +112,6 @@ export class MarkdownTextArea extends Component<
   }
 
   render() {
-    const languageId = this.state.languageId;
-
     return (
       <form
         className="markdown-textarea"
@@ -256,19 +253,6 @@ export class MarkdownTextArea extends Component<
           </div>
 
           <div className="col-12 d-flex align-items-center flex-wrap mt-2">
-            {this.props.showLanguage && (
-              <LanguageSelect
-                iconVersion
-                allLanguages={this.props.allLanguages}
-                selectedLanguageIds={
-                  languageId ? Array.of(languageId) : undefined
-                }
-                siteLanguages={this.props.siteLanguages}
-                onChange={this.handleLanguageChange}
-                disabled={this.isDisabled}
-              />
-            )}
-
             {/* A flex expander */}
             <div className="flex-grow-1"></div>
 

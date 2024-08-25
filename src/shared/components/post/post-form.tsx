@@ -40,7 +40,6 @@ import {
 } from "../../services/HttpService";
 import { toast } from "../../toast";
 import { Icon, Spinner } from "../common/icon";
-import { LanguageSelect } from "../common/language-select";
 import { MarkdownTextArea } from "../common/markdown-textarea";
 import { SearchableSelect } from "../common/searchable-select";
 import { PostListings } from "./post-listings";
@@ -424,9 +423,6 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
   }
 
   render() {
-    const firstLang = this.state.form.language_id;
-    const selectedLangs = firstLang ? Array.of(firstLang) : undefined;
-
     const url = this.state.form.url;
 
     return (
@@ -620,13 +616,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             />
           </div>
         </div>
-        <LanguageSelect
-          allLanguages={this.props.allLanguages}
-          siteLanguages={this.props.siteLanguages}
-          selectedLanguageIds={selectedLangs}
-          multiple={false}
-          onChange={this.handleLanguageChange}
-        />
+
         {url && isImage(url) && (
           <div className="mb-3 row">
             <label className="col-sm-2 col-form-label" htmlFor="post-alt-text">

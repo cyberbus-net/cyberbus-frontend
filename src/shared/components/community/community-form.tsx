@@ -11,7 +11,6 @@ import {
 import { I18NextService } from "../../services";
 import { Icon, Spinner } from "../common/icon";
 import { ImageUploadForm } from "../common/image-upload-form";
-import { LanguageSelect } from "../common/language-select";
 import { MarkdownTextArea } from "../common/markdown-textarea";
 import { tippyMixin } from "../mixins/tippy-mixin";
 
@@ -259,14 +258,6 @@ export class CommunityForm extends Component<
             </div>
           </div>
         </div>
-        <LanguageSelect
-          allLanguages={this.props.allLanguages}
-          siteLanguages={this.props.siteLanguages}
-          showSite
-          selectedLanguageIds={this.state.form.discussion_languages}
-          multiple={true}
-          onChange={this.handleDiscussionLanguageChange}
-        />
         <div className="mb-3 row">
           <div className="col-12">
             <button
