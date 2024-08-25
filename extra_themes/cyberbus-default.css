@@ -3454,14 +3454,19 @@ fieldset:disabled a.btn {
   font-size: 1.125rem;
   line-height: 1.5;
   border-radius: 0.5rem;
+  font-weight: 500;
 }
 
 .btn-sm,
 .btn-group-sm > .btn {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  line-height: 1.5;
-  border-radius: 1rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  height: 2rem;
+  line-height: calc(
+    var(--button-height) - (2 * var(--button-border-width, 0px))
+  );
+  border-radius: 4rem;
 }
 
 .btn-block {
