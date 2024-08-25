@@ -114,7 +114,9 @@ export class MarkdownTextArea extends Component<
   render() {
     return (
       <form
-        className="markdown-textarea"
+        className={classNames("markdown-textarea rounded border", {
+          "markdown-textarea-focused": !!this.state.content,
+        })}
         id={this.formId}
         onSubmit={linkEvent(this, this.handleSubmit)}
       >
@@ -127,8 +129,8 @@ export class MarkdownTextArea extends Component<
           }
         />
         <div className="mb-3 row">
-          <div className="col-12">
-            <div className="rounded bg-light border">
+          <div className="">
+            <div className="bg-light rounded">
               {!this.state.previewMode && (
                 <div
                   className={classNames("d-flex flex-wrap border-bottom", {
@@ -202,12 +204,9 @@ export class MarkdownTextArea extends Component<
               <div>
                 <textarea
                   id={this.id}
-                  className={classNames(
-                    "form-control border-0 rounded-top-0 rounded-bottom",
-                    {
-                      "d-none": this.state.previewMode,
-                    },
-                  )}
+                  className={classNames("form-control border-0", {
+                    "d-none": this.state.previewMode,
+                  })}
                   value={this.state.content}
                   onInput={linkEvent(this, this.handleContentChange)}
                   onBlur={linkEvent(this, this.handleContentBlur)}

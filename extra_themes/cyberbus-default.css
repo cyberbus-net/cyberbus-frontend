@@ -2267,10 +2267,8 @@ pre code {
 
 .form-control:focus {
   color: #495057;
-  background-color: #fff;
-  border-color: #b389f9;
+  border: 0;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(102, 16, 242, 0.75);
 }
 
 .form-control::placeholder {
@@ -7178,7 +7176,7 @@ button.bg-danger:focus {
 }
 
 .bg-light {
-  background-color: #f8f9fa !important;
+  background-color: #f9fafa !important;
 }
 
 a.bg-light:hover,
@@ -7288,7 +7286,7 @@ button.bg-dark:focus {
 }
 
 .rounded {
-  border-radius: 0.5rem !important;
+  border-radius: 1rem !important;
 }
 
 .rounded-top {
@@ -11175,4 +11173,10 @@ a.text-neutral-content:visited {
 .user-avatar {
   width: 2rem;
   height: 2rem;
+}
+
+.markdown-textarea-focused {
+  border-color: #b389f9;
+  outline: 0;
+  box-shadow: 0 0 10px 2px rgba(102, 16, 242, 0.75);
 }
