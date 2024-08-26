@@ -223,21 +223,21 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
           {this.props.showIcon && !community.removed && (
             <BannerIconHeader icon={community.icon} banner={community.banner} />
           )}
-          <span className="me-2">
+          <span className="">
             <CommunityLink community={community} hideAvatar />
           </span>
           {community.removed && (
-            <small className="me-2 text-muted fst-italic">
+            <small className=" text-muted fst-italic">
               {I18NextService.i18n.t("removed")}
             </small>
           )}
           {community.deleted && (
-            <small className="me-2 text-muted fst-italic">
+            <small className=" text-muted fst-italic">
               {I18NextService.i18n.t("deleted")}
             </small>
           )}
           {community.nsfw && (
-            <small className="me-2 text-muted fst-italic">
+            <small className=" text-muted fst-italic">
               {I18NextService.i18n.t("nsfw")}
             </small>
           )}
