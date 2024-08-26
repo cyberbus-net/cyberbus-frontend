@@ -184,8 +184,9 @@ export default class ContentActionDropdown extends Component<
       <>
         {type === "comment" && (
           <ActionButton
+            className="comment-button-background big"
             onClick={this.props.onReply}
-            icon="reply1"
+            icon="message-square"
             inline
             label={I18NextService.i18n.t("reply")}
             noLoading
@@ -194,7 +195,7 @@ export default class ContentActionDropdown extends Component<
 
         <div className="dropdown">
           <button
-            className="btn btn-sm btn-link btn-animate text-muted py-0 dropdown-toggle"
+            className="btn btn-sm btn-link btn-animate text-muted py-0 dropdown-toggle comment-button-background"
             data-tippy-content={I18NextService.i18n.t("more")}
             data-bs-toggle="dropdown"
             aria-expanded="false"

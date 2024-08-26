@@ -79,7 +79,7 @@ export class PersonListing extends Component<PersonListingProps, any> {
               userAvatar={true}
             />
           )}
-        <span>{name}</span>
+        <span className="line-h-2rem">{name}</span>
         {serverStr && <small className="text-muted">{serverStr}</small>}
       </>
     );

@@ -812,10 +812,9 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   }
 
   commentsLine(mobile = false) {
-    const { showBody, onPostVote, enableDownvotes, voteDisplayMode } =
-      this.props;
+    const { onPostVote, enableDownvotes, voteDisplayMode } = this.props;
     const {
-      post: { id, body },
+      post: { id },
       my_vote,
       counts,
     } = this.postView;
@@ -855,8 +854,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             myVote={my_vote}
           />
         )}
-
-        {showBody && body && this.viewSourceButton}
       </div>
     );
   }

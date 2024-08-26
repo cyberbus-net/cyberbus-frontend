@@ -9,9 +9,7 @@ import { Language } from "lemmy-js-client";
 import {
   concurrentImageUpload,
   markdownFieldCharacterLimit,
-  markdownHelpUrl,
   maxUploadImages,
-  relTags,
 } from "../../config";
 import { customEmojisLookup, mdToHtml, setupTribute } from "../../markdown";
 import { HttpService, I18NextService, UserService } from "../../services";
@@ -190,15 +188,6 @@ export class MarkdownTextArea extends Component<
                     "superscript",
                     this.handleInsertSuperscript,
                   )}
-                  {this.getFormatButton("spoiler", this.handleInsertSpoiler)}
-                  <a
-                    href={markdownHelpUrl}
-                    className="btn btn-sm btn-link rounded-0 text-muted fw-bold"
-                    title={I18NextService.i18n.t("formatting_help")}
-                    rel={relTags}
-                  >
-                    <Icon icon="help-circle" classes="icon-inline" />
-                  </a>
                 </div>
               )}
               <div>
@@ -222,7 +211,7 @@ export class MarkdownTextArea extends Component<
                 />
                 {this.state.previewMode && this.state.content && (
                   <div
-                    className="card border-secondary card-body md-div"
+                    className="card card-body md-div rounded"
                     dangerouslySetInnerHTML={mdToHtml(this.state.content, () =>
                       this.forceUpdate(),
                     )}
