@@ -250,7 +250,7 @@ export class PersonDetails extends Component<PersonDetailsProps, any> {
       <div>
         {combined.map(i => [
           this.renderItemType(i),
-          <hr key={i.type_} className="my-3" />,
+          <hr key={i.type_} className="my-1" />,
         ])}
       </div>
     );
@@ -327,7 +327,7 @@ export class PersonDetails extends Component<PersonDetailsProps, any> {
               onMarkPostAsRead={this.props.onMarkPostAsRead}
               onHidePost={async () => {}}
             />
-            <hr className="my-3" />
+            <hr className="my-1" />
           </>
         ))}
       </div>
