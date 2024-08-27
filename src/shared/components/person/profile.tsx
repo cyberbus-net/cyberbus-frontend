@@ -654,7 +654,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
               <div className="mb-0 d-flex flex-wrap">
                 <div>
                   {pv.person.display_name && (
-                    <h1 className="h4 mb-4">{pv.person.display_name}</h1>
+                    <h1 className="h4">{pv.person.display_name}</h1>
                   )}
                   <ul className="list-inline mb-2">
                     <li className="list-inline-item">
@@ -664,6 +664,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                         useApubName
                         muted
                         hideAvatar
+                        needPrefix={true}
                       />
                     </li>
                     <li className="list-inline-item">
@@ -766,7 +767,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                   <>
                     <button
                       className={
-                        "d-flex registration-self-start btn btn-secondary me-2"
+                        "d-flex registration-self-start align-self-start btn btn-secondary me-2"
                       }
                       aria-label={I18NextService.i18n.t("view_registration")}
                       onClick={this.handleRegistrationShow}
@@ -829,19 +830,20 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                   </li>
                 </ul>
               </div>
-              <div className="text-muted">
-                {I18NextService.i18n.t("joined")}{" "}
-                <MomentTime
-                  published={pv.person.published}
-                  showAgo
-                  ignoreUpdated
-                />
-              </div>
-              <div className="d-flex align-items-center text-muted mb-2">
+              <div className="d-flex align-items-center text-muted mb-2 line-h-1rem font-size-075rem">
                 <Icon icon="cake" />
                 <span className="ms-2">
                   {I18NextService.i18n.t("cake_day_title")}{" "}
                   {format(cakeDate(pv.person.published), "PPP")}
+                </span>
+                <span>.&nbsp;</span>
+                <span>
+                  {I18NextService.i18n.t("joined")}{" "}
+                  <MomentTime
+                    published={pv.person.published}
+                    showAgo
+                    ignoreUpdated
+                  />
                 </span>
               </div>
             </div>

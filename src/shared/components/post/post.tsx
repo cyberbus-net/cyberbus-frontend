@@ -578,7 +578,7 @@ export class Post extends Component<PostRouteProps, PostState> {
                 onScrollIntoCommentsClick={this.handleScrollIntoCommentsClick}
                 showFull={true}
               />
-              <div ref={this.commentSectionRef} className="mb-4" />
+              <div ref={this.commentSectionRef} className="mb-2" />
 
               {/* Only show the top level comment form if its not a context view */}
               {!(

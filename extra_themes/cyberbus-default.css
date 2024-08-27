@@ -11186,6 +11186,14 @@ a.text-neutral-content:visited {
   box-shadow: 0 0 0 1px rgba(102, 16, 242, 0.75);
 }
 
+.font-size-075rem {
+  font-size: 0.75rem;
+}
+
+.line-h-1rem {
+  line-height: 1rem;
+}
+
 .line-h-2rem {
   line-height: 2rem;
 }

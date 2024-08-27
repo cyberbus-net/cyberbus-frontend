@@ -633,7 +633,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const pv = this.postView;
 
     return (
-      <div className="mb-1 mb-md-0">
+      <div className="mb-md-0 line-h-2rem">
         <PersonListing person={pv.creator} />
         <UserBadges
           classNames="ms-1"
@@ -658,10 +658,21 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const pv = this.postView;
 
     return (
-      <div className="mb-1 mb-md-0">
+      <div className="mb-md-0 line-h-2rem">
         {this.props.showCommunity && (
           <>
             <CommunityLink community={pv.community} />
+          </>
+        )}
+        {!this.props.showCommunity && (
+          <>
+            <PersonListing person={pv.creator} />
+            <UserBadges
+              classNames="ms-1"
+              isMod={pv.creator_is_moderator}
+              isAdmin={pv.creator_is_admin}
+              isBot={pv.creator.bot_account}
+            />
           </>
         )}
         <span className="h6"> · </span>
@@ -972,7 +983,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             <div className="flex-grow-1">
               <div className="row">
                 <div className="flex-grow-1">
-                  <div className="d-flex post-listing-nav-bar min-h-2rem">
+                  <div className="d-flex post-listing-nav-bar min-h-2rem mb-2 post-title-full">
                     {this.createdLine()}
                     {this.showMoreButtons()}
                   </div>
@@ -1017,7 +1028,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             <div className="flex-grow-1">
               <div className="row">
                 <div className="flex-grow-1">
-                  <div className="d-flex post-listing-nav-bar min-h-2rem">
+                  <div className="d-flex post-listing-nav-bar min-h-2rem mb-2 post-title">
                     {this.createdLineForPostListing()}
                     {this.showMoreButtons()}
                   </div>

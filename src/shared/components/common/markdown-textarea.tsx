@@ -126,7 +126,7 @@ export class MarkdownTextArea extends Component<
               this.state.loading)
           }
         />
-        <div className="mb-3 row">
+        <div className="mb-2 row">
           <div className="">
             <div className="bg-light rounded">
               {!this.state.previewMode && (
