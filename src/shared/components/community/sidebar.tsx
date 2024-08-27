@@ -224,7 +224,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
             <BannerIconHeader icon={community.icon} banner={community.banner} />
           )}
           <span className="">
-            <CommunityLink community={community} hideAvatar />
+            <CommunityLink community={community} hideAvatar showTitle={true} />
           </span>
           {community.removed && (
             <small className=" text-muted fst-italic">
