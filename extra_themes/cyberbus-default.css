@@ -11253,6 +11253,13 @@ a.text-neutral-content:visited {
   display: flex;
   justify-content: center;
 }
+
+.dropdown-menu {
+  box-shadow: 4px 4px 8px 2px rgba(225, 225, 225, 0.75);
+  top: 120%;
+  left: -90%;
+}
+
 .dropdown-username {
   line-height: calc(var(--bs-body-line-height) * 1em) !important;
 }

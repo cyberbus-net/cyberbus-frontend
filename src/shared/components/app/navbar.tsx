@@ -5,6 +5,7 @@ import { amAdmin, canCreateCommunity } from "@utils/roles";
 import { Component, createRef, linkEvent } from "inferno";
 import { NavLink } from "inferno-router";
 import { GetSiteResponse } from "lemmy-js-client";
+import { getStaticDir } from "@utils/env";
 import {
   I18NextService,
   UserService,
@@ -374,6 +375,14 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                             hoverStyle={true}
                           />
                         )}
+                        {!person.avatar && (
+                          <PictrsImage
+                            src={`${getStaticDir()}/assets/icons/icon-96x96.png`}
+                            icon
+                            circleIcon={true}
+                            hoverStyle={true}
+                          />
+                        )}
                       </button>
                       <ul
                         className="dropdown-menu"
@@ -383,11 +392,11 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                           <NavLink
                             to={`/u/${person.name}`}
                             className="dropdown-item px-2"
-                            title={I18NextService.i18n.t("profile")}
+                            title={I18NextService.i18n.t("View Profile")}
                             onMouseUp={linkEvent(this, handleCollapseClick)}
                           >
                             <Icon icon="user" classes="me-1" />
-                            {I18NextService.i18n.t("profile")}
+                            {I18NextService.i18n.t("View Profile")}
                           </NavLink>
                         </li>
                         <li>
