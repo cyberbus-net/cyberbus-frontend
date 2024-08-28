@@ -23,8 +23,6 @@ import type { QueryParams, StringBoolean } from "@utils/types";
 import { RouteDataResponse } from "@utils/types";
 import { NoOptionI18nKeys } from "i18next";
 import { Component, InfernoNode, MouseEventHandler, linkEvent } from "inferno";
-import { T } from "inferno-i18next-dess";
-import { Link } from "inferno-router";
 import {
   AddAdmin,
   AddModToCommunity,
@@ -429,9 +427,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
             />
           )}
           {showSubscribedMobile && (
-            <div className="card border-secondary mb-3">
-              {this.subscribedCommunities(true)}
-            </div>
+            <div className="card mb-3">{this.subscribedCommunities()}</div>
           )}
         </div>
       </div>
@@ -456,76 +452,35 @@ export class Home extends Component<HomeRouteProps, HomeState> {
         />
         {this.hasFollows && (
           <div className="accordion">
-            <section id="sidebarSubscribed" className="card mb-3">
-              {this.subscribedCommunities(false)}
-            </section>
+            <div className="card mb-3">
+              <div className="list-group list-group-flush">
+                {this.subscribedCommunities()}
+              </div>
+            </div>
           </div>
         )}
       </div>
     );
   }
 
-  subscribedCommunities(isMobile = false) {
-    const { subscribedCollapsed } = this.state;
-
+  subscribedCommunities() {
     return (
       <>
-        <header
-          className="card-header d-flex align-items-center"
-          id="sidebarSubscribedHeader"
-        >
-          <h5 className="mb-0 d-inline">
-            <T class="d-inline" i18nKey="subscribed_to_communities">
-              #
-              <Link className="text-body" to="/communities">
-                #
-              </Link>
-            </T>
-          </h5>
-          {!isMobile && (
-            <button
-              type="button"
-              className="btn btn-sm text-muted"
-              onClick={linkEvent(this, this.handleCollapseSubscribe)}
-              aria-label={
-                subscribedCollapsed
-                  ? I18NextService.i18n.t("expand")
-                  : I18NextService.i18n.t("collapse")
-              }
-              data-tippy-content={
-                subscribedCollapsed
-                  ? I18NextService.i18n.t("expand")
-                  : I18NextService.i18n.t("collapse")
-              }
-              aria-expanded="true"
-              aria-controls="sidebarSubscribedBody"
-            >
-              <Icon
-                icon={`${subscribedCollapsed ? "plus" : "minus"}-square`}
-                classes="icon-inline"
-              />
-            </button>
-          )}
-        </header>
-        {!subscribedCollapsed && (
-          <div
-            id="sidebarSubscribedBody"
-            aria-labelledby="sidebarSubscribedHeader"
-          >
-            <div className="card-body">
-              <ul className="list-inline mb-0">
-                {UserService.Instance.myUserInfo?.follows.map(cfv => (
-                  <li
-                    key={cfv.community.id}
-                    className="list-inline-item d-inline-block"
-                  >
-                    <CommunityLink community={cfv.community} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        <div className="list-group-item">
+          <h2 className="h5">
+            {I18NextService.i18n.t("Subscribed to Communities")}
+          </h2>
+          <ul className="list-inline mb-2">
+            {UserService.Instance.myUserInfo?.follows.map(cfv => (
+              <li
+                key={cfv.community.id}
+                className="list-inline-item badge text-bg-tertiary"
+              >
+                <CommunityLink community={cfv.community} />
+              </li>
+            ))}
+          </ul>
+        </div>
       </>
     );
   }

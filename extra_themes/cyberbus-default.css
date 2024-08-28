@@ -11239,3 +11239,8 @@ a.text-neutral-content:visited {
   margin-left: 0.5rem !important;
   margin-right: 0.5rem !important;
 }
+
+.text-bg-tertiary {
+  color: #fff !important;
+  background-color: #e1e1e1;
+}
