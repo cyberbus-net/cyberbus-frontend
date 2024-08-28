@@ -97,6 +97,7 @@ import { PersonDetails } from "./person-details";
 import { PersonListing } from "./person-listing";
 import { Karma } from "./karma";
 import { TorphyCase } from "./torphy-case";
+import { Homelab } from "./homelab";
 import { getHttpBaseInternal } from "../../utils/env";
 import { IRoutePropsWithFetch } from "../../routes";
 import { MediaUploads } from "../common/media-uploads";
@@ -545,6 +546,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                 <div className="list-group list-group-flush">
                   <Karma pv={personRes.person_view} />
                   <Moderates moderates={personRes.moderates} />
+                  <Homelab />
                   <TorphyCase />
                   {this.amCurrentUser && <Follows />}
                 </div>
