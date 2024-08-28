@@ -11200,6 +11200,11 @@ a.text-neutral-content:visited {
   line-height: 2rem;
 }
 
+.comment:hover {
+  background-color: #f7f7f9;
+  border-radius: var(--bs-border-radius);
+}
+
 .comment-button-background {
   box-shadow: var(--button-shadow);
   box-sizing: border-box;
