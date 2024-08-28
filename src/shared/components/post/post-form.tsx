@@ -193,14 +193,6 @@ function handlePostUrlBlur(i: PostForm, event: any) {
   i.updateUrl(() => i.props.onUrlBlur?.(event.target.value));
 }
 
-function handlePostNsfwChange(i: PostForm, event: any) {
-  i.setState(s => ((s.form.nsfw = event.target.checked), s));
-
-  i.updateUrl(() =>
-    i.props.onNsfwChange?.(event.target.checked ? "true" : "false"),
-  );
-}
-
 function handleHoneyPotChange(i: PostForm, event: any) {
   i.setState(s => ((s.form.honeypot = event.target.value), s));
 }
@@ -658,20 +650,6 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                 onSearch={this.handleCommunitySearch}
               />
             </div>
-          </div>
-        )}
-        {this.props.enableNsfw && (
-          <div className="form-check mb-3">
-            <input
-              className="form-check-input"
-              id="post-nsfw"
-              type="checkbox"
-              checked={this.state.form.nsfw}
-              onChange={linkEvent(this, handlePostNsfwChange)}
-            />
-            <label className="form-check-label" htmlFor="post-nsfw">
-              {I18NextService.i18n.t("nsfw")}
-            </label>
           </div>
         )}
         <input

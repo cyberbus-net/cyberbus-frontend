@@ -2223,6 +2223,30 @@ pre code {
     box-shadow 0.15s ease-in-out;
 }
 
+.form-control-no-outline {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.form-control-no-outline:focus {
+  color: #495057;
+  border: 0;
+  outline: 0;
+}
+
 .form-select {
   --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   display: block;
@@ -2273,7 +2297,7 @@ pre code {
 .form-control:focus {
   color: #495057;
   border: 0;
-  outline: 0;
+  outline: 1px auto #6610f2;
 }
 
 .form-control::placeholder {

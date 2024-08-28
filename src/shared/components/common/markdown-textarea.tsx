@@ -193,7 +193,7 @@ export class MarkdownTextArea extends Component<
               <div>
                 <textarea
                   id={this.id}
-                  className={classNames("form-control border-0", {
+                  className={classNames("form-control-no-outline border-0", {
                     "d-none": this.state.previewMode,
                   })}
                   value={this.state.content}
