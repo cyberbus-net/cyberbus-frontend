@@ -259,7 +259,6 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                   )}
                 </div>
                 <div className="comment-bottom-btns d-flex justify-content-start column-gap-1.5 flex-wrap text-muted fw-bold mt-1 align-items-center">
-                  {this.props.showContext && this.getLinkButton()}
                   {this.props.markable && (
                     <button
                       className="btn btn-link btn-animate text-muted"
