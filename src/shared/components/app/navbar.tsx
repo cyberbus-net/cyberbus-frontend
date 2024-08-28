@@ -109,7 +109,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
             onMouseUp={linkEvent(this, handleCollapseClick)}
           >
             {siteView?.site.icon && showAvatars() && (
-              <PictrsImage src={siteView.site.icon} icon />
+              <PictrsImage src={siteView.site.icon} siteIcon={true} />
             )}
             {siteView?.site.name}
           </NavLink>
@@ -362,14 +362,18 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     <li id="dropdownUser" className="dropdown">
                       <button
                         type="button"
-                        className="btn dropdown-toggle"
+                        className="btn"
                         aria-expanded="false"
                         data-bs-toggle="dropdown"
                       >
                         {showAvatars() && person.avatar && (
-                          <PictrsImage src={person.avatar} icon />
+                          <PictrsImage
+                            src={person.avatar}
+                            icon
+                            circleIcon={true}
+                            hoverStyle={true}
+                          />
                         )}
-                        {person.display_name ?? person.name}
                       </button>
                       <ul
                         className="dropdown-menu"

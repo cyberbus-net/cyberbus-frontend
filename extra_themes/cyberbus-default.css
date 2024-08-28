@@ -11182,6 +11182,10 @@ a.text-neutral-content:visited {
   height: 2rem;
 }
 
+.circle-icon {
+  border-radius: 999px;
+}
+
 .markdown-textarea-focused {
   border-color: #b389f9;
   outline: 0;
@@ -11243,4 +11247,21 @@ a.text-neutral-content:visited {
 .text-bg-tertiary {
   color: #fff !important;
   background-color: #e1e1e1;
+}
+
+.dropdown {
+  display: flex;
+  justify-content: center;
+}
+.dropdown-username {
+  line-height: calc(var(--bs-body-line-height) * 1em) !important;
+}
+
+.img-hover-style:hover {
+  box-shadow: 0 0 8px 4px rgba(102, 16, 242, 0.5);
+}
+
+.site-icon {
+  width: 60px;
+  height: 60px;
 }

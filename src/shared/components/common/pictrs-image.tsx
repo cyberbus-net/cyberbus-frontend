@@ -20,6 +20,9 @@ interface PictrsImageProps {
   pushup?: boolean;
   cardTop?: boolean;
   userAvatar?: boolean;
+  hoverStyle?: boolean;
+  circleIcon?: boolean;
+  siteIcon?: boolean;
 }
 
 interface PictrsImageState {
@@ -55,6 +58,9 @@ export class PictrsImage extends Component<PictrsImageProps, PictrsImageState> {
       pushup,
       cardTop,
       userAvatar,
+      circleIcon,
+      hoverStyle,
+      siteIcon,
     } = this.props;
 
     const { src } = this.state;
@@ -88,6 +94,9 @@ export class PictrsImage extends Component<PictrsImageProps, PictrsImageState> {
               "ms-2 mb-0 rounded-circle object-fit-cover avatar-overlay":
                 iconOverlay,
               "user-avatar": userAvatar,
+              "img-hover-style": hoverStyle,
+              "circle-icon": circleIcon,
+              "site-icon": siteIcon,
               "avatar-pushup": pushup,
               "card-img-top": cardTop,
             })}
