@@ -158,17 +158,15 @@ const getCommunitiesListing = (
 ) =>
   communityViews &&
   communityViews.length > 0 && (
-    <div className="card border-secondary mb-3">
-      <div className="card-body">
-        <h2 className="h5">{I18NextService.i18n.t(translationKey)}</h2>
-        <ul className="list-unstyled mb-0">
-          {communityViews.map(({ community }) => (
-            <li key={community.id}>
-              <CommunityLink community={community} />
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="list-group-item">
+      <h2 className="h5">{I18NextService.i18n.t(translationKey)}</h2>
+      <ul className="list-unstyled mb-0">
+        {communityViews.map(({ community }) => (
+          <li key={community.id}>
+            <CommunityLink community={community} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 
@@ -540,10 +538,15 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
               )}
             </div>
 
+            {/* user profile right sidebar */}
             <div className="col-12 col-md-4">
-              <Karma pv={personRes.person_view} />
-              <Moderates moderates={personRes.moderates} />
-              {this.amCurrentUser && <Follows />}
+              <div className="card mb-3">
+                <div className="list-group list-group-flush">
+                  <Karma pv={personRes.person_view} />
+                  <Moderates moderates={personRes.moderates} />
+                  {this.amCurrentUser && <Follows />}
+                </div>
+              </div>
             </div>
           </div>
         );

@@ -5157,6 +5157,7 @@ input[type="button"].btn-block {
   min-height: 1px;
   padding: 1.25rem;
   color: #495057;
+  border: 1px solid #e1e1e1;
 }
 
 .card-title {
