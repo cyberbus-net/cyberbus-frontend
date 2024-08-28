@@ -418,6 +418,7 @@ export class Community extends Component<CommunityRouteProps, State> {
           <main className="col-12 col-md-8 col-lg-8" ref={this.mainContentRef}>
             {this.renderCommunity()}
             {this.selects()}
+            <hr className="my-1" />
             {this.listings()}
             <PaginatorCursor
               nextPage={this.getNextPage}
@@ -603,7 +604,7 @@ export class Community extends Component<CommunityRouteProps, State> {
   selects() {
     const { sort } = this.props;
     return (
-      <div className="mb-3">
+      <div className="mb-1 mt-4">
         <span className="me-2">
           <SortSelect sort={sort} onChange={this.handleSortChange} />
         </span>
