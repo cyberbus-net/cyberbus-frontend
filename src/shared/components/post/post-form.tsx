@@ -429,6 +429,29 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             ) && !this.state.bypassNavWarning
           }
         />
+        {!this.props.post_view && (
+          <div className="mb-3 row">
+            <label className="col-sm-2 col-form-label" htmlFor="post-community">
+              {I18NextService.i18n.t("community")}
+            </label>
+            <div className="col-sm-10">
+              <SearchableSelect
+                id="post-community"
+                value={this.state.form.community_id}
+                options={[
+                  {
+                    label: I18NextService.i18n.t("select_a_community"),
+                    value: "",
+                    disabled: true,
+                  } as Choice,
+                ].concat(this.state.communitySearchOptions)}
+                loading={this.state.communitySearchLoading}
+                onChange={this.handleCommunitySelect}
+                onSearch={this.handleCommunitySearch}
+              />
+            </div>
+          </div>
+        )}
         <div className="mb-3 row">
           <label className="col-sm-2 col-form-label" htmlFor="post-title">
             {I18NextService.i18n.t("title")}
@@ -625,29 +648,6 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                 value={this.state.form.alt_text}
                 onInput={linkEvent(this, handleAltTextChange)}
                 onBlur={linkEvent(this, handleAltTextBlur)}
-              />
-            </div>
-          </div>
-        )}
-        {!this.props.post_view && (
-          <div className="mb-3 row">
-            <label className="col-sm-2 col-form-label" htmlFor="post-community">
-              {I18NextService.i18n.t("community")}
-            </label>
-            <div className="col-sm-10">
-              <SearchableSelect
-                id="post-community"
-                value={this.state.form.community_id}
-                options={[
-                  {
-                    label: I18NextService.i18n.t("select_a_community"),
-                    value: "",
-                    disabled: true,
-                  } as Choice,
-                ].concat(this.state.communitySearchOptions)}
-                loading={this.state.communitySearchLoading}
-                onChange={this.handleCommunitySelect}
-                onSearch={this.handleCommunitySearch}
               />
             </div>
           </div>
