@@ -155,7 +155,6 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
                 <Badges communityId={id} counts={counts} />
               </li>
               <li className="list-group-item">
-                {this.props.editable && this.adminButtons()}
                 {!banned_from_community && (
                   <>
                     <SubscribeButton
@@ -168,6 +167,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
                     {myUserInfo && this.blockCommunity()}
                   </>
                 )}
+                {this.props.editable && this.adminButtons()}
               </li>
 
               <li className="list-group-item">
@@ -270,7 +270,7 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
     const cv = this.props.community_view;
     return (
       <Link
-        className={`btn btn-secondary d-block mb-2 w-100 ${
+        className={`link-non-visited-white btn btn-secondary d-block mb-2 w-100 ${
           cv.community.deleted || cv.community.removed ? "no-click" : ""
         }`}
         to={
@@ -316,120 +316,111 @@ export class Sidebar extends Component<SidebarProps, SidebarState> {
     const community_view = this.props.community_view;
     return (
       <>
-        <ul className="list-inline mb-1 text-muted fw-bold">
-          {amMod(this.props.community_view.community.id) && (
-            <>
-              <li className="list-inline-item-action">
+        {amMod(this.props.community_view.community.id) && (
+          <>
+            <button
+              className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+              onClick={linkEvent(this, this.handleEditClick)}
+              data-tippy-content={I18NextService.i18n.t("edit")}
+              aria-label={I18NextService.i18n.t("edit")}
+            >
+              <Icon icon="edit" classes="icon-inline" />{" "}
+              {I18NextService.i18n.t("edit")}
+            </button>
+            {!amTopMod(this.props.moderators) &&
+              (!this.state.showConfirmLeaveModTeam ? (
                 <button
-                  className="btn btn-link text-muted d-inline-block"
-                  onClick={linkEvent(this, this.handleEditClick)}
-                  data-tippy-content={I18NextService.i18n.t("edit")}
-                  aria-label={I18NextService.i18n.t("edit")}
+                  className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+                  onClick={linkEvent(
+                    this,
+                    this.handleShowConfirmLeaveModTeamClick,
+                  )}
                 >
-                  <Icon icon="edit" classes="icon-inline" />
-                </button>
-              </li>
-              {!amTopMod(this.props.moderators) &&
-                (!this.state.showConfirmLeaveModTeam ? (
-                  <li className="list-inline-item-action">
-                    <button
-                      className="btn btn-link text-muted d-inline-block"
-                      onClick={linkEvent(
-                        this,
-                        this.handleShowConfirmLeaveModTeamClick,
-                      )}
-                    >
-                      {I18NextService.i18n.t("leave_mod_team")}
-                    </button>
-                  </li>
-                ) : (
-                  <>
-                    <li className="list-inline-item-action">
-                      {I18NextService.i18n.t("are_you_sure")}
-                    </li>
-                    <li className="list-inline-item-action">
-                      <button
-                        className="btn btn-link text-muted d-inline-block"
-                        onClick={linkEvent(this, this.handleLeaveModTeam)}
-                      >
-                        {I18NextService.i18n.t("yes")}
-                      </button>
-                    </li>
-                    <li className="list-inline-item-action">
-                      <button
-                        className="btn btn-link text-muted d-inline-block"
-                        onClick={linkEvent(
-                          this,
-                          this.handleCancelLeaveModTeamClick,
-                        )}
-                      >
-                        {I18NextService.i18n.t("no")}
-                      </button>
-                    </li>
-                  </>
-                ))}
-              {amTopMod(this.props.moderators) && (
-                <li className="list-inline-item-action">
-                  <button
-                    className="btn btn-link text-muted d-inline-block"
-                    onClick={linkEvent(this, this.handleDeleteCommunity)}
-                    data-tippy-content={
-                      !community_view.community.deleted
-                        ? I18NextService.i18n.t("delete")
-                        : I18NextService.i18n.t("restore")
-                    }
-                    aria-label={
-                      !community_view.community.deleted
-                        ? I18NextService.i18n.t("delete")
-                        : I18NextService.i18n.t("restore")
-                    }
-                  >
-                    {this.state.deleteCommunityLoading ? (
-                      <Spinner />
-                    ) : (
-                      <Icon
-                        icon="trash"
-                        classes={`icon-inline ${
-                          community_view.community.deleted && "text-danger"
-                        }`}
-                      />
-                    )}{" "}
-                  </button>
-                </li>
-              )}
-            </>
-          )}
-          {amAdmin() && (
-            <li className="list-inline-item">
-              {!this.props.community_view.community.removed ? (
-                <button
-                  className="btn btn-link text-muted d-inline-block"
-                  onClick={linkEvent(this, this.handleModRemoveShow)}
-                >
-                  {I18NextService.i18n.t("remove")}
+                  <Icon icon="log-out" classes="icon-inline" />{" "}
+                  {I18NextService.i18n.t("leave_mod_team")}
                 </button>
               ) : (
-                <button
-                  className="btn btn-link text-muted d-inline-block"
-                  onClick={linkEvent(this, this.handleRemoveCommunity)}
-                >
-                  {this.state.removeCommunityLoading ? (
-                    <Spinner />
-                  ) : (
-                    I18NextService.i18n.t("restore")
-                  )}
-                </button>
-              )}
+                <>
+                  {I18NextService.i18n.t("are_you_sure")}
+                  <button
+                    className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+                    onClick={linkEvent(this, this.handleLeaveModTeam)}
+                  >
+                    {I18NextService.i18n.t("yes")}
+                  </button>
+                  <button
+                    className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+                    onClick={linkEvent(
+                      this,
+                      this.handleCancelLeaveModTeamClick,
+                    )}
+                  >
+                    {I18NextService.i18n.t("no")}
+                  </button>
+                </>
+              ))}
+            {amTopMod(this.props.moderators) && (
               <button
-                className="btn btn-link text-muted d-inline-block"
-                onClick={linkEvent(this, this.handlePurgeCommunityShow)}
-                aria-label={I18NextService.i18n.t("purge_community")}
+                className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+                onClick={linkEvent(this, this.handleDeleteCommunity)}
+                data-tippy-content={
+                  !community_view.community.deleted
+                    ? I18NextService.i18n.t("delete")
+                    : I18NextService.i18n.t("restore")
+                }
+                aria-label={
+                  !community_view.community.deleted
+                    ? I18NextService.i18n.t("delete")
+                    : I18NextService.i18n.t("restore")
+                }
               >
-                {I18NextService.i18n.t("purge_community")}
+                {this.state.deleteCommunityLoading ? (
+                  <Spinner />
+                ) : (
+                  <Icon
+                    icon="trash"
+                    classes={`icon-inline ${
+                      community_view.community.deleted && "text-danger"
+                    }`}
+                  />
+                )}
+                {I18NextService.i18n.t("delete")}
               </button>
-            </li>
-          )}
-        </ul>
+            )}
+          </>
+        )}
+        {amAdmin() && (
+          <>
+            {!this.props.community_view.community.removed ? (
+              <button
+                className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+                onClick={linkEvent(this, this.handleModRemoveShow)}
+              >
+                <Icon icon="remove-2" classes="icon-inline" />{" "}
+                {I18NextService.i18n.t("remove")}
+              </button>
+            ) : (
+              <button
+                className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+                onClick={linkEvent(this, this.handleRemoveCommunity)}
+              >
+                {this.state.removeCommunityLoading ? (
+                  <Spinner />
+                ) : (
+                  I18NextService.i18n.t("restore")
+                )}
+              </button>
+            )}
+            <button
+              className="btn admin-btn d-block mb-2 w-100 btn-secondary"
+              onClick={linkEvent(this, this.handlePurgeCommunityShow)}
+              aria-label={I18NextService.i18n.t("purge_community")}
+            >
+              <Icon icon="purge" classes="icon-inline" />{" "}
+              {I18NextService.i18n.t("purge_community")}
+            </button>
+          </>
+        )}
         {this.state.showRemoveDialog && (
           <form onSubmit={linkEvent(this, this.handleRemoveCommunity)}>
             <div className="input-group mb-3">
