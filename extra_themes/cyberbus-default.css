@@ -5509,14 +5509,16 @@ input[type="button"].btn-block {
 
 .badge {
   display: inline-block;
-  padding: 0.4em 0.8em;
-  font-size: 75%;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.8rem !important;
   font-weight: 600;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 0.5rem;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
   transition:
     color 0.15s ease-in-out,
     background-color 0.15s ease-in-out,
@@ -11121,7 +11123,6 @@ a.text-neutral-content:visited {
 }
 
 .post-title {
-  font-size: 1.125rem;
   line-height: 1.5rem;
   font-weight: 600;
 }
