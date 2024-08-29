@@ -113,7 +113,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   private readonly isoData: IsoDataOptionalSite = setIsoData(this.context);
   state: PostListingState = {
     showEdit: false,
-    imageExpanded: false,
+    imageExpanded: true,
     viewSource: false,
     showAdvanced: false,
     showBody: true,
@@ -187,7 +187,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           {!this.state.showEdit ? (
             <>
               {this.postTitleFull()}
-              {this.state.imageExpanded && !this.props.hideImage && this.img}
+              {!this.props.hideImage && this.img}
               {/* magnet link */}
               {this.showBody &&
                 post.url &&
@@ -228,7 +228,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               href={`/post/${post.id}`}
               className="text-neutral-content visited:text-neutral-content-weak"
             >
-              {this.state.imageExpanded && !this.props.hideImage && this.img}
+              {!this.props.hideImage && this.img}
 
               {/* magnet link */}
               {this.showBody &&
@@ -486,7 +486,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     if (this.imageSrc) {
       return (
         <>
-          <div className="offset-sm-3 my-2 d-none d-sm-block">
+          <div className="my-2 d-none d-sm-block">
             <a href={this.imageSrc} className="d-inline-block">
               <PictrsImage src={this.imageSrc} alt={post.alt_text} />
             </a>
