@@ -487,18 +487,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
       return (
         <>
           <div className="my-2 d-none d-sm-block">
-            <a href={this.imageSrc} className="d-inline-block">
-              <PictrsImage src={this.imageSrc} alt={post.alt_text} />
-            </a>
-          </div>
-          <div className="my-2 d-block d-sm-none">
-            <button
-              type="button"
-              className="p-0 border-0 bg-transparent d-inline-block"
-              onClick={linkEvent(this, this.handleImageExpandClick)}
-            >
-              <PictrsImage src={this.imageSrc} alt={post.alt_text} />
-            </button>
+            <PictrsImage src={this.imageSrc} alt={post.alt_text} />
           </div>
         </>
       );
