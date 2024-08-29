@@ -204,6 +204,14 @@ a:not([href]):hover {
   text-decoration: none;
 }
 
+.link-non-visited-white:visited {
+  color: #ffffff !important;
+}
+
+.link-non-visited-white:hover {
+  color: #ffffff;
+}
+
 pre,
 code,
 kbd,
@@ -11308,4 +11316,9 @@ a.text-neutral-content:visited {
 
 .link-warp {
   word-wrap: break-word;
+}
+
+.admin-btn {
+  background-image: linear-gradient(-247.23deg, #6610f2, #4af2c8);
+  border: 0px !important;
 }

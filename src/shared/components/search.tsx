@@ -606,13 +606,13 @@ export class Search extends Component<SearchRouteProps, SearchState> {
         className="row gx-2 gy-3"
         onSubmit={linkEvent(this, this.handleSearchSubmit)}
       >
-        <div className="col-auto flex-grow-1 flex-sm-grow-0">
+        <div className="col-auto flex-grow-1">
           {/* key is necessary for defaultValue to update when props.q changes,
               e.g. back button. */}
           <input
             key={this.context.router.history.location.key}
             type="text"
-            className="form-control me-2 mb-2 col-sm-8"
+            className="form-control mb-2 col-sm"
             defaultValue={this.props.q ?? ""}
             placeholder={`${I18NextService.i18n.t("search")}...`}
             aria-label={I18NextService.i18n.t("search")}
