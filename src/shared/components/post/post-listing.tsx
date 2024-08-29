@@ -177,6 +177,8 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
   render() {
     const post = this.postView.post;
+    console.log("------------------------");
+    console.log(post);
 
     // render full post content
     if (this.props.showFull) {
@@ -186,6 +188,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             <>
               {this.postTitleFull()}
               {this.state.imageExpanded && !this.props.hideImage && this.img}
+              {/* magnet link */}
               {this.showBody &&
                 post.url &&
                 isMagnetLink(post.url) &&
@@ -226,6 +229,8 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               className="text-neutral-content visited:text-neutral-content-weak"
             >
               {this.state.imageExpanded && !this.props.hideImage && this.img}
+
+              {/* magnet link */}
               {this.showBody &&
                 post.url &&
                 isMagnetLink(post.url) &&
@@ -452,6 +457,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
       </div>
     );
   }
+
   get img() {
     const { post } = this.postView;
     const { url } = post;
@@ -516,11 +522,8 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get imageSrc(): string | undefined {
     const post = this.postView.post;
     const url = post.url;
-    const thumbnail = post.thumbnail_url;
 
-    if (thumbnail) {
-      return thumbnail;
-    } else if (url && isImage(url)) {
+    if (url && isImage(url)) {
       return url;
     } else {
       return undefined;
@@ -789,7 +792,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
                 title={url}
                 rel={relTags}
               >
-                {linkName}
+                {url}
               </a>
             )}
           </p>
