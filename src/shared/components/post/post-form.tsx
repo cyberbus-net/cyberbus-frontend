@@ -200,22 +200,6 @@ function handleHoneyPotChange(i: PostForm, event: any) {
   i.setState(s => ((s.form.honeypot = event.target.value), s));
 }
 
-function handleAltTextChange(i: PostForm, event: any) {
-  i.setState(s => ((s.form.alt_text = event.target.value), s));
-}
-
-function handleAltTextBlur(i: PostForm, event: any) {
-  i.updateUrl(() => i.props.onAltTextBlur?.(event.target.value));
-}
-
-function handleCustomThumbnailChange(i: PostForm, event: any) {
-  i.setState(s => ((s.form.custom_thumbnail = event.target.value), s));
-}
-
-function handleCustomThumbnailBlur(i: PostForm, event: any) {
-  i.updateUrl(() => i.props.onThumbnailUrlBlur?.(event.target.value));
-}
-
 function handleCancel(i: PostForm) {
   i.props.onCancel?.();
 }
@@ -653,25 +637,6 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                         </button>
                       )}
                     </div>
-                    {url && isImage(url) && (
-                      <div className="mb-3 row">
-                        <div className="">
-                          <input
-                            autoComplete="false"
-                            name="alt_text"
-                            placeholder={I18NextService.i18n.t(
-                              "column_alttext",
-                            )}
-                            type="text"
-                            className="form-control"
-                            id="post-alt-text"
-                            value={this.state.form.alt_text}
-                            onInput={linkEvent(this, handleAltTextChange)}
-                            onBlur={linkEvent(this, handleAltTextBlur)}
-                          />
-                        </div>
-                      </div>
-                    )}
                     {this.props.crossPosts &&
                       this.props.crossPosts.length > 0 && (
                         <>
@@ -710,24 +675,6 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                         </>
                       )}
                   </div>
-
-                  {!isImage(url || "") && (
-                    <div className="mb-3 row">
-                      <div className="">
-                        <input
-                          type="url"
-                          id="post-custom-thumbnail"
-                          placeholder={I18NextService.i18n.t(
-                            "custom_thumbnail_url",
-                          )}
-                          className="form-control mb-3"
-                          value={this.state.form.custom_thumbnail}
-                          onInput={linkEvent(this, handleCustomThumbnailChange)}
-                          onBlur={linkEvent(this, handleCustomThumbnailBlur)}
-                        />
-                      </div>
-                    </div>
-                  )}
                 </div>
               ),
             },
