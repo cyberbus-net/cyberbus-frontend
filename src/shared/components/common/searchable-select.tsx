@@ -8,7 +8,7 @@ import {
   RefObject,
 } from "inferno";
 import { I18NextService } from "../../services";
-import { Icon, Spinner } from "./icon";
+import { Spinner } from "./icon";
 import { LoadingEllipses } from "./loading-ellipses";
 
 interface SearchableSelectProps {
@@ -100,12 +100,12 @@ export class SearchableSelect extends Component<
     const { searchText, selectedIndex } = this.state;
 
     return (
-      <div className="searchable-select dropdown col-12 col-sm-auto flex-grow-1">
+      <div className="searchable-select dropdown flex-grow-1">
         <button
           id={id}
           type="button"
           role="combobox"
-          className="form-select d-inline-block text-start"
+          className="form-select d-inline-block text-start searchable-select-button"
           aria-haspopup="listbox"
           aria-controls="searchable-select-input"
           aria-activedescendant={options[selectedIndex].label}
@@ -125,9 +125,7 @@ export class SearchableSelect extends Component<
         </button>
         <div className="modlog-choices-font-size dropdown-menu w-100 p-2">
           <div className="input-group">
-            <span className="input-group-text">
-              {loading ? <Spinner /> : <Icon icon="search" />}
-            </span>
+            <span className="">{loading ? <Spinner /> : <span />}</span>
             <input
               type="text"
               id="searchable-select-input"

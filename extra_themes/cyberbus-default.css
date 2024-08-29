@@ -3981,8 +3981,6 @@ input[type="button"].btn-block {
 
 .input-group > .form-control:not(:first-child),
 .input-group > .custom-select:not(:first-child) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
 }
 
 .input-group > .custom-file {
@@ -5181,7 +5179,8 @@ input[type="button"].btn-block {
   min-height: 1px;
   padding: 1.25rem;
   color: #495057;
-  border: 1px solid #e1e1e1;
+  border-top: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
 }
 
 .card-title {
@@ -11295,4 +11294,13 @@ a.text-neutral-content:visited {
 .site-icon {
   width: 60px;
   height: 60px;
+}
+
+.searchable-select-button {
+  border-radius: 999px;
+  background-color: #e5ebee;
+}
+
+.width-30percent {
+  width: 30%;
 }
