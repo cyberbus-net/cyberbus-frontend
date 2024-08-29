@@ -11304,3 +11304,7 @@ a.text-neutral-content:visited {
 .width-30percent {
   width: 30%;
 }
+
+.link-warp {
+  word-wrap: break-word;
+}

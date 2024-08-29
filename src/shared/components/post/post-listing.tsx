@@ -188,11 +188,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             <>
               {this.postTitleFull()}
               {!this.props.hideImage && this.img}
-              {/* magnet link */}
-              {this.showBody &&
-                post.url &&
-                isMagnetLink(post.url) &&
-                this.torrentHelp()}
               {this.showBody && post.url && post.embed_title && (
                 <MetadataCard post={post} />
               )}
@@ -229,12 +224,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               className="text-neutral-content visited:text-neutral-content-weak"
             >
               {!this.props.hideImage && this.img}
-
-              {/* magnet link */}
-              {this.showBody &&
-                post.url &&
-                isMagnetLink(post.url) &&
-                this.torrentHelp()}
               {this.showBody && post.url && post.embed_title && (
                 <MetadataCard post={post} />
               )}
@@ -776,7 +765,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           <p className="small m-0">
             {url && !(hostname(url) === getExternalHost()) && (
               <a
-                className="fst-italic link-dark link-opacity-75 link-opacity-100-hover"
+                className="fst-italic link-warp link-dark link-opacity-75 link-opacity-100-hover"
                 href={url}
                 title={url}
                 rel={relTags}
