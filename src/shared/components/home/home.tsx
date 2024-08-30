@@ -617,7 +617,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
 
     return (
       <div className="row align-items-center">
-        <div className="col-auto">
+        <div className="">
           <SortSelect sort={sort} onChange={this.handleSortChange} />
         </div>
       </div>
