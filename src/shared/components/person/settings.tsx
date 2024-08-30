@@ -428,11 +428,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
               label: I18NextService.i18n.t("blocks"),
               getNode: this.blockCards,
             },
-            {
-              key: "import_export_section_title",
-              label: I18NextService.i18n.t("import_export_section_title"),
-              getNode: this.importExportSettings,
-            },
           ]}
         />
       </div>
