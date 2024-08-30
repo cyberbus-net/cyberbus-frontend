@@ -262,6 +262,8 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
     this.handleBannerUpload = this.handleBannerUpload.bind(this);
     this.handleBannerRemove = this.handleBannerRemove.bind(this);
     this.userSettings = this.userSettings.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.importExportSettings = this.importExportSettings.bind(this);
     this.blockCards = this.blockCards.bind(this);
 
     this.handleBlockPerson = this.handleBlockPerson.bind(this);
@@ -417,9 +419,19 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
               getNode: this.userSettings,
             },
             {
+              key: "change_password",
+              label: I18NextService.i18n.t("change_password"),
+              getNode: this.changePassword,
+            },
+            {
               key: "blocks",
               label: I18NextService.i18n.t("blocks"),
               getNode: this.blockCards,
+            },
+            {
+              key: "import_export_section_title",
+              label: I18NextService.i18n.t("import_export_section_title"),
+              getNode: this.importExportSettings,
             },
           ]}
         />
@@ -438,17 +450,53 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
         id="settings-tab-pane"
       >
         <div className="row">
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.saveUserSettingsHtmlForm()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.saveUserSettingsHtmlForm()}
+              </div>
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.changePasswordHtmlForm()}</div>
+        </div>
+      </div>
+    );
+  }
+
+  changePassword(isSelected: boolean) {
+    return (
+      <div
+        className={classNames("tab-pane show", {
+          active: isSelected,
+        })}
+        role="tabpanel"
+        id="settings-tab-pane"
+      >
+        <div className="row">
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.changePasswordHtmlForm()}
+              </div>
             </div>
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.importExport()}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  importExportSettings(isSelected: boolean) {
+    return (
+      <div
+        className={classNames("tab-pane show", {
+          active: isSelected,
+        })}
+        role="tabpanel"
+        id="settings-tab-pane"
+      >
+        <div className="row">
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">{this.importExport()}</div>
             </div>
           </div>
         </div>
@@ -466,19 +514,23 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
         id="blocks-tab-pane"
       >
         <div className="row">
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.blockUserCard()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">{this.blockUserCard()}</div>
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.blockCommunityCard()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.blockCommunityCard()}
+              </div>
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.blockInstanceCard()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.blockInstanceCard()}
+              </div>
             </div>
           </div>
         </div>
@@ -519,10 +571,7 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
             />
           </div>
           <div className="input-group mb-3">
-            <button
-              type="submit"
-              className="btn d-block btn-secondary me-4 w-100"
-            >
+            <button type="submit" className="btn d-block btn-secondary w-100">
               {this.state.changePasswordRes.state === "loading" ? (
                 <Spinner />
               ) : (
