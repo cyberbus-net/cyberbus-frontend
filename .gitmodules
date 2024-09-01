@@ -1,0 +1,3 @@
+[submodule "cyberbus-translations"]
+	path = cyberbus-translations
+	url = git@github.com:cyberbus-net/cyberbus-translations.git
