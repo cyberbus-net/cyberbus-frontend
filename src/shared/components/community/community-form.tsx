@@ -203,24 +203,6 @@ export class CommunityForm extends Component<
           </div>
         </div>
 
-        {this.props.enableNsfw && (
-          <div className="mb-3 row">
-            <legend className="col-form-label col-sm-2 pt-0">
-              {I18NextService.i18n.t("nsfw")}
-            </legend>
-            <div className="col-10">
-              <div className="form-check">
-                <input
-                  className="form-check-input position-static"
-                  id="community-nsfw"
-                  type="checkbox"
-                  checked={this.state.form.nsfw}
-                  onChange={linkEvent(this, this.handleCommunityNsfwChange)}
-                />
-              </div>
-            </div>
-          </div>
-        )}
         <div className="mb-3 row">
           <legend className="col-form-label col-6 pt-0">
             {I18NextService.i18n.t("community_visibility")}
