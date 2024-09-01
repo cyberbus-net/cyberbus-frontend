@@ -1,5 +1,5 @@
 src/shared/translations
-lemmy-translations
+cyberbus-translations
 src/assets/css/themes/*.css
 src/assets/css/code-themes/*.css
 stats.json

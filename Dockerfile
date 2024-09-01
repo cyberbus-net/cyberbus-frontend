@@ -27,7 +27,7 @@ COPY generate_translations.js \
   .babelrc \
   ./
 
-COPY lemmy-translations lemmy-translations
+COPY cyberbus-translations cyberbus-translations
 COPY src src
 COPY .git .git
 
