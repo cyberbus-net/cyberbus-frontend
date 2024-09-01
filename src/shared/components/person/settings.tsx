@@ -36,7 +36,7 @@ import {
   SuccessResponse,
   UpdateTotpResponse,
 } from "lemmy-js-client";
-import { elementUrl, emDash, fetchLimit, relTags } from "../../config";
+import { emDash, fetchLimit } from "../../config";
 import { FirstLoadService, UserService } from "../../services";
 import {
   EMPTY_REQUEST,
@@ -817,24 +817,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
                 value={this.state.saveUserSettingsForm.email}
                 onInput={linkEvent(this, this.handleEmailChange)}
                 minLength={3}
-              />
-            </div>
-          </div>
-          <div className="mb-3 row">
-            <label className="col-sm-3 col-form-label" htmlFor="matrix-user-id">
-              <a href={elementUrl} rel={relTags}>
-                {I18NextService.i18n.t("matrix_user_id")}
-              </a>
-            </label>
-            <div className="col-sm-9">
-              <input
-                id="matrix-user-id"
-                type="text"
-                className="form-control"
-                placeholder="@user:example.com"
-                value={this.state.saveUserSettingsForm.matrix_user_id}
-                onInput={linkEvent(this, this.handleMatrixUserIdChange)}
-                pattern="^@[A-Za-z0-9._=-]+:[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
               />
             </div>
           </div>
