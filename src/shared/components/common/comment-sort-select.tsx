@@ -1,9 +1,7 @@
 import { randomStr } from "@utils/helpers";
 import { Component, linkEvent } from "inferno";
 import { CommentSortType } from "lemmy-js-client";
-import { relTags, sortingHelpUrl } from "../../config";
 import { I18NextService } from "../../services";
-import { Icon } from "./icon";
 
 interface CommentSortSelectProps {
   sort: CommentSortType;
@@ -55,14 +53,6 @@ export class CommentSortSelect extends Component<
           <option value={"New"}>{I18NextService.i18n.t("new")}</option>
           <option value={"Old"}>{I18NextService.i18n.t("old")}</option>
         </select>
-        <a
-          className="sort-select-help text-muted"
-          href={sortingHelpUrl}
-          rel={relTags}
-          title={I18NextService.i18n.t("sorting_help")}
-        >
-          <Icon icon="help-circle" classes="icon-inline" />
-        </a>
       </>
     );
   }
