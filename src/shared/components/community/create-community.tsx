@@ -44,10 +44,8 @@ export class CreateCommunity extends Component<
           path={this.context.router.route.match.url}
         />
         <div className="row">
-          <div className="col-12 mb-4">
-            <h1 className="h4 mb-4">
-              {I18NextService.i18n.t("create_community")}
-            </h1>
+          <div className="col-12">
+            <h1 className="h4 ">{I18NextService.i18n.t("create_community")}</h1>
             <CommunityForm
               onUpsertCommunity={this.handleCommunityCreate}
               enableNsfw={enableNsfw(this.state.siteRes)}
