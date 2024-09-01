@@ -966,52 +966,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
             <div className="form-check">
               <input
                 className="form-check-input"
-                id="user-show-nsfw"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.show_nsfw}
-                onChange={linkEvent(this, this.handleShowNsfwChange)}
-              />
-              <label className="form-check-label" htmlFor="user-show-nsfw">
-                {I18NextService.i18n.t("show_nsfw")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-blur-nsfw"
-                type="checkbox"
-                disabled={!this.state.saveUserSettingsForm.show_nsfw}
-                checked={
-                  this.state.saveUserSettingsForm.blur_nsfw &&
-                  this.state.saveUserSettingsForm.show_nsfw
-                }
-                onChange={linkEvent(this, this.handleBlurNsfwChange)}
-              />
-              <label className="form-check-label" htmlFor="user-blur-nsfw">
-                {I18NextService.i18n.t("blur_nsfw")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-auto-expand"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.auto_expand}
-                onChange={linkEvent(this, this.handleAutoExpandChange)}
-              />
-              <label className="form-check-label" htmlFor="user-auto-expand">
-                {I18NextService.i18n.t("auto_expand")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
                 id="user-show-scores"
                 type="checkbox"
                 checked={this.state.saveUserSettingsForm.show_scores}
@@ -1086,37 +1040,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
               />
               <label className="form-check-label" htmlFor="user-show-avatars">
                 {I18NextService.i18n.t("show_avatars")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-bot-account"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.bot_account}
-                onChange={linkEvent(this, this.handleBotAccount)}
-              />
-              <label className="form-check-label" htmlFor="user-bot-account">
-                {I18NextService.i18n.t("bot_account")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-show-bot-accounts"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.show_bot_accounts}
-                onChange={linkEvent(this, this.handleShowBotAccounts)}
-              />
-              <label
-                className="form-check-label"
-                htmlFor="user-show-bot-accounts"
-              >
-                {I18NextService.i18n.t("show_bot_accounts")}
               </label>
             </div>
           </div>
