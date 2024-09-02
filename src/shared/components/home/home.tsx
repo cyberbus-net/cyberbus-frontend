@@ -69,6 +69,7 @@ import {
   TransferCommunity,
 } from "lemmy-js-client";
 import { fetchLimit } from "../../config";
+import { Link } from "inferno-router";
 import {
   CommentViewType,
   DataType,
@@ -468,7 +469,9 @@ export class Home extends Component<HomeRouteProps, HomeState> {
       <>
         <div className="list-group-item">
           <h2 className="h5">
-            {I18NextService.i18n.t("subscribed_to_communities")}
+            <Link className="text-body" to="/communities">
+              {I18NextService.i18n.t("communities")}
+            </Link>
           </h2>
           <ul className="list-inline mb-2">
             {UserService.Instance.myUserInfo?.follows.map(cfv => (
