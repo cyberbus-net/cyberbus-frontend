@@ -11,7 +11,7 @@ import {
   LoginResponse,
   SiteView,
 } from "lemmy-js-client";
-import { joinLemmyUrl } from "../../config";
+import { joinCyberbusUrl } from "../../config";
 import { mdToHtml } from "../../markdown";
 import { I18NextService, UserService } from "../../services";
 import {
@@ -143,7 +143,7 @@ export class Signup extends Component<
           <div className="mb-3 row">
             <div className="mt-2 mb-0 alert alert-warning" role="alert">
               <T i18nKey="lemmy_ml_registration_message">
-                #<a href={joinLemmyUrl}>#</a>
+                #<a href={joinCyberbusUrl}>#</a>
               </T>
             </div>
           </div>

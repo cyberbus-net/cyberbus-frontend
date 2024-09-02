@@ -8,6 +8,7 @@ export const frontendRepo = "https://github.com/cyberbus-net/cyberbus-frontend";
 export const backendRepo = "https://github.com/cyberbus-net/cyberbus-backend";
 
 export const siteUrl = "https://cyberbus.net";
+export const joinCyberbusUrl = "https://cyberbus.net";
 export const donateLemmyUrl = `${siteUrl}/donate`;
 export const docsUrl = `${siteUrl}/docs/en/index.html`;
 export const helpGuideUrl = `${siteUrl}/docs/en/users/01-getting-started.html`; // TODO find a way to redirect to the non-en folder

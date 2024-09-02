@@ -3577,13 +3577,13 @@ input[type="button"].btn-block {
 }
 
 .dropdown-menu {
+  box-shadow: 4px 4px 8px 2px rgba(225, 225, 225, 0.75);
+  top: 120%;
+  left: -350%;
   position: absolute;
-  top: 100%;
-  left: 0;
   z-index: 1000;
   display: none;
-  float: left;
-  min-width: 10rem;
+  min-width: 15rem !important;
   padding: 0.5rem 0;
   margin: 0.125rem 0 0;
   font-size: 0.875rem;
@@ -11285,12 +11285,6 @@ a.text-neutral-content:visited {
 .dropdown {
   display: flex;
   justify-content: center;
-}
-
-.dropdown-menu {
-  box-shadow: 4px 4px 8px 2px rgba(225, 225, 225, 0.75);
-  top: 120%;
-  left: -90%;
 }
 
 .dropdown-username {

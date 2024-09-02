@@ -887,34 +887,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
             showSite
             onChange={this.handleDiscussionLanguageChange}
           />
-          <div className="mb-3 row">
-            <label className="col-sm-3 col-form-label" htmlFor="user-theme">
-              {I18NextService.i18n.t("theme")}
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="user-theme"
-                value={this.state.saveUserSettingsForm.theme}
-                onChange={linkEvent(this, this.handleThemeChange)}
-                className="form-select d-inline-block w-auto"
-              >
-                <option disabled aria-hidden="true">
-                  {I18NextService.i18n.t("theme")}
-                </option>
-                <option value="browser">
-                  {I18NextService.i18n.t("browser_default")}
-                </option>
-                <option value="browser-compact">
-                  {I18NextService.i18n.t("browser_default_compact")}
-                </option>
-                {this.state.themeList.map(theme => (
-                  <option key={theme} value={theme}>
-                    {theme}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
           <form className="mb-3 row">
             <label className="col-sm-3 col-form-label">
               {I18NextService.i18n.t("type")}
