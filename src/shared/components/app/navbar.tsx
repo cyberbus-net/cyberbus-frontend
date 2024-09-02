@@ -392,11 +392,11 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                           <NavLink
                             to={`/u/${person.name}`}
                             className="dropdown-item px-2"
-                            title={I18NextService.i18n.t("View Profile")}
+                            title={I18NextService.i18n.t("view_profile")}
                             onMouseUp={linkEvent(this, handleCollapseClick)}
                           >
                             <Icon icon="user" classes="me-1" />
-                            {I18NextService.i18n.t("View Profile")}
+                            {I18NextService.i18n.t("view_profile")}
                           </NavLink>
                         </li>
                         <li>

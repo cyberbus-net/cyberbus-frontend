@@ -14,7 +14,7 @@ export class TorphyCase extends Component<TorphyCaseProps, any> {
     return (
       <>
         <div className="list-group-item">
-          <h2 className="h5">{I18NextService.i18n.t("Torphy Case")}</h2>
+          <h2 className="h5">{I18NextService.i18n.t("torphy_case")}</h2>
           <ul className="list-inline mb-2">
             <li className="list-inline-item badge text-bg-secondary">
               {I18NextService.i18n.t("coming soon")}

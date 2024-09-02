@@ -19,7 +19,7 @@ export class Karma extends Component<KarmaProps, any> {
     return (
       <>
         <div className="list-group-item">
-          <h2 className="h5">{I18NextService.i18n.t("Karma")}</h2>
+          <h2 className="h5">{I18NextService.i18n.t("karma")}</h2>
           <ul className="list-inline mb-2">
             <li className="list-inline-item badge text-bg-secondary">
               {I18NextService.i18n.t("number_of_posts", {
