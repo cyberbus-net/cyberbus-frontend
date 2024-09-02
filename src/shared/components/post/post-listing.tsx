@@ -177,8 +177,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
   render() {
     const post = this.postView.post;
-    console.log("------------------------");
-    console.log(post);
 
     // render full post content
     if (this.props.showFull) {
