@@ -468,7 +468,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
       <>
         <div className="list-group-item">
           <h2 className="h5">
-            {I18NextService.i18n.t("Subscribed to Communities")}
+            {I18NextService.i18n.t("subscribed_to_communities")}
           </h2>
           <ul className="list-inline mb-2">
             {UserService.Instance.myUserInfo?.follows.map(cfv => (
