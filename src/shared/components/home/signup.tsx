@@ -122,9 +122,7 @@ export class Signup extends Component<
           path={this.context.router.route.match.url}
         />
         <div className="row">
-          <div className="col-12 col-lg-6 offset-lg-3">
-            {this.registerForm()}
-          </div>
+          <div className="col-12">{this.registerForm()}</div>
         </div>
       </div>
     );

@@ -172,7 +172,7 @@ export class Login extends Component<LoginRouteProps, State> {
           onClose={linkEvent(this, handleClose2faModal)}
         />
         <div className="row">
-          <div className="col-12 col-lg-6 offset-lg-3">{this.loginForm()}</div>
+          <div className="col-12">{this.loginForm()}</div>
         </div>
       </div>
     );

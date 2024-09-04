@@ -442,7 +442,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
           tabs={[
             {
               key: "post",
-              label: I18NextService.i18n.t("post"),
+              label: I18NextService.i18n.t("post_a_post"),
               getNode: isSelected => (
                 <div
                   className={classNames("tab-pane show", {
@@ -495,7 +495,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             },
             {
               key: "link",
-              label: I18NextService.i18n.t("link"),
+              label: I18NextService.i18n.t("post_a_link"),
               getNode: isSelected => (
                 <div
                   className={classNames("tab-pane show", {
@@ -576,7 +576,7 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
             },
             {
               key: "image_and_video",
-              label: I18NextService.i18n.t("image_and_video"),
+              label: I18NextService.i18n.t("post_image_or_video"),
               getNode: isSelected => (
                 <div
                   className={classNames("tab-pane show", {
