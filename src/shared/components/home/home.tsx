@@ -6,7 +6,6 @@ import {
   enableDownvotes,
   enableNsfw,
   getDataTypeString,
-  myAuth,
   postToCommentSortType,
   setIsoData,
   showLocal,
@@ -24,8 +23,6 @@ import type { QueryParams, StringBoolean } from "@utils/types";
 import { RouteDataResponse } from "@utils/types";
 import { NoOptionI18nKeys } from "i18next";
 import { Component, InfernoNode, MouseEventHandler, linkEvent } from "inferno";
-import { T } from "inferno-i18next-dess";
-import { Link } from "inferno-router";
 import {
   AddAdmin,
   AddModToCommunity,
@@ -71,7 +68,8 @@ import {
   SuccessResponse,
   TransferCommunity,
 } from "lemmy-js-client";
-import { fetchLimit, relTags } from "../../config";
+import { fetchLimit } from "../../config";
+import { Link } from "inferno-router";
 import {
   CommentViewType,
   DataType,
@@ -89,10 +87,8 @@ import {
 import { tippyMixin } from "../mixins/tippy-mixin";
 import { toast } from "../../toast";
 import { CommentNodes } from "../comment/comment-nodes";
-import { DataTypeSelect } from "../common/data-type-select";
 import { HtmlTags } from "../common/html-tags";
 import { Icon } from "../common/icon";
-import { ListingTypeSelect } from "../common/listing-type-select";
 import { SortSelect } from "../common/sort-select";
 import { CommunityLink } from "../community/community-link";
 import { PostListings } from "../post/post-listings";
@@ -105,7 +101,6 @@ import {
 } from "../common/loading-skeleton";
 import { RouteComponentProps } from "inferno-router/dist/Route";
 import { IRoutePropsWithFetch } from "../../routes";
-import PostHiddenSelect from "../common/post-hidden-select";
 import { isBrowser, snapToTop } from "@utils/browser";
 
 interface HomeState {
@@ -131,38 +126,6 @@ type HomeData = RouteDataResponse<{
   postsRes: GetPostsResponse;
   commentsRes: GetCommentsResponse;
 }>;
-
-function getRss(listingType: ListingType, sort: SortType) {
-  let rss: string | undefined = undefined;
-
-  const queryString = getQueryString({ sort });
-  switch (listingType) {
-    case "All": {
-      rss = "/feeds/all.xml" + queryString;
-      break;
-    }
-    case "Local": {
-      rss = "/feeds/local.xml" + queryString;
-      break;
-    }
-    case "Subscribed": {
-      const auth = myAuth();
-      rss = auth ? `/feeds/front/${auth}.xml${queryString}` : undefined;
-      break;
-    }
-  }
-
-  return (
-    rss && (
-      <>
-        <a href={rss} rel={relTags} title="RSS">
-          <Icon icon="rss" classes="text-muted small" />
-        </a>
-        <link rel="alternate" type="application/atom+xml" href={rss} />
-      </>
-    )
-  );
-}
 
 function getDataTypeFromQuery(type?: string): DataType {
   return type ? DataType[type] : DataType.Post;
@@ -404,7 +367,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
         />
         {site_setup && (
           <div className="row">
-            <main role="main" className="col-12 col-md-8 col-lg-9">
+            <main role="main" className="col-12 col-md-8 col-lg-8">
               {tagline && (
                 <div
                   id="tagline"
@@ -416,7 +379,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
               <div className="d-block d-md-none">{this.mobileView}</div>
               {this.posts}
             </main>
-            <aside className="d-none d-md-block col-md-4 col-lg-3">
+            <aside className="d-none d-md-block col-md-4 col-lg-4">
               {this.mySidebar}
             </aside>
           </div>
@@ -465,9 +428,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
             />
           )}
           {showSubscribedMobile && (
-            <div className="card border-secondary mb-3">
-              {this.subscribedCommunities(true)}
-            </div>
+            <div className="card mb-3">{this.subscribedCommunities()}</div>
           )}
         </div>
       </div>
@@ -492,79 +453,37 @@ export class Home extends Component<HomeRouteProps, HomeState> {
         />
         {this.hasFollows && (
           <div className="accordion">
-            <section
-              id="sidebarSubscribed"
-              className="card border-secondary mb-3"
-            >
-              {this.subscribedCommunities(false)}
-            </section>
+            <div className="card mb-3">
+              <div className="list-group list-group-flush">
+                {this.subscribedCommunities()}
+              </div>
+            </div>
           </div>
         )}
       </div>
     );
   }
 
-  subscribedCommunities(isMobile = false) {
-    const { subscribedCollapsed } = this.state;
-
+  subscribedCommunities() {
     return (
       <>
-        <header
-          className="card-header d-flex align-items-center"
-          id="sidebarSubscribedHeader"
-        >
-          <h5 className="mb-0 d-inline">
-            <T class="d-inline" i18nKey="subscribed_to_communities">
-              #
-              <Link className="text-body" to="/communities">
-                #
-              </Link>
-            </T>
-          </h5>
-          {!isMobile && (
-            <button
-              type="button"
-              className="btn btn-sm text-muted"
-              onClick={linkEvent(this, this.handleCollapseSubscribe)}
-              aria-label={
-                subscribedCollapsed
-                  ? I18NextService.i18n.t("expand")
-                  : I18NextService.i18n.t("collapse")
-              }
-              data-tippy-content={
-                subscribedCollapsed
-                  ? I18NextService.i18n.t("expand")
-                  : I18NextService.i18n.t("collapse")
-              }
-              aria-expanded="true"
-              aria-controls="sidebarSubscribedBody"
-            >
-              <Icon
-                icon={`${subscribedCollapsed ? "plus" : "minus"}-square`}
-                classes="icon-inline"
-              />
-            </button>
-          )}
-        </header>
-        {!subscribedCollapsed && (
-          <div
-            id="sidebarSubscribedBody"
-            aria-labelledby="sidebarSubscribedHeader"
-          >
-            <div className="card-body">
-              <ul className="list-inline mb-0">
-                {UserService.Instance.myUserInfo?.follows.map(cfv => (
-                  <li
-                    key={cfv.community.id}
-                    className="list-inline-item d-inline-block"
-                  >
-                    <CommunityLink community={cfv.community} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        <div className="list-group-item">
+          <h2 className="h5">
+            <Link className="text-body" to="/communities">
+              {I18NextService.i18n.t("communities")}
+            </Link>
+          </h2>
+          <ul className="list-inline mb-2">
+            {UserService.Instance.myUserInfo?.follows.map(cfv => (
+              <li
+                key={cfv.community.id}
+                className="list-inline-item badge text-bg-tertiary"
+              >
+                <CommunityLink community={cfv.community} />
+              </li>
+            ))}
+          </ul>
+        </div>
       </>
     );
   }
@@ -593,6 +512,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
       <div className="main-content-wrapper">
         <div>
           {this.selects}
+          <hr className="my-2" />
           {this.listings}
           <PaginatorCursor
             nextPage={this.getNextPage}
@@ -696,44 +616,12 @@ export class Home extends Component<HomeRouteProps, HomeState> {
   }
 
   get selects() {
-    const { listingType, dataType, sort, showHidden } = this.props;
+    const { sort } = this.props;
 
     return (
-      <div className="row align-items-center mb-3 g-3">
-        <div className="col-auto">
-          <DataTypeSelect
-            type_={dataType}
-            onChange={this.handleDataTypeChange}
-          />
-        </div>
-        {dataType === DataType.Post && UserService.Instance.myUserInfo && (
-          <div className="col-auto">
-            <PostHiddenSelect
-              showHidden={showHidden}
-              onShowHiddenChange={this.handleShowHiddenChange}
-            />
-          </div>
-        )}
-        <div className="col-auto">
-          <ListingTypeSelect
-            type_={
-              listingType ??
-              this.state.siteRes.site_view.local_site.default_post_listing_type
-            }
-            showLocal={showLocal(this.isoData)}
-            showSubscribed
-            onChange={this.handleListingTypeChange}
-          />
-        </div>
-        <div className="col-auto">
+      <div className="row align-items-center">
+        <div className="">
           <SortSelect sort={sort} onChange={this.handleSortChange} />
-        </div>
-        <div className="col-auto ps-0">
-          {getRss(
-            listingType ??
-              this.state.siteRes.site_view.local_site.default_post_listing_type,
-            sort,
-          )}
         </div>
       </div>
     );

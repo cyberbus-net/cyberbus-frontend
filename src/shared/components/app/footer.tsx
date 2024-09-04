@@ -1,7 +1,6 @@
 import { Component } from "inferno";
-import { NavLink } from "inferno-router";
 import { GetSiteResponse } from "lemmy-js-client";
-import { docsUrl, joinLemmyUrl, repoUrl } from "../../config";
+import { statusUrl, frontendRepo, backendRepo } from "../../config";
 import { I18NextService } from "../../services";
 import { VERSION } from "../../version";
 
@@ -19,46 +18,24 @@ export class Footer extends Component<FooterProps, any> {
       <footer className="app-footer container-lg navbar navbar-expand-md navbar-light navbar-bg p-3">
         <div className="navbar-collapse">
           <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <span className="nav-link">©cyberbus</span>
+            </li>
             {this.props.site?.version !== VERSION && (
               <li className="nav-item">
-                <span className="nav-link">UI: {VERSION}</span>
+                <a target="_blank" className="nav-link" href={frontendRepo}>
+                  frontend: {VERSION}
+                </a>
               </li>
             )}
             <li className="nav-item">
-              <span className="nav-link">BE: {this.props.site?.version}</span>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/modlog">
-                {I18NextService.i18n.t("modlog")}
-              </NavLink>
-            </li>
-            {this.props.site?.site_view.local_site.legal_information && (
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/legal">
-                  {I18NextService.i18n.t("legal_information")}
-                </NavLink>
-              </li>
-            )}
-            {this.props.site?.site_view.local_site.federation_enabled && (
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/instances">
-                  {I18NextService.i18n.t("instances")}
-                </NavLink>
-              </li>
-            )}
-            <li className="nav-item">
-              <a className="nav-link" href={docsUrl}>
-                {I18NextService.i18n.t("docs")}
+              <a target="_blank" className="nav-link" href={backendRepo}>
+                backend: {this.props.site?.version}
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href={repoUrl}>
-                {I18NextService.i18n.t("code")}
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href={joinLemmyUrl}>
-                {new URL(joinLemmyUrl).hostname}
+              <a target="_blank" className="nav-link" href={statusUrl}>
+                {I18NextService.i18n.t("status")}
               </a>
             </li>
           </ul>

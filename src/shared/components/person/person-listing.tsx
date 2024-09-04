@@ -16,6 +16,7 @@ interface PersonListingProps {
   muted?: boolean;
   hideAvatar?: boolean;
   showApubName?: boolean;
+  needPrefix?: boolean;
 }
 
 export class PersonListing extends Component<PersonListingProps, any> {
@@ -24,7 +25,7 @@ export class PersonListing extends Component<PersonListingProps, any> {
   }
 
   render() {
-    const { person, useApubName } = this.props;
+    const { person, useApubName, needPrefix } = this.props;
     const local = person.local;
     let link: string;
     let serverStr: string | undefined = undefined;
@@ -43,7 +44,7 @@ export class PersonListing extends Component<PersonListingProps, any> {
     }
 
     const classes = classNames(
-      "person-listing d-inline-flex align-items-baseline",
+      "person-listing d-inline-flex align-items-baseline ",
       {
         "text-muted": this.props.muted,
         "text-info": !this.props.muted,
@@ -53,11 +54,11 @@ export class PersonListing extends Component<PersonListingProps, any> {
       <>
         {!this.props.realLink ? (
           <Link title={name} className={classes} to={link}>
-            {this.avatarAndName(name, serverStr)}
+            {this.avatarAndName(name, serverStr, needPrefix)}
           </Link>
         ) : (
           <a title={name} className={classes} href={link} rel={relTags}>
-            {this.avatarAndName(name, serverStr)}
+            {this.avatarAndName(name, serverStr, needPrefix)}
           </a>
         )}
 
@@ -66,7 +67,7 @@ export class PersonListing extends Component<PersonListingProps, any> {
     );
   }
 
-  avatarAndName(name: string, serverStr?: string) {
+  avatarAndName(name: string, serverStr?: string, needPrefix?: boolean) {
     const avatar = this.props.person.avatar;
     return (
       <>
@@ -76,9 +77,10 @@ export class PersonListing extends Component<PersonListingProps, any> {
             <PictrsImage
               src={avatar ?? `${getStaticDir()}/assets/icons/icon-96x96.png`}
               icon
+              userAvatar={true}
             />
           )}
-        <span>{name}</span>
+        <span className="line-h-2rem">{needPrefix ? "u/" + name : name}</span>
         {serverStr && <small className="text-muted">{serverStr}</small>}
       </>
     );

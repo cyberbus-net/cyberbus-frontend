@@ -107,7 +107,7 @@ export class PostListings extends Component<PostListingsProps, any> {
                 onMarkPostAsRead={this.props.onMarkPostAsRead}
                 onHidePost={this.props.onHidePost}
               />
-              {idx + 1 !== this.posts.length && <hr className="my-3" />}
+              {idx + 1 !== this.posts.length && <hr className="my-1" />}
             </>
           ))
         ) : (

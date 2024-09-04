@@ -15,7 +15,6 @@ import {
   getPageFromString,
   getQueryParams,
   getQueryString,
-  numToSI,
   randomStr,
   resourcesSettled,
   bareRoutePush,
@@ -96,6 +95,9 @@ import { UserBadges } from "../common/user-badges";
 import { CommunityLink } from "../community/community-link";
 import { PersonDetails } from "./person-details";
 import { PersonListing } from "./person-listing";
+import { Karma } from "./karma";
+import { TorphyCase } from "./torphy-case";
+import { Homelab } from "./homelab";
 import { getHttpBaseInternal } from "../../utils/env";
 import { IRoutePropsWithFetch } from "../../routes";
 import { MediaUploads } from "../common/media-uploads";
@@ -158,17 +160,15 @@ const getCommunitiesListing = (
 ) =>
   communityViews &&
   communityViews.length > 0 && (
-    <div className="card border-secondary mb-3">
-      <div className="card-body">
-        <h2 className="h5">{I18NextService.i18n.t(translationKey)}</h2>
-        <ul className="list-unstyled mb-0">
-          {communityViews.map(({ community }) => (
-            <li key={community.id}>
-              <CommunityLink community={community} />
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="list-group-item">
+      <h2 className="h5">{I18NextService.i18n.t(translationKey)}</h2>
+      <ul className="list-unstyled mb-0">
+        {communityViews.map(({ community }) => (
+          <li key={community.id}>
+            <CommunityLink community={community} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 
@@ -540,9 +540,17 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
               )}
             </div>
 
+            {/* user profile right sidebar */}
             <div className="col-12 col-md-4">
-              <Moderates moderates={personRes.moderates} />
-              {this.amCurrentUser && <Follows />}
+              <div className="card mb-3">
+                <div className="list-group list-group-flush">
+                  <Karma pv={personRes.person_view} />
+                  <Moderates moderates={personRes.moderates} />
+                  <Homelab />
+                  <TorphyCase />
+                  {this.amCurrentUser && <Follows />}
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -562,8 +570,8 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
     return (
       <div className="btn-group btn-group-toggle flex-wrap" role="group">
         {this.getRadio(PersonDetailsView.Overview)}
-        {this.getRadio(PersonDetailsView.Comments)}
         {this.getRadio(PersonDetailsView.Posts)}
+        {this.getRadio(PersonDetailsView.Comments)}
         {this.amCurrentUser && this.getRadio(PersonDetailsView.Saved)}
         {this.amCurrentUser && this.getRadio(PersonDetailsView.Uploads)}
       </div>
@@ -598,11 +606,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
   }
 
   get selects() {
-    const { sort, view } = this.props;
-    const { username } = this.props.match.params;
-
-    const profileRss = `/feeds/u/${username}.xml${getQueryString({ sort })}`;
-
+    const { sort } = this.props;
     return (
       <div className="row align-items-center mb-3 g-3">
         <div className="col-auto">{this.viewRadios}</div>
@@ -614,19 +618,6 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
             hideMostComments
           />
         </div>
-        {/* Don't show the rss feed for the Saved view, as that's not implemented.*/}
-        {view !== PersonDetailsView.Saved && (
-          <div className="col-auto">
-            <a href={profileRss} rel={relTags} title="RSS">
-              <Icon icon="rss" classes="text-muted small ps-0" />
-            </a>
-            <link
-              rel="alternate"
-              type="application/atom+xml"
-              href={profileRss}
-            />
-          </div>
-        )}
       </div>
     );
   }
@@ -654,7 +645,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
               <div className="mb-0 d-flex flex-wrap">
                 <div>
                   {pv.person.display_name && (
-                    <h1 className="h4 mb-4">{pv.person.display_name}</h1>
+                    <h1 className="h4">{pv.person.display_name}</h1>
                   )}
                   <ul className="list-inline mb-2">
                     <li className="list-inline-item">
@@ -664,6 +655,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                         useApubName
                         muted
                         hideAvatar
+                        needPrefix={true}
                       />
                     </li>
                     <li className="list-inline-item">
@@ -766,7 +758,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                   <>
                     <button
                       className={
-                        "d-flex registration-self-start btn btn-secondary me-2"
+                        "d-flex registration-self-start align-self-start btn btn-secondary me-2"
                       }
                       aria-label={I18NextService.i18n.t("view_registration")}
                       onClick={this.handleRegistrationShow}
@@ -813,42 +805,23 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                   />
                 </div>
               )}
-              <div>
-                <ul className="list-inline mb-2">
-                  <li className="list-inline-item badge text-bg-light">
-                    {I18NextService.i18n.t("number_of_posts", {
-                      count: Number(pv.counts.post_count),
-                      formattedCount: numToSI(pv.counts.post_count),
-                    })}
-                  </li>
-                  <li className="list-inline-item badge text-bg-light">
-                    {I18NextService.i18n.t("number_of_comments", {
-                      count: Number(pv.counts.comment_count),
-                      formattedCount: numToSI(pv.counts.comment_count),
-                    })}
-                  </li>
-                </ul>
-              </div>
-              <div className="text-muted">
-                {I18NextService.i18n.t("joined")}{" "}
-                <MomentTime
-                  published={pv.person.published}
-                  showAgo
-                  ignoreUpdated
-                />
-              </div>
-              <div className="d-flex align-items-center text-muted mb-2">
+
+              <div className="d-flex align-items-center text-muted mb-2 line-h-1rem font-size-075rem">
                 <Icon icon="cake" />
                 <span className="ms-2">
                   {I18NextService.i18n.t("cake_day_title")}{" "}
                   {format(cakeDate(pv.person.published), "PPP")}
                 </span>
+                <span>.&nbsp;</span>
+                <span>
+                  {I18NextService.i18n.t("joined")}{" "}
+                  <MomentTime
+                    published={pv.person.published}
+                    showAgo
+                    ignoreUpdated
+                  />
+                </span>
               </div>
-              {!UserService.Instance.myUserInfo && (
-                <div className="alert alert-info" role="alert">
-                  {I18NextService.i18n.t("profile_not_logged_in_alert")}
-                </div>
-              )}
             </div>
           </div>
         </div>

@@ -54,7 +54,6 @@ import { CommentNodes } from "./comment-nodes";
 import { BanUpdateForm } from "../common/modal/mod-action-form-modal";
 import CommentActionDropdown from "../common/content-actions/comment-action-dropdown";
 import { RequestState } from "../../services/HttpService";
-import { VoteDisplay } from "../common/vote-display";
 
 type CommentNodeState = {
   showReply: boolean;
@@ -111,13 +110,6 @@ interface CommentNodeProps {
   onPurgeComment(form: PurgeComment): Promise<void>;
 }
 
-function handleToggleViewSource(i: CommentNode) {
-  i.setState(({ viewSource, ...restPrev }) => ({
-    viewSource: !viewSource,
-    ...restPrev,
-  }));
-}
-
 @tippyMixin
 export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
   state: CommentNodeState = {
@@ -170,7 +162,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
     const {
       creator_is_moderator,
       creator_is_admin,
-      comment: { id, language_id, published, distinguished, updated },
+      comment: { id, published, distinguished, updated },
       creator,
       community,
       post,
@@ -199,19 +191,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
           })}
         >
           <div className="ms-2">
-            <div className="d-flex flex-wrap align-items-center text-muted small">
-              <button
-                className="btn btn-sm btn-link text-muted me-2"
-                onClick={linkEvent(this, this.handleCommentCollapse)}
-                aria-label={this.expandText}
-                data-tippy-content={this.expandText}
-              >
-                <Icon
-                  icon={`${this.state.collapsed ? "plus" : "minus"}-square`}
-                  classes="icon-inline"
-                />
-              </button>
-
+            <div className="d-flex flex-wrap align-items-center text-muted small min-h-2rem">
               <PersonListing person={creator} />
 
               {cv.comment.distinguished && (
@@ -237,25 +217,9 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                 </>
               )}
 
-              {this.getLinkButton(true)}
-
-              {language_id !== 0 && (
-                <span className="badge text-bg-light d-none d-sm-inline me-2">
-                  {
-                    this.props.allLanguages.find(
-                      lang => lang.id === language_id,
-                    )?.name
-                  }
-                </span>
-              )}
               {/* This is an expanding spacer for mobile */}
               <div className="me-lg-5 flex-grow-1 flex-lg-grow-0 unselectable pointer mx-2" />
 
-              <VoteDisplay
-                voteDisplayMode={this.props.voteDisplayMode}
-                myVote={my_vote}
-                counts={counts}
-              />
               <span>
                 <MomentTime published={published} updated={updated} />
               </span>
@@ -276,7 +240,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
             )}
             {!this.state.showEdit && !this.state.collapsed && (
               <>
-                <div className="comment-content">
+                <div className="comment-content mt-2">
                   {this.state.viewSource ? (
                     <pre>{this.commentUnlessRemoved}</pre>
                   ) : (
@@ -295,7 +259,6 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                   )}
                 </div>
                 <div className="comment-bottom-btns d-flex justify-content-start column-gap-1.5 flex-wrap text-muted fw-bold mt-1 align-items-center">
-                  {this.props.showContext && this.getLinkButton()}
                   {this.props.markable && (
                     <button
                       className="btn btn-link btn-animate text-muted"
@@ -335,22 +298,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                           counts={counts}
                           myVote={my_vote}
                         />
-                        <button
-                          type="button"
-                          className="btn btn-link btn-animate text-muted"
-                          onClick={linkEvent(this, handleToggleViewSource)}
-                          data-tippy-content={I18NextService.i18n.t(
-                            "view_source",
-                          )}
-                          aria-label={I18NextService.i18n.t("view_source")}
-                        >
-                          <Icon
-                            icon="file-text"
-                            classes={`icon-inline ${
-                              this.state.viewSource && "text-success"
-                            }`}
-                          />
-                        </button>
+
                         <CommentActionDropdown
                           commentView={this.commentView}
                           admins={this.props.admins}

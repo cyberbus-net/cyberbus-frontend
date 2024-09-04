@@ -5,7 +5,6 @@ import {
   editPrivateMessage,
   editWith,
   enableDownvotes,
-  myAuth,
   setIsoData,
   updatePersonBlock,
   voteDisplayMode,
@@ -64,7 +63,7 @@ import {
   SuccessResponse,
   TransferCommunity,
 } from "lemmy-js-client";
-import { fetchLimit, relTags } from "../../config";
+import { fetchLimit } from "../../config";
 import { CommentViewType, InitialFetchRequest } from "../../interfaces";
 import { FirstLoadService, I18NextService, UserService } from "../../services";
 import { UnreadCounterService } from "../../services";
@@ -80,7 +79,7 @@ import { toast } from "../../toast";
 import { CommentNodes } from "../comment/comment-nodes";
 import { CommentSortSelect } from "../common/comment-sort-select";
 import { HtmlTags } from "../common/html-tags";
-import { Icon, Spinner } from "../common/icon";
+import { Spinner } from "../common/icon";
 import { Paginator } from "../common/paginator";
 import { PrivateMessage } from "../private_message/private-message";
 import { getHttpBaseInternal } from "../../utils/env";
@@ -244,8 +243,6 @@ export class Inbox extends Component<InboxRouteProps, InboxState> {
   }
 
   render() {
-    const auth = myAuth();
-    const inboxRss = auth ? `/feeds/inbox/${auth}.xml` : undefined;
     return (
       <div className="inbox container-lg">
         <div className="row">
@@ -254,21 +251,7 @@ export class Inbox extends Component<InboxRouteProps, InboxState> {
               title={this.documentTitle}
               path={this.context.router.route.match.url}
             />
-            <h1 className="h4 mb-4">
-              {I18NextService.i18n.t("inbox")}
-              {inboxRss && (
-                <small>
-                  <a href={inboxRss} title="RSS" rel={relTags}>
-                    <Icon icon="rss" classes="ms-2 text-muted small" />
-                  </a>
-                  <link
-                    rel="alternate"
-                    type="application/atom+xml"
-                    href={inboxRss}
-                  />
-                </small>
-              )}
-            </h1>
+            <h1 className="h4 mb-4">{I18NextService.i18n.t("inbox")}</h1>
             {this.hasUnreads && (
               <button
                 className="btn btn-secondary mb-2 mb-sm-3"

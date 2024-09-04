@@ -9,6 +9,7 @@ interface ActionButtonPropsBase {
   iconClass?: string;
   inline?: boolean;
   noLoading?: boolean;
+  className?: string;
 }
 
 interface ActionButtonPropsLoading extends ActionButtonPropsBase {
@@ -54,7 +55,7 @@ export default class ActionButton extends Component<
     return (
       <button
         className={classNames(
-          "btn btn-link btn-sm",
+          "btn btn-link btn-sm " + this.props.className,
           inline
             ? "btn-animate text-muted py-0"
             : "d-flex align-items-center rounded-0 dropdown-item",
@@ -67,7 +68,12 @@ export default class ActionButton extends Component<
         {this.state.loading ? (
           <Spinner />
         ) : (
-          <Icon classes={classNames("me-2", iconClass)} icon={icon} inline />
+          /* @NOTE: this icon will change comment icon and content-action-dropdown icon both.  */
+          <Icon
+            classes={classNames("me-2", "big", iconClass)}
+            icon={icon}
+            inline
+          />
         )}
         {!inline && label}
       </button>

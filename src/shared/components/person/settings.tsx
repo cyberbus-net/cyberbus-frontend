@@ -36,7 +36,7 @@ import {
   SuccessResponse,
   UpdateTotpResponse,
 } from "lemmy-js-client";
-import { elementUrl, emDash, fetchLimit, relTags } from "../../config";
+import { emDash, fetchLimit } from "../../config";
 import { FirstLoadService, UserService } from "../../services";
 import {
   EMPTY_REQUEST,
@@ -261,6 +261,8 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
     this.handleBannerUpload = this.handleBannerUpload.bind(this);
     this.handleBannerRemove = this.handleBannerRemove.bind(this);
     this.userSettings = this.userSettings.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.importExportSettings = this.importExportSettings.bind(this);
     this.blockCards = this.blockCards.bind(this);
 
     this.handleBlockPerson = this.handleBlockPerson.bind(this);
@@ -416,6 +418,11 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
               getNode: this.userSettings,
             },
             {
+              key: "change_password",
+              label: I18NextService.i18n.t("change_password"),
+              getNode: this.changePassword,
+            },
+            {
               key: "blocks",
               label: I18NextService.i18n.t("blocks"),
               getNode: this.blockCards,
@@ -437,17 +444,53 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
         id="settings-tab-pane"
       >
         <div className="row">
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.saveUserSettingsHtmlForm()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.saveUserSettingsHtmlForm()}
+              </div>
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.changePasswordHtmlForm()}</div>
+        </div>
+      </div>
+    );
+  }
+
+  changePassword(isSelected: boolean) {
+    return (
+      <div
+        className={classNames("tab-pane show", {
+          active: isSelected,
+        })}
+        role="tabpanel"
+        id="settings-tab-pane"
+      >
+        <div className="row">
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.changePasswordHtmlForm()}
+              </div>
             </div>
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.importExport()}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  importExportSettings(isSelected: boolean) {
+    return (
+      <div
+        className={classNames("tab-pane show", {
+          active: isSelected,
+        })}
+        role="tabpanel"
+        id="settings-tab-pane"
+      >
+        <div className="row">
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">{this.importExport()}</div>
             </div>
           </div>
         </div>
@@ -465,19 +508,23 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
         id="blocks-tab-pane"
       >
         <div className="row">
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.blockUserCard()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">{this.blockUserCard()}</div>
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.blockCommunityCard()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.blockCommunityCard()}
+              </div>
             </div>
           </div>
-          <div className="col-12 col-md-6">
-            <div className="card border-secondary mb-3">
-              <div className="card-body">{this.blockInstanceCard()}</div>
+          <div className="">
+            <div className="card border-0 mb-3">
+              <div className="card-body border-0">
+                {this.blockInstanceCard()}
+              </div>
             </div>
           </div>
         </div>
@@ -518,10 +565,7 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
             />
           </div>
           <div className="input-group mb-3">
-            <button
-              type="submit"
-              className="btn d-block btn-secondary me-4 w-100"
-            >
+            <button type="submit" className="btn d-block btn-secondary w-100">
               {this.state.changePasswordRes.state === "loading" ? (
                 <Spinner />
               ) : (
@@ -776,24 +820,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
             </div>
           </div>
           <div className="mb-3 row">
-            <label className="col-sm-3 col-form-label" htmlFor="matrix-user-id">
-              <a href={elementUrl} rel={relTags}>
-                {I18NextService.i18n.t("matrix_user_id")}
-              </a>
-            </label>
-            <div className="col-sm-9">
-              <input
-                id="matrix-user-id"
-                type="text"
-                className="form-control"
-                placeholder="@user:example.com"
-                value={this.state.saveUserSettingsForm.matrix_user_id}
-                onInput={linkEvent(this, this.handleMatrixUserIdChange)}
-                pattern="^@[A-Za-z0-9._=-]+:[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-              />
-            </div>
-          </div>
-          <div className="mb-3 row">
             <label className="col-sm-3 col-form-label">
               {I18NextService.i18n.t("avatar")}
             </label>
@@ -860,34 +886,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
             showSite
             onChange={this.handleDiscussionLanguageChange}
           />
-          <div className="mb-3 row">
-            <label className="col-sm-3 col-form-label" htmlFor="user-theme">
-              {I18NextService.i18n.t("theme")}
-            </label>
-            <div className="col-sm-9">
-              <select
-                id="user-theme"
-                value={this.state.saveUserSettingsForm.theme}
-                onChange={linkEvent(this, this.handleThemeChange)}
-                className="form-select d-inline-block w-auto"
-              >
-                <option disabled aria-hidden="true">
-                  {I18NextService.i18n.t("theme")}
-                </option>
-                <option value="browser">
-                  {I18NextService.i18n.t("browser_default")}
-                </option>
-                <option value="browser-compact">
-                  {I18NextService.i18n.t("browser_default_compact")}
-                </option>
-                {this.state.themeList.map(theme => (
-                  <option key={theme} value={theme}>
-                    {theme}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
           <form className="mb-3 row">
             <label className="col-sm-3 col-form-label">
               {I18NextService.i18n.t("type")}
@@ -917,52 +915,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
               />
             </div>
           </form>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-show-nsfw"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.show_nsfw}
-                onChange={linkEvent(this, this.handleShowNsfwChange)}
-              />
-              <label className="form-check-label" htmlFor="user-show-nsfw">
-                {I18NextService.i18n.t("show_nsfw")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-blur-nsfw"
-                type="checkbox"
-                disabled={!this.state.saveUserSettingsForm.show_nsfw}
-                checked={
-                  this.state.saveUserSettingsForm.blur_nsfw &&
-                  this.state.saveUserSettingsForm.show_nsfw
-                }
-                onChange={linkEvent(this, this.handleBlurNsfwChange)}
-              />
-              <label className="form-check-label" htmlFor="user-blur-nsfw">
-                {I18NextService.i18n.t("blur_nsfw")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-auto-expand"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.auto_expand}
-                onChange={linkEvent(this, this.handleAutoExpandChange)}
-              />
-              <label className="form-check-label" htmlFor="user-auto-expand">
-                {I18NextService.i18n.t("auto_expand")}
-              </label>
-            </div>
-          </div>
           <div className="input-group mb-3">
             <div className="form-check">
               <input
@@ -1041,37 +993,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
               />
               <label className="form-check-label" htmlFor="user-show-avatars">
                 {I18NextService.i18n.t("show_avatars")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-bot-account"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.bot_account}
-                onChange={linkEvent(this, this.handleBotAccount)}
-              />
-              <label className="form-check-label" htmlFor="user-bot-account">
-                {I18NextService.i18n.t("bot_account")}
-              </label>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                id="user-show-bot-accounts"
-                type="checkbox"
-                checked={this.state.saveUserSettingsForm.show_bot_accounts}
-                onChange={linkEvent(this, this.handleShowBotAccounts)}
-              />
-              <label
-                className="form-check-label"
-                htmlFor="user-show-bot-accounts"
-              >
-                {I18NextService.i18n.t("show_bot_accounts")}
               </label>
             </div>
           </div>

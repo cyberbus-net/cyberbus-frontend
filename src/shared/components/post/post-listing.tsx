@@ -40,6 +40,7 @@ import { mdToHtml, mdToHtmlInline } from "../../markdown";
 import { I18NextService, UserService } from "../../services";
 import { tippyMixin } from "../mixins/tippy-mixin";
 import { Icon } from "../common/icon";
+import { BigIcon } from "../common/big-icon";
 import { MomentTime } from "../common/moment-time";
 import { PictrsImage } from "../common/pictrs-image";
 import { UserBadges } from "../common/user-badges";
@@ -56,6 +57,8 @@ import { toast } from "../../toast";
 import isMagnetLink, {
   extractMagnetLinkDownloadName,
 } from "@utils/media/is-magnet-link";
+
+const postTruncateAtLines = 8;
 
 type PostListingState = {
   showEdit: boolean;
@@ -83,6 +86,7 @@ interface PostListingProps {
   voteDisplayMode: LocalUserVoteDisplayMode;
   enableNsfw?: boolean;
   viewOnly?: boolean;
+  showFull?: boolean;
   onPostEdit(form: EditPost): Promise<RequestState<PostResponse>>;
   onPostVote(form: CreatePostLike): Promise<RequestState<PostResponse>>;
   onPostReport(form: CreatePostReport): Promise<void>;
@@ -109,10 +113,10 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   private readonly isoData: IsoDataOptionalSite = setIsoData(this.context);
   state: PostListingState = {
     showEdit: false,
-    imageExpanded: false,
+    imageExpanded: true,
     viewSource: false,
     showAdvanced: false,
-    showBody: false,
+    showBody: true,
     loading: false,
   };
 
@@ -174,44 +178,245 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   render() {
     const post = this.postView.post;
 
+    // render full post content
+    if (this.props.showFull) {
+      return (
+        <div className="post-listing-full mt-1">
+          {!this.state.showEdit ? (
+            <>
+              {this.postTitleFull()}
+              {!this.props.hideImage && this.img}
+              {this.showBody && post.url && post.embed_title && (
+                <MetadataCard post={post} />
+              )}
+              {this.showBody && this.body()}
+            </>
+          ) : (
+            <PostForm
+              post_view={this.postView}
+              crossPosts={this.props.crossPosts}
+              onEdit={this.handleEditPost}
+              onCancel={this.handleEditCancel}
+              enableNsfw={this.props.enableNsfw}
+              enableDownvotes={this.props.enableDownvotes}
+              voteDisplayMode={this.props.voteDisplayMode}
+              allLanguages={this.props.allLanguages}
+              siteLanguages={this.props.siteLanguages}
+              loading={this.state.loading}
+            />
+          )}
+          {this.commentsLine()}
+          {this.duplicatesLine()}
+        </div>
+      );
+    }
+
+    // render post-listing's post
     return (
-      <div className="post-listing mt-2">
+      <div className="post-listing mt-1">
         {!this.state.showEdit ? (
           <>
-            {this.listing()}
-            {this.state.imageExpanded && !this.props.hideImage && this.img}
-            {this.showBody &&
-              post.url &&
-              isMagnetLink(post.url) &&
-              this.torrentHelp()}
-            {this.showBody && post.url && post.embed_title && (
-              <MetadataCard post={post} />
-            )}
-            {this.showBody && this.videoBlock}
-            {this.showBody && this.body()}
+            {this.postTitle()}
+            <a
+              href={`/post/${post.id}`}
+              className="text-neutral-content visited:text-neutral-content-weak"
+            >
+              {!this.props.hideImage && this.img}
+              {this.showBody && post.url && post.embed_title && (
+                <MetadataCard post={post} />
+              )}
+              {this.showBody && this.body()}
+            </a>
           </>
         ) : (
-          <PostForm
-            post_view={this.postView}
-            crossPosts={this.props.crossPosts}
-            onEdit={this.handleEditPost}
-            onCancel={this.handleEditCancel}
-            enableNsfw={this.props.enableNsfw}
-            enableDownvotes={this.props.enableDownvotes}
-            voteDisplayMode={this.props.voteDisplayMode}
-            allLanguages={this.props.allLanguages}
-            siteLanguages={this.props.siteLanguages}
-            loading={this.state.loading}
-          />
+          <a
+            href={`/post/${post.id}`}
+            className="text-neutral-content visited:text-neutral-content-weak"
+          >
+            <PostForm
+              post_view={this.postView}
+              crossPosts={this.props.crossPosts}
+              onEdit={this.handleEditPost}
+              onCancel={this.handleEditCancel}
+              enableNsfw={this.props.enableNsfw}
+              enableDownvotes={this.props.enableDownvotes}
+              voteDisplayMode={this.props.voteDisplayMode}
+              allLanguages={this.props.allLanguages}
+              siteLanguages={this.props.siteLanguages}
+              loading={this.state.loading}
+            />
+          </a>
         )}
+        {this.commentsLine()}
+        {this.duplicatesLine()}
       </div>
     );
   }
 
+  replaceTrailingNewline(input: string): string {
+    const newlineRegex = /(\r\n|\n|\r)$/;
+    return input.replace(newlineRegex, "...");
+  }
+
+  truncateAtNLine(body: string | undefined, nline: number): string {
+    // Handle undefined or null body
+    if (body === undefined || body === null) {
+      return "";
+    }
+    const markdownCodeBlockStart = "```";
+    const markdownCodeBlockEnd = "```";
+
+    let lineCount = 0;
+    let inCodeBlock = false;
+    let inBlockquote = false;
+    let inList = false;
+    let inTable = false;
+    let result = "";
+    let i = 0;
+
+    while (i < body.length) {
+      const remainingText = body.substring(i);
+
+      // Find indices for line breaks, code block start, code block end, blockquote start, list start, and table start
+      const nextLineBreakIndex = remainingText.search(/(?:\r\n|\r|\n)/);
+      const nextCodeBlockStartIndex = remainingText.indexOf(
+        markdownCodeBlockStart,
+      );
+      const nextCodeBlockEndIndex = remainingText.indexOf(markdownCodeBlockEnd);
+      const nextBlockquoteStartIndex = remainingText.indexOf(">");
+      const nextListStartIndex = remainingText.search(
+        /^(?:\s*[\*\-\+]\s|\s*\d+\.\s)/m,
+      );
+      const nextTableStartIndex = remainingText.indexOf("|");
+
+      if (
+        nextLineBreakIndex === -1 &&
+        nextCodeBlockStartIndex === -1 &&
+        nextCodeBlockEndIndex === -1 &&
+        nextBlockquoteStartIndex === -1 &&
+        nextListStartIndex === -1 &&
+        nextTableStartIndex === -1
+      ) {
+        // No more significant syntax elements
+        result += remainingText;
+        break;
+      }
+
+      if (inCodeBlock) {
+        // Handle text within code block
+        if (nextCodeBlockEndIndex !== -1) {
+          // Found the end of the code block
+          result += remainingText.substring(
+            0,
+            nextCodeBlockEndIndex + markdownCodeBlockEnd.length,
+          );
+          i += nextCodeBlockEndIndex + markdownCodeBlockEnd.length;
+          inCodeBlock = false;
+        } else {
+          // Continue within the code block
+          result += remainingText;
+          break;
+        }
+      } else if (inBlockquote || inList || inTable) {
+        // Handle text within blockquote, list, or table
+        const nextSyntaxEnd = Math.min(
+          nextLineBreakIndex === -1 ? Infinity : nextLineBreakIndex,
+          nextBlockquoteStartIndex === -1 ? Infinity : nextBlockquoteStartIndex,
+          nextListStartIndex === -1 ? Infinity : nextListStartIndex,
+          nextTableStartIndex === -1 ? Infinity : nextTableStartIndex,
+        );
+        if (nextSyntaxEnd === Infinity) {
+          result += remainingText;
+          break;
+        }
+        result += remainingText.substring(0, nextSyntaxEnd);
+        i += nextSyntaxEnd;
+        if (nextLineBreakIndex === nextSyntaxEnd) {
+          lineCount++;
+          if (lineCount === nline) {
+            break;
+          }
+        }
+      } else {
+        // Handle text outside of code block
+        if (
+          nextCodeBlockStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 ||
+            nextCodeBlockStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a code block
+          result += remainingText.substring(
+            0,
+            nextCodeBlockStartIndex + markdownCodeBlockStart.length,
+          );
+          i += nextCodeBlockStartIndex + markdownCodeBlockStart.length;
+          inCodeBlock = true;
+        } else if (nextLineBreakIndex !== -1) {
+          // Found a line break
+          lineCount++;
+          if (lineCount === nline) {
+            result += remainingText.substring(0, nextLineBreakIndex + 1);
+            break;
+          }
+          result += remainingText.substring(0, nextLineBreakIndex + 1);
+          i += nextLineBreakIndex + 1;
+        } else if (
+          nextBlockquoteStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 ||
+            nextBlockquoteStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a blockquote
+          result += remainingText.substring(0, nextBlockquoteStartIndex + 1); // include the '>' character
+          i += nextBlockquoteStartIndex + 1;
+          inBlockquote = true;
+        } else if (
+          nextListStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 || nextListStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a list
+          result += remainingText.substring(
+            0,
+            nextListStartIndex +
+              remainingText.substring(nextListStartIndex).search(/\n/) +
+              1,
+          );
+          i +=
+            nextListStartIndex +
+            remainingText.substring(nextListStartIndex).search(/\n/) +
+            1;
+          inList = true;
+        } else if (
+          nextTableStartIndex !== -1 &&
+          (nextLineBreakIndex === -1 ||
+            nextTableStartIndex < nextLineBreakIndex)
+        ) {
+          // Found the start of a table
+          result += remainingText.substring(
+            0,
+            remainingText.indexOf("\n", nextTableStartIndex) + 1,
+          );
+          i += remainingText.indexOf("\n", nextTableStartIndex) + 1;
+          inTable = true;
+        }
+      }
+    }
+
+    // If less than nline breaks, return the whole body
+    if (lineCount >= nline) {
+      return this.replaceTrailingNewline(result);
+    }
+    return result;
+  }
+
   body() {
-    const body = this.postView.post.body;
+    var body;
+    if (this.props.showFull) {
+      body = this.postView.post.body;
+    } else {
+      body = this.truncateAtNLine(this.postView.post.body, postTruncateAtLines);
+    }
     return body ? (
-      <article id="postContent" className="col-12 card my-2 p-2">
+      <article className="my-2">
         {this.state.viewSource ? (
           <pre>{body}</pre>
         ) : (
@@ -282,19 +487,8 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     if (this.imageSrc) {
       return (
         <>
-          <div className="offset-sm-3 my-2 d-none d-sm-block">
-            <a href={this.imageSrc} className="d-inline-block">
-              <PictrsImage src={this.imageSrc} alt={post.alt_text} />
-            </a>
-          </div>
-          <div className="my-2 d-block d-sm-none">
-            <button
-              type="button"
-              className="p-0 border-0 bg-transparent d-inline-block"
-              onClick={linkEvent(this, this.handleImageExpandClick)}
-            >
-              <PictrsImage src={this.imageSrc} alt={post.alt_text} />
-            </button>
+          <div className="my-2 d-none d-sm-block">
+            <PictrsImage src={this.imageSrc} alt={post.alt_text} />
           </div>
         </>
       );
@@ -318,11 +512,8 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get imageSrc(): string | undefined {
     const post = this.postView.post;
     const url = post.url;
-    const thumbnail = post.thumbnail_url;
 
-    if (thumbnail) {
-      return thumbnail;
-    } else if (url && isImage(url)) {
+    if (url && isImage(url)) {
       return url;
     } else {
       return undefined;
@@ -435,7 +626,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const pv = this.postView;
 
     return (
-      <div className="small mb-1 mb-md-0">
+      <div className="mb-md-0 line-h-2rem">
         <PersonListing person={pv.creator} />
         <UserBadges
           classNames="ms-1"
@@ -446,20 +637,39 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {this.props.showCommunity && (
           <>
             {" "}
-            {I18NextService.i18n.t("to")}{" "}
+            {I18NextService.i18n.t("@")}{" "}
+            <CommunityLink community={pv.community} />
+          </>
+        )}{" "}
+        <span className="h6"> · </span>
+        <MomentTime published={pv.post.published} updated={pv.post.updated} />
+      </div>
+    );
+  }
+
+  createdLineForPostListing() {
+    const pv = this.postView;
+
+    return (
+      <div className="mb-md-0 line-h-2rem">
+        {this.props.showCommunity && (
+          <>
             <CommunityLink community={pv.community} />
           </>
         )}
-        {pv.post.language_id !== 0 && (
-          <span className="mx-1 badge text-bg-light">
-            {
-              this.props.allLanguages.find(
-                lang => lang.id === pv.post.language_id,
-              )?.name
-            }
-          </span>
-        )}{" "}
-        · <MomentTime published={pv.post.published} updated={pv.post.updated} />
+        {!this.props.showCommunity && (
+          <>
+            <PersonListing person={pv.creator} />
+            <UserBadges
+              classNames="ms-1"
+              isMod={pv.creator_is_moderator}
+              isAdmin={pv.creator_is_admin}
+              isBot={pv.creator.bot_account}
+            />
+          </>
+        )}
+        <span className="h6"> · </span>
+        <MomentTime published={pv.post.published} updated={pv.post.updated} />
       </div>
     );
   }
@@ -491,32 +701,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return (
       <>
         <div className="post-title">
-          <h1 className="h5 d-inline text-break">
-            {url && this.props.showBody ? (
-              <a
-                className={
-                  !post.featured_community && !post.featured_local
-                    ? "link-dark"
-                    : "link-primary"
-                }
-                href={url}
-                title={url}
-                rel={relTags}
-                dangerouslySetInnerHTML={mdToHtmlInline(post.name)}
-              ></a>
-            ) : (
-              this.postLink
-            )}
-          </h1>
-
-          {/**
-           * If there is (a) a URL and an embed title, or (b) a post body, and
-           * we were not told to show the body by the parent component, show the
-           * MetadataCard/body toggle.
-           */}
-          {!this.props.showBody &&
-            ((post.url && post.embed_title) || post.body) &&
-            this.showPreviewButton()}
+          <h1 className="h5 mb-2 d-inline text-break">{post.name}</h1>
 
           {post.removed && (
             <small className="ms-2 badge text-bg-secondary">
@@ -592,12 +777,12 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           <p className="small m-0">
             {url && !(hostname(url) === getExternalHost()) && (
               <a
-                className="fst-italic link-dark link-opacity-75 link-opacity-100-hover"
+                className="fst-italic link-warp link-dark link-opacity-75 link-opacity-100-hover"
                 href={url}
                 title={url}
                 rel={relTags}
               >
-                {linkName}
+                {url}
               </a>
             )}
           </p>
@@ -631,39 +816,37 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   }
 
   commentsLine(mobile = false) {
+    const { onPostVote, enableDownvotes, voteDisplayMode } = this.props;
     const {
-      admins,
-      moderators,
-      showBody,
-      onPostVote,
-      enableDownvotes,
-      voteDisplayMode,
-    } = this.props;
-    const {
-      post: { ap_id, id, body },
+      post: { id },
       my_vote,
       counts,
     } = this.postView;
 
     return (
-      <div className="d-flex align-items-center justify-content-start flex-wrap text-muted">
+      <div className="d-flex align-items-center justify-content-start flex-wrap mt-2">
+        {this.isInteractable && (
+          <VoteButtons
+            voteContentType={VoteContentType.Post}
+            id={this.postView.post.id}
+            onVote={this.props.onPostVote}
+            enableDownvotes={this.props.enableDownvotes}
+            voteDisplayMode={this.props.voteDisplayMode}
+            counts={this.postView.counts}
+            myVote={this.postView.my_vote}
+          />
+        )}
         {this.commentsButton}
         {canShare() && (
           <button
-            className="btn btn-sm btn-link btn-animate text-muted py-0"
+            className="btn btn-lg btn-link btn-animate text-muted py-0"
             onClick={linkEvent(this, this.handleShare)}
             type="button"
           >
             <Icon icon="share" inline />
           </button>
         )}
-        <a
-          className="btn btn-sm btn-link btn-animate text-muted py-0"
-          title={I18NextService.i18n.t("link")}
-          href={ap_id}
-        >
-          <Icon icon="fedilink" inline />
-        </a>
+
         {mobile && this.isInteractable && (
           <VoteButtonsCompact
             voteContentType={VoteContentType.Post}
@@ -673,34 +856,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             enableDownvotes={enableDownvotes}
             voteDisplayMode={voteDisplayMode}
             myVote={my_vote}
-          />
-        )}
-
-        {showBody && body && this.viewSourceButton}
-
-        {UserService.Instance.myUserInfo && this.isInteractable && (
-          <PostActionDropdown
-            postView={this.postView}
-            admins={admins}
-            moderators={moderators}
-            crossPostParams={this.crossPostParams}
-            onSave={this.handleSavePost}
-            onReport={this.handleReport}
-            onBlock={this.handleBlockPerson}
-            onEdit={this.handleEditClick}
-            onDelete={this.handleDeletePost}
-            onLock={this.handleModLock}
-            onFeatureCommunity={this.handleModFeaturePostCommunity}
-            onFeatureLocal={this.handleModFeaturePostLocal}
-            onRemove={this.handleRemove}
-            onBanFromCommunity={this.handleModBanFromCommunity}
-            onAppointCommunityMod={this.handleAppointCommunityMod}
-            onTransferCommunity={this.handleTransferCommunity}
-            onBanFromSite={this.handleModBanFromSite}
-            onPurgeUser={this.handlePurgePerson}
-            onPurgeContent={this.handlePurgePost}
-            onAppointAdmin={this.handleAppointAdmin}
-            onHidePost={this.handleHidePost}
           />
         )}
       </div>
@@ -724,13 +879,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
     return (
       <Link
-        className="btn btn-link btn-sm text-muted ps-0"
+        className="post-button font-weight-bold post-button-background mr-sm-3"
         title={title}
         to={`/post/${pv.post.id}?scrollToComments=true`}
         data-tippy-content={title}
         onClick={this.props.onScrollIntoCommentsClick}
       >
-        <Icon icon="message-square" classes="me-1" inline />
+        <BigIcon icon="message-square" classes="me-1 text-muted" inline />
         {pv.counts.comments}
         {this.unreadCount && (
           <>
@@ -754,7 +909,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   get viewSourceButton() {
     return (
       <button
-        className="btn btn-sm btn-link btn-animate text-muted py-0"
+        className="btn btn-lg btn-link btn-animate text-muted py-0"
         onClick={linkEvent(this, this.handleViewSource)}
         data-tippy-content={I18NextService.i18n.t("view_source")}
         aria-label={I18NextService.i18n.t("view_source")}
@@ -784,7 +939,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return (
       <button
         type="button"
-        className="btn btn-sm btn-link link-dark link-opacity-75 link-opacity-100-hover py-0 align-baseline"
+        className="btn btn-lg btn-link link-dark link-opacity-75 link-opacity-100-hover py-0 align-baseline"
         onClick={linkEvent(this, this.handleShowBody)}
       >
         <Icon
@@ -795,7 +950,9 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     );
   }
 
-  listing() {
+  postTitleFull() {
+    const post = this.postView.post;
+
     return (
       <>
         {/* The mobile view*/}
@@ -816,35 +973,103 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {/* The larger view*/}
         <div className="d-none d-sm-block">
           <article className="row post-container">
-            {this.isInteractable && (
-              <div className="col flex-grow-0">
-                <VoteButtons
-                  voteContentType={VoteContentType.Post}
-                  id={this.postView.post.id}
-                  onVote={this.props.onPostVote}
-                  enableDownvotes={this.props.enableDownvotes}
-                  voteDisplayMode={this.props.voteDisplayMode}
-                  counts={this.postView.counts}
-                  myVote={this.postView.my_vote}
-                />
-              </div>
-            )}
-            <div className="col flex-grow-1">
+            <div className="flex-grow-1">
               <div className="row">
-                <div className="col flex-grow-0 px-0">
-                  <div className="">{this.thumbnail()}</div>
-                </div>
-                <div className="col flex-grow-1">
-                  {this.postTitleLine()}
-                  {this.createdLine()}
-                  {this.commentsLine()}
-                  {this.duplicatesLine()}
+                <div className="flex-grow-1">
+                  <div className="d-flex post-listing-nav-bar min-h-2rem mb-2 post-title-full">
+                    {this.createdLine()}
+                    {this.showMoreButtons()}
+                  </div>
+                  <a
+                    href={`/post/${post.id}`}
+                    className="text-neutral-content visited:text-neutral-content-weak"
+                  >
+                    {this.postTitleLine()}
+                  </a>
                 </div>
               </div>
             </div>
           </article>
         </div>
       </>
+    );
+  }
+
+  postTitle() {
+    const post = this.postView.post;
+
+    return (
+      <>
+        {/* The mobile view*/}
+        <div className="d-block d-sm-none">
+          <article className="row post-container">
+            <div className="col-12">
+              {this.createdLineForPostListing()}
+
+              {/* If it has a thumbnail, do a right aligned thumbnail */}
+              {this.mobileThumbnail()}
+
+              {this.commentsLine(true)}
+              {this.duplicatesLine()}
+            </div>
+          </article>
+        </div>
+
+        {/* The larger view*/}
+        <div className="d-none d-sm-block">
+          <article className="row post-container">
+            <div className="flex-grow-1">
+              <div className="row">
+                <div className="flex-grow-1">
+                  <div className="d-flex post-listing-nav-bar min-h-2rem mb-2 post-title">
+                    {this.createdLineForPostListing()}
+                    {this.showMoreButtons()}
+                  </div>
+                  <a
+                    href={`/post/${post.id}`}
+                    className="text-neutral-content visited:text-neutral-content-weak"
+                  >
+                    {this.postTitleLine()}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </>
+    );
+  }
+
+  showMoreButtons() {
+    const { admins, moderators } = this.props;
+    return (
+      <div className="d-flex align-items-center justify-content-start flex-wrap text-muted">
+        {UserService.Instance.myUserInfo && this.isInteractable && (
+          <PostActionDropdown
+            postView={this.postView}
+            admins={admins}
+            moderators={moderators}
+            crossPostParams={this.crossPostParams}
+            onSave={this.handleSavePost}
+            onReport={this.handleReport}
+            onBlock={this.handleBlockPerson}
+            onEdit={this.handleEditClick}
+            onDelete={this.handleDeletePost}
+            onLock={this.handleModLock}
+            onFeatureCommunity={this.handleModFeaturePostCommunity}
+            onFeatureLocal={this.handleModFeaturePostLocal}
+            onRemove={this.handleRemove}
+            onBanFromCommunity={this.handleModBanFromCommunity}
+            onAppointCommunityMod={this.handleAppointCommunityMod}
+            onTransferCommunity={this.handleTransferCommunity}
+            onBanFromSite={this.handleModBanFromSite}
+            onPurgeUser={this.handlePurgePerson}
+            onPurgeContent={this.handlePurgePost}
+            onAppointAdmin={this.handleAppointAdmin}
+            onHidePost={this.handleHidePost}
+          />
+        )}
+      </div>
     );
   }
 

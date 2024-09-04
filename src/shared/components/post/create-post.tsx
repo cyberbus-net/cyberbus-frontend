@@ -258,7 +258,7 @@ export class CreatePost extends Component<
           path={this.context.router.route.match.url}
         />
         <div className="row">
-          <div id="createPostForm" className="col-12 col-lg-6 offset-lg-3 mb-4">
+          <div id="createPostForm" className="col-12 mb-4">
             <h1 className="h4 mb-4">{I18NextService.i18n.t("create_post")}</h1>
             <PostForm
               key={this.state.resetCounter}

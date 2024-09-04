@@ -9,9 +9,7 @@ import { Language } from "lemmy-js-client";
 import {
   concurrentImageUpload,
   markdownFieldCharacterLimit,
-  markdownHelpUrl,
   maxUploadImages,
-  relTags,
 } from "../../config";
 import { customEmojisLookup, mdToHtml, setupTribute } from "../../markdown";
 import { HttpService, I18NextService, UserService } from "../../services";
@@ -19,7 +17,6 @@ import { tippyMixin } from "../mixins/tippy-mixin";
 import { pictrsDeleteToast, toast } from "../../toast";
 import { EmojiPicker } from "./emoji-picker";
 import { Icon, Spinner } from "./icon";
-import { LanguageSelect } from "./language-select";
 import ProgressBar from "./progress-bar";
 import validUrl from "@utils/helpers/valid-url";
 interface MarkdownTextAreaProps {
@@ -113,11 +110,11 @@ export class MarkdownTextArea extends Component<
   }
 
   render() {
-    const languageId = this.state.languageId;
-
     return (
       <form
-        className="markdown-textarea"
+        className={classNames("markdown-textarea rounded border", {
+          "markdown-textarea-focused": !!this.state.content,
+        })}
         id={this.formId}
         onSubmit={linkEvent(this, this.handleSubmit)}
       >
@@ -129,9 +126,9 @@ export class MarkdownTextArea extends Component<
               this.state.loading)
           }
         />
-        <div className="mb-3 row">
-          <div className="col-12">
-            <div className="rounded bg-light border">
+        <div className="mb-2 row">
+          <div className="">
+            <div className="bg-light rounded">
               {!this.state.previewMode && (
                 <div
                   className={classNames("d-flex flex-wrap border-bottom", {
@@ -191,26 +188,14 @@ export class MarkdownTextArea extends Component<
                     "superscript",
                     this.handleInsertSuperscript,
                   )}
-                  {this.getFormatButton("spoiler", this.handleInsertSpoiler)}
-                  <a
-                    href={markdownHelpUrl}
-                    className="btn btn-sm btn-link rounded-0 text-muted fw-bold"
-                    title={I18NextService.i18n.t("formatting_help")}
-                    rel={relTags}
-                  >
-                    <Icon icon="help-circle" classes="icon-inline" />
-                  </a>
                 </div>
               )}
               <div>
                 <textarea
                   id={this.id}
-                  className={classNames(
-                    "form-control border-0 rounded-top-0 rounded-bottom",
-                    {
-                      "d-none": this.state.previewMode,
-                    },
-                  )}
+                  className={classNames("form-control-no-outline border-0", {
+                    "d-none": this.state.previewMode,
+                  })}
                   value={this.state.content}
                   onInput={linkEvent(this, this.handleContentChange)}
                   onBlur={linkEvent(this, this.handleContentBlur)}
@@ -227,7 +212,7 @@ export class MarkdownTextArea extends Component<
                 />
                 {this.state.previewMode && this.state.content && (
                   <div
-                    className="card border-secondary card-body md-div"
+                    className="card card-body md-div rounded"
                     dangerouslySetInnerHTML={mdToHtml(this.state.content, () =>
                       this.forceUpdate(),
                     )}
@@ -257,19 +242,6 @@ export class MarkdownTextArea extends Component<
           </div>
 
           <div className="col-12 d-flex align-items-center flex-wrap mt-2">
-            {this.props.showLanguage && (
-              <LanguageSelect
-                iconVersion
-                allLanguages={this.props.allLanguages}
-                selectedLanguageIds={
-                  languageId ? Array.of(languageId) : undefined
-                }
-                siteLanguages={this.props.siteLanguages}
-                onChange={this.handleLanguageChange}
-                disabled={this.isDisabled}
-              />
-            )}
-
             {/* A flex expander */}
             <div className="flex-grow-1"></div>
 

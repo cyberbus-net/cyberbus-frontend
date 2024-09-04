@@ -2,7 +2,6 @@ import { Component } from "inferno";
 import { I18NextService, UserService } from "../../../services";
 import { Icon } from "../icon";
 import { CrossPostParams } from "@utils/types";
-import CrossPostButton from "./cross-post-button";
 import { CommunityModeratorView, PersonView, PostView } from "lemmy-js-client";
 import {
   amAdmin,
@@ -185,27 +184,18 @@ export default class ContentActionDropdown extends Component<
       <>
         {type === "comment" && (
           <ActionButton
+            className="comment-button-background big"
             onClick={this.props.onReply}
-            icon="reply1"
+            icon="message-square"
             inline
             label={I18NextService.i18n.t("reply")}
             noLoading
           />
         )}
-        <ActionButton
-          onClick={onSave}
-          inline
-          icon="star"
-          label={I18NextService.i18n.t(saved ? "unsave" : "save")}
-          iconClass={classNames({ "text-warning": saved })}
-        />
-        {type === "post" && (
-          <CrossPostButton {...this.props.crossPostParams!} />
-        )}
 
         <div className="dropdown">
           <button
-            className="btn btn-sm btn-link btn-animate text-muted py-0 dropdown-toggle"
+            className="btn btn-sm btn-link btn-animate text-muted py-0 dropdown-toggle comment-button-background"
             data-tippy-content={I18NextService.i18n.t("more")}
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -219,6 +209,14 @@ export default class ContentActionDropdown extends Component<
           <ul className="dropdown-menu" id={dropdownId}>
             {this.state.dropdownOpenedOnce && (
               <>
+                <li>
+                  <ActionButton
+                    icon="star"
+                    label={I18NextService.i18n.t(saved ? "unsave" : "save")}
+                    onClick={onSave}
+                    iconClass={classNames({ "text-warning": saved })}
+                  />
+                </li>
                 {type === "post" && (
                   <li>
                     <ActionButton

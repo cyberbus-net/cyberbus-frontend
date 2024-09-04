@@ -12,6 +12,7 @@ interface CommunityLinkProps {
   useApubName?: boolean;
   muted?: boolean;
   hideAvatar?: boolean;
+  showTitle?: boolean;
 }
 
 export class CommunityLink extends Component<CommunityLinkProps, any> {
@@ -42,30 +43,63 @@ export class CommunityLink extends Component<CommunityLinkProps, any> {
 
     return !this.props.realLink ? (
       <Link title={title} className={classes} to={link}>
-        {this.avatarAndName(title, serverStr)}
+        {this.avatarAndName(serverStr, this.props.showTitle)}
       </Link>
     ) : (
       <a title={title} className={classes} href={link} rel={relTags}>
-        {this.avatarAndName(title, serverStr)}
+        {this.avatarAndName(serverStr, this.props.showTitle)}
       </a>
     );
   }
 
-  avatarAndName(title: string, serverStr?: string) {
+  getCommunitySlug() {
+    const { community } = this.props;
+    const local = community.local === null ? true : community.local;
+
+    let serverStr: string | undefined = undefined;
+
+    let link: string;
+
+    if (local) {
+      link = `c/${community.name}`;
+    } else {
+      serverStr = `@${hostname(community.actor_id)}`;
+      link = !this.props.realLink
+        ? `c/${community.name}${serverStr}`
+        : community.actor_id;
+    }
+    return link;
+  }
+
+  avatarAndName(serverStr?: string, showTitle?: boolean) {
     const icon = this.props.community.icon;
     const nsfw = this.props.community.nsfw;
 
-    return (
-      <>
-        {!this.props.hideAvatar &&
-          !this.props.community.removed &&
-          showAvatars() &&
-          icon && <PictrsImage src={icon} icon nsfw={nsfw} />}
-        <span className="overflow-wrap-anywhere">
-          {title}
-          {serverStr && <small className="text-muted">{serverStr}</small>}
-        </span>
-      </>
-    );
+    if (!showTitle) {
+      return (
+        <>
+          {!this.props.hideAvatar &&
+            !this.props.community.removed &&
+            showAvatars() &&
+            icon && <PictrsImage src={icon} icon nsfw={nsfw} />}
+          <span className="h6 overflow-wrap-anywhere">
+            {this.getCommunitySlug()}
+            {serverStr && <small className="text-muted">{serverStr}</small>}
+          </span>
+        </>
+      );
+    } else {
+      return (
+        <>
+          {!this.props.hideAvatar &&
+            !this.props.community.removed &&
+            showAvatars() &&
+            icon && <PictrsImage src={icon} icon nsfw={nsfw} />}
+          <span className="h5 overflow-wrap-anywhere">
+            {<span>{this.props.community.title}</span>}
+          </span>
+        </>
+      );
+    }
   }
 }

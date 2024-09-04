@@ -11,8 +11,8 @@ import {
 import { VoteContentType, VoteType } from "../../interfaces";
 import { I18NextService, UserService } from "../../services";
 import { Icon, Spinner } from "../common/icon";
+import { BigIcon } from "../common/big-icon";
 import { tippyMixin } from "../mixins/tippy-mixin";
-import classNames from "classnames";
 
 interface VoteButtonsProps {
   voteContentType: VoteContentType;
@@ -135,7 +135,7 @@ export class VoteButtonsCompact extends Component<
       <>
         <button
           type="button"
-          className={`btn btn-animate btn-sm btn-link py-0 px-1 ${
+          className={`btn btn-animate btn-sm btn-link py-0 px-1 vote-button comment-button-background ${
             this.props.myVote === 1 ? "text-info" : "text-muted"
           }`}
           data-tippy-content={tippy(
@@ -151,20 +151,27 @@ export class VoteButtonsCompact extends Component<
             <Spinner />
           ) : (
             <>
-              <Icon icon="arrow-up1" classes="icon-inline small" />
-              {showScores() &&
-                this.props.voteContentType === VoteContentType.Post && (
-                  <span className="ms-2">
-                    {numToSI(this.props.counts.upvotes)}
-                  </span>
-                )}
+              <Icon icon="circle-up" classes="icon-inline big" />
             </>
           )}
         </button>
+        {showScores() ? (
+          <div
+            className="unselectable pointer post-score post-button font-weight-bold vote-indicator"
+            data-tippy-content={tippy(
+              this.props.voteDisplayMode,
+              this.props.counts,
+            )}
+          >
+            {numToSI(this.props.counts.score)}
+          </div>
+        ) : (
+          <div className="p-1"></div>
+        )}
         {this.props.enableDownvotes && (
           <button
             type="button"
-            className={`ms-2 btn btn-sm btn-link btn-animate btn py-0 px-1 ${
+            className={`btn btn-animate btn-sm btn-link py-0 px-1 comment-button-background ${
               this.props.myVote === -1 ? "text-danger" : "text-muted"
             }`}
             disabled={!UserService.Instance.myUserInfo}
@@ -180,17 +187,7 @@ export class VoteButtonsCompact extends Component<
               <Spinner />
             ) : (
               <>
-                <Icon icon="arrow-down1" classes="icon-inline small" />
-                {showScores() &&
-                  this.props.voteContentType === VoteContentType.Post && (
-                    <span
-                      className={classNames("ms-2", {
-                        invisible: this.props.counts.downvotes === 0,
-                      })}
-                    >
-                      {numToSI(this.props.counts.downvotes)}
-                    </span>
-                  )}
+                <Icon icon="circle-down" classes="icon-inline big" />
               </>
             )}
           </button>
@@ -224,10 +221,10 @@ export class VoteButtons extends Component<VoteButtonsProps, VoteButtonsState> {
 
   render() {
     return (
-      <div className="vote-bar small text-center">
+      <div className="d-flex align-items-center justify-content-start flex-wrap font-weight-bold post-button-background mr-sm-3">
         <button
           type="button"
-          className={`btn-animate btn btn-link p-0 ${
+          className={`btn-animate vote-button ${
             this.props.myVote === 1 ? "text-info" : "text-muted"
           }`}
           disabled={!UserService.Instance.myUserInfo}
@@ -242,12 +239,12 @@ export class VoteButtons extends Component<VoteButtonsProps, VoteButtonsState> {
           {this.state.upvoteLoading ? (
             <Spinner />
           ) : (
-            <Icon icon="arrow-up1" classes="upvote" />
+            <BigIcon icon="circle-up" />
           )}
         </button>
         {showScores() ? (
           <div
-            className="unselectable pointer text-muted post-score"
+            className="unselectable pointer post-score post-button font-weight-bold vote-indicator"
             data-tippy-content={tippy(
               this.props.voteDisplayMode,
               this.props.counts,
@@ -261,7 +258,7 @@ export class VoteButtons extends Component<VoteButtonsProps, VoteButtonsState> {
         {this.props.enableDownvotes && (
           <button
             type="button"
-            className={`btn-animate btn btn-link p-0 ${
+            className={`btn-animate vote-button ${
               this.props.myVote === -1 ? "text-danger" : "text-muted"
             }`}
             disabled={!UserService.Instance.myUserInfo}
@@ -276,7 +273,7 @@ export class VoteButtons extends Component<VoteButtonsProps, VoteButtonsState> {
             {this.state.downvoteLoading ? (
               <Spinner />
             ) : (
-              <Icon icon="arrow-down1" classes="downvote" />
+              <BigIcon icon="circle-down" />
             )}
           </button>
         )}

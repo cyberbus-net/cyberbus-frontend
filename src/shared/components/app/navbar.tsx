@@ -5,7 +5,7 @@ import { amAdmin, canCreateCommunity } from "@utils/roles";
 import { Component, createRef, linkEvent } from "inferno";
 import { NavLink } from "inferno-router";
 import { GetSiteResponse } from "lemmy-js-client";
-import { donateLemmyUrl } from "../../config";
+import { getStaticDir } from "@utils/env";
 import {
   I18NextService,
   UserService,
@@ -97,9 +97,9 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
     const siteView = this.props.siteRes?.site_view;
     const person = UserService.Instance.myUserInfo?.local_user_view.person;
     return (
-      <div className="shadow-sm">
+      <div className="">
         <nav
-          className="navbar navbar-expand-md navbar-light p-0 px-3 container-lg"
+          className="navbar navbar-expand-md navbar-light p-0 px-3"
           id="navbar"
         >
           <NavLink
@@ -110,7 +110,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
             onMouseUp={linkEvent(this, handleCollapseClick)}
           >
             {siteView?.site.icon && showAvatars() && (
-              <PictrsImage src={siteView.site.icon} icon />
+              <PictrsImage src={siteView.site.icon} siteIcon={true} />
             )}
             {siteView?.site.name}
           </NavLink>
@@ -239,18 +239,6 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </NavLink>
                 </li>
               )}
-              <li className="nav-item">
-                <a
-                  className="nav-link d-inline-flex align-items-center d-md-inline-block"
-                  title={I18NextService.i18n.t("support_lemmy")}
-                  href={donateLemmyUrl}
-                >
-                  <Icon icon="heart" classes="small" />
-                  <span className="d-inline ms-1 d-md-none ms-md-0">
-                    {I18NextService.i18n.t("support_lemmy")}
-                  </span>
-                </a>
-              </li>
             </ul>
             <ul id="navbarIcons" className="navbar-nav">
               <li id="navSearch" className="nav-item">
@@ -375,14 +363,26 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     <li id="dropdownUser" className="dropdown">
                       <button
                         type="button"
-                        className="btn dropdown-toggle"
+                        className="btn"
                         aria-expanded="false"
                         data-bs-toggle="dropdown"
                       >
                         {showAvatars() && person.avatar && (
-                          <PictrsImage src={person.avatar} icon />
+                          <PictrsImage
+                            src={person.avatar}
+                            icon
+                            circleIcon={true}
+                            hoverStyle={true}
+                          />
                         )}
-                        {person.display_name ?? person.name}
+                        {!person.avatar && (
+                          <PictrsImage
+                            src={`${getStaticDir()}/assets/icons/icon-96x96.png`}
+                            icon
+                            circleIcon={true}
+                            hoverStyle={true}
+                          />
+                        )}
                       </button>
                       <ul
                         className="dropdown-menu"
@@ -392,11 +392,11 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                           <NavLink
                             to={`/u/${person.name}`}
                             className="dropdown-item px-2"
-                            title={I18NextService.i18n.t("profile")}
+                            title={I18NextService.i18n.t("view_profile")}
                             onMouseUp={linkEvent(this, handleCollapseClick)}
                           >
                             <Icon icon="user" classes="me-1" />
-                            {I18NextService.i18n.t("profile")}
+                            {I18NextService.i18n.t("view_profile")}
                           </NavLink>
                         </li>
                         <li>
