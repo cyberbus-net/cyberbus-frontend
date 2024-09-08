@@ -10,7 +10,7 @@ import { PurgeWarning, Spinner } from "../icon";
 import { getApubName, randomStr } from "@utils/helpers";
 import type { Modal } from "bootstrap";
 import classNames from "classnames";
-import { Community, Person } from "lemmy-js-client";
+import { Community, Person } from "@cyberbus-net/cyberbus-js-client";
 import { LoadingEllipses } from "../loading-ellipses";
 import { modalMixin } from "../../mixins/modal-mixin";
 

@@ -13,7 +13,7 @@ import {
   GetSiteResponse,
   Instance,
   ListingType,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import deepEqual from "lodash.isequal";
 import { I18NextService } from "../../services";
 import { Icon, Spinner } from "../common/icon";
@@ -69,6 +69,7 @@ export class SiteForm extends Component<SiteFormProps, SiteFormState> {
       icon: site.icon,
       banner: site.banner,
       require_email_verification: ls.require_email_verification,
+      require_invite_code: ls.require_invite_code,
       application_question: ls.application_question,
       private_instance: ls.private_instance,
       default_theme: ls.default_theme,
@@ -352,6 +353,25 @@ export class SiteForm extends Component<SiteFormProps, SiteFormState> {
                 htmlFor="create-site-community-creation-admin-only"
               >
                 {I18NextService.i18n.t("community_creation_admin_only")}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="mb-3 row">
+          <div className="col-12">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                id="create-site-require-invite-code"
+                type="checkbox"
+                checked={this.state.siteForm.require_invite_code}
+                onChange={linkEvent(this, this.handleSiteRequireInviteCode)}
+              />
+              <label
+                className="form-check-label"
+                htmlFor="create-site-require-invite-code"
+              >
+                {I18NextService.i18n.t("require_invite_code")}
               </label>
             </div>
           </div>
@@ -940,6 +960,11 @@ export class SiteForm extends Component<SiteFormProps, SiteFormState> {
 
   handleSiteEnableDownvotesChange(i: SiteForm, event: any) {
     i.state.siteForm.enable_downvotes = event.target.checked;
+    i.setState(i.state);
+  }
+
+  handleSiteRequireInviteCode(i: SiteForm, event: any) {
+    i.state.siteForm.require_invite_code = event.target.checked;
     i.setState(i.state);
   }
 

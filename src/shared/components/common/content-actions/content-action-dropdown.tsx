@@ -2,7 +2,11 @@ import { Component } from "inferno";
 import { I18NextService, UserService } from "../../../services";
 import { Icon } from "../icon";
 import { CrossPostParams } from "@utils/types";
-import { CommunityModeratorView, PersonView, PostView } from "lemmy-js-client";
+import {
+  CommunityModeratorView,
+  PersonView,
+  PostView,
+} from "@cyberbus-net/cyberbus-js-client";
 import {
   amAdmin,
   amCommunityCreator,

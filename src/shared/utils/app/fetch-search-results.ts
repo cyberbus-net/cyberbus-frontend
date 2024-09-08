@@ -1,4 +1,4 @@
-import { Search, SearchType } from "lemmy-js-client";
+import { Search, SearchType } from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../../config";
 import { HttpService } from "../../services";
 

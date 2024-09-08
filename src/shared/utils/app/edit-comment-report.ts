@@ -1,5 +1,5 @@
 import { editListImmutable } from "@utils/helpers";
-import { CommentReportView } from "lemmy-js-client";
+import { CommentReportView } from "@cyberbus-net/cyberbus-js-client";
 
 export default function editCommentReport(
   data: CommentReportView,

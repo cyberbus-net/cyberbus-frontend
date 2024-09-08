@@ -45,7 +45,7 @@ import {
   GetPersonMentionsResponse,
   GetRepliesResponse,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   MarkCommentReplyAsRead,
   MarkPersonMentionAsRead,
   MarkPrivateMessageAsRead,
@@ -62,7 +62,7 @@ import {
   SaveComment,
   SuccessResponse,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../../config";
 import { CommentViewType, InitialFetchRequest } from "../../interfaces";
 import { FirstLoadService, I18NextService, UserService } from "../../services";
@@ -723,7 +723,7 @@ export class Inbox extends Component<InboxRouteProps, InboxState> {
     headers,
   }: InitialFetchRequest): Promise<InboxData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const sort: CommentSortType = "New";
     const empty: EmptyRequestState = EMPTY_REQUEST;

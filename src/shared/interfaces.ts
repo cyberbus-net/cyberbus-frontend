@@ -4,7 +4,7 @@ import {
   CommentView,
   GetSiteResponse,
   PersonMention,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { RequestState } from "./services/HttpService";
 import { Match } from "inferno-router/dist/Route";
 

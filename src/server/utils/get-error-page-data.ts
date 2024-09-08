@@ -1,5 +1,5 @@
 import { ErrorPageData } from "@utils/types";
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 
 export function getErrorPageData(error: Error, site?: GetSiteResponse) {
   const errorPageData: ErrorPageData = {};

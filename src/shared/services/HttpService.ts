@@ -1,5 +1,5 @@
 import { getHttpBase } from "@utils/env";
-import { LemmyHttp } from "lemmy-js-client";
+import { CyberbusHttp } from "@cyberbus-net/cyberbus-js-client";
 
 export const EMPTY_REQUEST = {
   state: "empty",
@@ -34,20 +34,20 @@ export type RequestState<T> =
   | FailedRequestState
   | SuccessRequestState<T>;
 
-export type WrappedLemmyHttp = WrappedLemmyHttpClient & {
-  [K in keyof LemmyHttp]: LemmyHttp[K] extends (...args: any[]) => any
-    ? ReturnType<LemmyHttp[K]> extends Promise<infer U>
-      ? (...args: Parameters<LemmyHttp[K]>) => Promise<RequestState<U>>
+export type WrappedCyberbusHttp = WrappedCyberbusHttpClient & {
+  [K in keyof CyberbusHttp]: CyberbusHttp[K] extends (...args: any[]) => any
+    ? ReturnType<CyberbusHttp[K]> extends Promise<infer U>
+      ? (...args: Parameters<CyberbusHttp[K]>) => Promise<RequestState<U>>
       : (
-          ...args: Parameters<LemmyHttp[K]>
-        ) => Promise<RequestState<LemmyHttp[K]>>
-    : LemmyHttp[K];
+          ...args: Parameters<CyberbusHttp[K]>
+        ) => Promise<RequestState<CyberbusHttp[K]>>
+    : CyberbusHttp[K];
 };
 
-class WrappedLemmyHttpClient {
-  rawClient: LemmyHttp;
+class WrappedCyberbusHttpClient {
+  rawClient: CyberbusHttp;
 
-  constructor(client: LemmyHttp) {
+  constructor(client: CyberbusHttp) {
     this.rawClient = client;
 
     for (const key of Object.getOwnPropertyNames(
@@ -74,17 +74,19 @@ class WrappedLemmyHttpClient {
   }
 }
 
-export function wrapClient(client: LemmyHttp) {
+export function wrapClient(client: CyberbusHttp) {
   // unfortunately, this verbose cast is necessary
-  return new WrappedLemmyHttpClient(client) as unknown as WrappedLemmyHttp;
+  return new WrappedCyberbusHttpClient(
+    client,
+  ) as unknown as WrappedCyberbusHttp;
 }
 
 export class HttpService {
   static #_instance: HttpService;
-  #client: WrappedLemmyHttp;
+  #client: WrappedCyberbusHttp;
 
   private constructor() {
-    const lemmyHttp = new LemmyHttp(getHttpBase());
+    const lemmyHttp = new CyberbusHttp(getHttpBase());
     this.#client = wrapClient(lemmyHttp);
   }
 

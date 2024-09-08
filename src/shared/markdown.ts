@@ -3,7 +3,7 @@ import { debounce, groupBy } from "@utils/helpers";
 import { CommunityTribute, PersonTribute } from "@utils/types";
 import { Picker } from "emoji-mart";
 import emojiShortName from "emoji-short-name";
-import { CustomEmojiView } from "lemmy-js-client";
+import { CustomEmojiView } from "@cyberbus-net/cyberbus-js-client";
 import { default as MarkdownIt } from "markdown-it";
 import markdown_it_container from "markdown-it-container";
 // import markdown_it_emoji from "markdown-it-emoji/bare";

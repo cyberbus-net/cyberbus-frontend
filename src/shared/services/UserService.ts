@@ -2,7 +2,7 @@ import { isAuthPath } from "@utils/app";
 import { clearAuthCookie, isBrowser, setAuthCookie } from "@utils/browser";
 import * as cookie from "cookie";
 import { jwtDecode } from "jwt-decode";
-import { LoginResponse, MyUserInfo } from "lemmy-js-client";
+import { LoginResponse, MyUserInfo } from "@cyberbus-net/cyberbus-js-client";
 import { toast } from "../toast";
 import { I18NextService } from "./I18NextService";
 import { amAdmin } from "@utils/roles";

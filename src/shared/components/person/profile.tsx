@@ -54,7 +54,7 @@ import {
   GetPersonDetails,
   GetPersonDetailsResponse,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ListMedia,
   ListMediaResponse,
   LockPost,
@@ -73,7 +73,7 @@ import {
   SuccessResponse,
   TransferCommunity,
   RegistrationApplicationResponse,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit, relTags } from "../../config";
 import { InitialFetchRequest, PersonDetailsView } from "../../interfaces";
 import { mdToHtml } from "../../markdown";
@@ -395,7 +395,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
     ProfileProps
   >): Promise<ProfileData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
 
     let uploadsRes: RequestState<ListMediaResponse> = EMPTY_REQUEST;

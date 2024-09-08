@@ -1,4 +1,8 @@
-import { BlockInstanceResponse, Instance, MyUserInfo } from "lemmy-js-client";
+import {
+  BlockInstanceResponse,
+  Instance,
+  MyUserInfo,
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService, UserService } from "../../services";
 import { toast } from "../../toast";
 

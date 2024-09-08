@@ -73,7 +73,7 @@ import {
   getSearchQueryParams,
 } from "./components/search";
 import { InitialFetchRequest, RouteData } from "./interfaces";
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { Inferno } from "inferno";
 
 export interface IRoutePropsWithFetch<

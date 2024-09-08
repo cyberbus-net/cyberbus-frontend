@@ -3,7 +3,7 @@ import {
   CommunityAggregates,
   CommunityId,
   SiteAggregates,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 
 interface BadgesProps {

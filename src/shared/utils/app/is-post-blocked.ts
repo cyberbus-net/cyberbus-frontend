@@ -1,4 +1,4 @@
-import { MyUserInfo, PostView } from "lemmy-js-client";
+import { MyUserInfo, PostView } from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 export default function isPostBlocked(

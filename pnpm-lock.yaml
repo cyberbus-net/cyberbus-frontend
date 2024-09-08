@@ -29,6 +29,9 @@ importers:
       '@babel/runtime':
         specifier: ^7.25.4
         version: 7.25.6
+      '@cyberbus-net/cyberbus-js-client':
+        specifier: 0.1.1
+        version: 0.1.1(eslint@9.9.1)
       '@emoji-mart/data':
         specifier: ^1.2.1
         version: 1.2.1
@@ -113,9 +116,6 @@ importers:
       jwt-decode:
         specifier: ^4.0.0
         version: 4.0.0
-      lemmy-js-client:
-        specifier: 0.19.6-beta.1
-        version: 0.19.6-beta.1
       lodash.isequal:
         specifier: ^4.5.0
         version: 4.5.0
@@ -950,6 +950,9 @@ packages:
   '@babel/types@7.25.4':
     resolution: {integrity: sha512-zQ1ijeeCXVEh+aNL0RlmkPkG8HUiDcU2pzQQFjtbntgAczRASFzj4H+6+bV+dy1ntKR14I/DypeuRG1uma98iQ==}
     engines: {node: '>=6.9.0'}
+
+  '@cyberbus-net/cyberbus-js-client@0.1.1':
+    resolution: {integrity: sha512-AuMBUvG4ItRAVfEV+XCbkR5lqTJr8qVXX6XPRt7zZo2rrW2hzcOkKDDljI9edAU6tgkP+hhZAUznBfl+JlxeBA==}
 
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
@@ -3048,9 +3051,6 @@ packages:
 
   leac@0.6.0:
     resolution: {integrity: sha512-y+SqErxb8h7nE/fiEX07jsbuhrpO9lL8eca7/Y1nuWV2moNlXhyd59iDGcRf6moVyDMbmTNzL40SUyrFU/yDpg==}
-
-  lemmy-js-client@0.19.6-beta.1:
-    resolution: {integrity: sha512-CiTbTpqKA7t1daBMdkKVLVXUrpy2wSuxkoWrnK5sVvmBrlFq1jpqC9h9SgNngiVqSgx6Tvsg3asmvne7OaEZRQ==}
 
   leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
@@ -5524,6 +5524,15 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
+  '@cyberbus-net/cyberbus-js-client@0.1.1(eslint@9.9.1)':
+    dependencies:
+      eslint-config-prettier: 9.1.0(eslint@9.9.1)
+      eslint-scope: 8.0.2
+      eslint-visitor-keys: 4.0.0
+      prettier-linter-helpers: 1.0.0
+    transitivePeerDependencies:
+      - eslint
+
   '@discoveryjs/json-ext@0.5.7': {}
 
   '@emnapi/runtime@1.2.0':
@@ -7811,8 +7820,6 @@ snapshots:
       shell-quote: 1.8.1
 
   leac@0.6.0: {}
-
-  lemmy-js-client@0.19.6-beta.1: {}
 
   leven@3.1.0: {}
 

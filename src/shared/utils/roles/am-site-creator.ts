@@ -1,4 +1,4 @@
-import { PersonView } from "lemmy-js-client";
+import { PersonView } from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 export default function amSiteCreator(

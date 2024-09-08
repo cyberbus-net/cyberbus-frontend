@@ -5,7 +5,7 @@ import {
   CommentView,
   LocalUserVoteDisplayMode,
   ResolveCommentReport,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { CommentNodeI, CommentViewType } from "../../interfaces";
 import { I18NextService } from "../../services";
 import { Icon, Spinner } from "../common/icon";

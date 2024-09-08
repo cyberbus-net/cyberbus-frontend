@@ -24,7 +24,7 @@ import {
   RemovePost,
   SavePost,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 import { PostListing } from "./post-listing";
 import { RequestState } from "../../services/HttpService";

@@ -50,7 +50,7 @@ import {
   GetPostsResponse,
   GetSiteResponse,
   HidePost,
-  LemmyHttp,
+  CyberbusHttp,
   ListingType,
   LockPost,
   MarkCommentReplyAsRead,
@@ -67,7 +67,7 @@ import {
   SortType,
   SuccessResponse,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../../config";
 import { Link } from "inferno-router";
 import {
@@ -302,7 +302,7 @@ export class Home extends Component<HomeRouteProps, HomeState> {
     headers,
   }: InitialFetchRequest<HomePathProps, HomeProps>): Promise<HomeData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
 
     let postsFetch: Promise<RequestState<GetPostsResponse>> =

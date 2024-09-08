@@ -1,4 +1,4 @@
-import { Site } from "lemmy-js-client";
+import { Site } from "@cyberbus-net/cyberbus-js-client";
 import { fetchIconPng } from "./fetch-icon-png";
 import { getStaticDir } from "@utils/env";
 

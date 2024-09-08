@@ -25,16 +25,16 @@ import {
   GetCommunity,
   GetCommunityResponse,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ListCommunitiesResponse,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { InitialFetchRequest, PostFormParams } from "../../interfaces";
 import { FirstLoadService, I18NextService } from "../../services";
 import {
   EMPTY_REQUEST,
   HttpService,
   RequestState,
-  WrappedLemmyHttp,
+  WrappedCyberbusHttp,
   wrapClient,
 } from "../../services/HttpService";
 import { HtmlTags } from "../common/html-tags";
@@ -77,7 +77,7 @@ export function getCreatePostQueryParams(source?: string): CreatePostProps {
   );
 }
 
-function fetchCommunitiesForOptions(client: WrappedLemmyHttp) {
+function fetchCommunitiesForOptions(client: WrappedCyberbusHttp) {
   return client.listCommunities({ limit: 30, sort: "TopMonth", type_: "All" });
 }
 
@@ -388,7 +388,7 @@ export class CreatePost extends Component<
     CreatePostProps
   >): Promise<CreatePostData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const data: CreatePostData = {
       initialCommunitiesRes: await fetchCommunitiesForOptions(client),

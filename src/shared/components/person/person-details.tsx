@@ -39,7 +39,7 @@ import {
   SavePost,
   SortType,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { CommentViewType, PersonDetailsView } from "../../interfaces";
 import { CommentNodes } from "../comment/comment-nodes";
 import { Paginator } from "../common/paginator";

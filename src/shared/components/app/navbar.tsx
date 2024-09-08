@@ -4,7 +4,7 @@ import { numToSI } from "@utils/helpers";
 import { amAdmin, canCreateCommunity } from "@utils/roles";
 import { Component, createRef, linkEvent } from "inferno";
 import { NavLink } from "inferno-router";
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { getStaticDir } from "@utils/env";
 import {
   I18NextService,

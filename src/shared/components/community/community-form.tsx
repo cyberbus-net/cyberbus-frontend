@@ -7,7 +7,7 @@ import {
   CreateCommunity,
   EditCommunity,
   Language,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 import { Icon, Spinner } from "../common/icon";
 import { ImageUploadForm } from "../common/image-upload-form";

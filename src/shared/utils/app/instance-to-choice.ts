@@ -1,5 +1,5 @@
 import { Choice } from "@utils/types";
-import { Instance } from "lemmy-js-client";
+import { Instance } from "@cyberbus-net/cyberbus-js-client";
 
 export default function instanceToChoice({ id, domain }: Instance): Choice {
   return {

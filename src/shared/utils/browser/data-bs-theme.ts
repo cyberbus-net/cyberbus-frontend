@@ -1,4 +1,4 @@
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import isDark from "./is-dark";
 
 export default function dataBsTheme(siteResOrTheme?: GetSiteResponse | string) {

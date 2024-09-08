@@ -1,7 +1,7 @@
 import { I18NextService } from "../../services";
 import { Component } from "inferno";
 
-import { PersonView } from "lemmy-js-client";
+import { PersonView } from "@cyberbus-net/cyberbus-js-client";
 
 import { numToSI } from "@utils/helpers";
 

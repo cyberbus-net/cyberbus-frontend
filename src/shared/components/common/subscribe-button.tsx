@@ -2,7 +2,7 @@ import { getQueryString, validInstanceTLD } from "@utils/helpers";
 import classNames from "classnames";
 import { NoOptionI18nKeys } from "i18next";
 import { Component, MouseEventHandler, createRef, linkEvent } from "inferno";
-import { CommunityView } from "lemmy-js-client";
+import { CommunityView } from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService, UserService } from "../../services";
 import { VERSION } from "../../version";
 import { Icon, Spinner } from "./icon";

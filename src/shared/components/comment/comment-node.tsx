@@ -32,7 +32,7 @@ import {
   RemoveComment,
   SaveComment,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { commentTreeMaxDepth } from "../../config";
 import {
   CommentNodeI,

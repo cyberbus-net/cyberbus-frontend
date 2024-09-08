@@ -7,7 +7,7 @@ import {
   EditPrivateMessage,
   Person,
   PrivateMessageView,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { relTags } from "../../config";
 import { I18NextService } from "../../services";
 import { Icon } from "../common/icon";

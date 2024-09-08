@@ -1,7 +1,7 @@
 import { randomStr } from "@utils/helpers";
 import classNames from "classnames";
 import { Component, linkEvent } from "inferno";
-import { ListingType } from "lemmy-js-client";
+import { ListingType } from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService, UserService } from "../../services";
 
 interface ListingTypeSelectProps {

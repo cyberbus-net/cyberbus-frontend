@@ -1,5 +1,8 @@
 import { Component, InfernoNode, linkEvent } from "inferno";
-import { ListMediaResponse, LocalImage } from "lemmy-js-client";
+import {
+  ListMediaResponse,
+  LocalImage,
+} from "@cyberbus-net/cyberbus-js-client";
 import { HttpService, I18NextService } from "../../services";
 import { PersonListing } from "../person/person-listing";
 import { tippyMixin } from "../mixins/tippy-mixin";

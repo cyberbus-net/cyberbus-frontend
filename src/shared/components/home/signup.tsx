@@ -10,7 +10,7 @@ import {
   GetSiteResponse,
   LoginResponse,
   SiteView,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { joinCyberbusUrl } from "../../config";
 import { mdToHtml } from "../../markdown";
 import { I18NextService, UserService } from "../../services";
@@ -40,6 +40,7 @@ interface State {
     captcha_answer?: string;
     honeypot?: string;
     answer?: string;
+    invite_code?: string;
   };
   captchaPlaying: boolean;
   siteRes: GetSiteResponse;
@@ -220,6 +221,31 @@ export class Signup extends Component<
             label={I18NextService.i18n.t("verify_password")}
             isNew
           />
+        </div>
+
+        <div className="mb-3 row">
+          <label
+            className="col-sm-2 col-form-label"
+            htmlFor="register-invite-code"
+          >
+            {I18NextService.i18n.t("invite_code")}
+          </label>
+          <div className="col-sm-10">
+            <input
+              type="text"
+              id="register-invite-code"
+              className="form-control"
+              placeholder={
+                siteView.local_site.require_invite_code
+                  ? I18NextService.i18n.t("required")
+                  : I18NextService.i18n.t("optional")
+              }
+              value={this.state.form.invite_code}
+              onInput={linkEvent(this, this.handleRegisterInviteCodeChange)}
+              required={siteView.local_site.require_invite_code}
+              minLength={6}
+            />
+          </div>
         </div>
 
         {siteView.local_site.registration_mode === "RequireApplication" && (
@@ -443,6 +469,11 @@ export class Signup extends Component<
 
   handleRegisterPasswordVerifyChange(i: Signup, event: any) {
     i.state.form.password_verify = event.target.value;
+    i.setState(i.state);
+  }
+
+  handleRegisterInviteCodeChange(i: Signup, event: any) {
+    i.state.form.invite_code = event.target.value;
     i.setState(i.state);
   }
 

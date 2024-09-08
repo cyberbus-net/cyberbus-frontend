@@ -26,7 +26,7 @@ import {
   RemoveComment,
   SaveComment,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { CommentNodeI, CommentViewType } from "../../interfaces";
 import { CommentNode } from "./comment-node";
 import { RequestState } from "../../services/HttpService";

@@ -15,7 +15,7 @@ import {
   PersonView,
   PurgeCommunity,
   RemoveCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { mdToHtml } from "../../markdown";
 import { I18NextService, UserService } from "../../services";
 import { Badges } from "../common/badges";

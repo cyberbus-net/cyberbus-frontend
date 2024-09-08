@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { NoOptionI18nKeys } from "i18next";
 import { Component, linkEvent } from "inferno";
 import { Prompt } from "inferno-router";
-import { Language } from "lemmy-js-client";
+import { Language } from "@cyberbus-net/cyberbus-js-client";
 import {
   concurrentImageUpload,
   markdownFieldCharacterLimit,

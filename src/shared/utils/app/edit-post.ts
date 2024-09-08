@@ -1,5 +1,5 @@
 import { editListImmutable } from "@utils/helpers";
-import { PostView } from "lemmy-js-client";
+import { PostView } from "@cyberbus-net/cyberbus-js-client";
 
 export default function editPost(
   data: PostView,

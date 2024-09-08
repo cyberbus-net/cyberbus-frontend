@@ -1,6 +1,6 @@
 import { randomStr } from "@utils/helpers";
 import { Component, linkEvent } from "inferno";
-import { CommentSortType } from "lemmy-js-client";
+import { CommentSortType } from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 
 interface CommentSortSelectProps {

@@ -13,7 +13,7 @@ import {
   ListCommentLikesResponse,
   ListPostLikesResponse,
   VoteView,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import {
   EMPTY_REQUEST,
   HttpService,

@@ -6,7 +6,7 @@ import {
   GetSiteResponse,
   LoginResponse,
   Register,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService, UserService } from "../../services";
 import {
   EMPTY_REQUEST,

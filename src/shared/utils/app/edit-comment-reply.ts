@@ -1,5 +1,5 @@
 import { editListImmutable } from "@utils/helpers";
-import { CommentReplyView } from "lemmy-js-client";
+import { CommentReplyView } from "@cyberbus-net/cyberbus-js-client";
 
 export default function editCommentReply(
   data: CommentReplyView,

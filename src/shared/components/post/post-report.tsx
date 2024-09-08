@@ -5,7 +5,7 @@ import {
   PostReportView,
   PostView,
   ResolvePostReport,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 import { Icon, Spinner } from "../common/icon";
 import { PersonListing } from "../person/person-listing";

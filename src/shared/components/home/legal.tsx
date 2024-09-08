@@ -1,6 +1,6 @@
 import { setIsoData } from "@utils/app";
 import { Component } from "inferno";
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { mdToHtml } from "../../markdown";
 import { I18NextService } from "../../services";
 import { HtmlTags } from "../common/html-tags";

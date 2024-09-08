@@ -1,5 +1,5 @@
 import { getCommentParentId, getDepthFromComment } from "@utils/app";
-import { CommentView } from "lemmy-js-client";
+import { CommentView } from "@cyberbus-net/cyberbus-js-client";
 import { CommentNodeI } from "../../interfaces";
 
 export default function buildCommentsTree(

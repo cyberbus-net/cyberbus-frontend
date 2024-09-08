@@ -6,7 +6,7 @@ import {
   DeleteCustomEmoji,
   EditCustomEmoji,
   GetSiteResponse,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { customEmojisLookup } from "../../markdown";
 import { HttpService, I18NextService } from "../../services";
 import { pictrsDeleteToast, toast } from "../../toast";

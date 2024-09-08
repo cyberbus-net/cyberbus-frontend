@@ -28,14 +28,14 @@ import {
   GetSiteResponse,
   Instance,
   InstanceBlockView,
-  LemmyHttp,
+  CyberbusHttp,
   ListingType,
   LoginResponse,
   PersonBlockView,
   SortType,
   SuccessResponse,
   UpdateTotpResponse,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { emDash, fetchLimit } from "../../config";
 import { FirstLoadService, UserService } from "../../services";
 import {
@@ -380,7 +380,7 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
     headers,
   }: InitialFetchRequest): Promise<SettingsData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     return {
       instancesRes: await client.getFederatedInstances(),

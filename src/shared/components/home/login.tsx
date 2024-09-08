@@ -3,7 +3,10 @@ import { isBrowser, refreshTheme } from "@utils/browser";
 import { getQueryParams } from "@utils/helpers";
 import { Component, linkEvent } from "inferno";
 import { RouteComponentProps } from "inferno-router/dist/Route";
-import { GetSiteResponse, LoginResponse } from "lemmy-js-client";
+import {
+  GetSiteResponse,
+  LoginResponse,
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService, UserService } from "../../services";
 import {
   EMPTY_REQUEST,

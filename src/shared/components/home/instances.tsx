@@ -5,8 +5,8 @@ import {
   GetFederatedInstancesResponse,
   GetSiteResponse,
   Instance,
-  LemmyHttp,
-} from "lemmy-js-client";
+  CyberbusHttp,
+} from "@cyberbus-net/cyberbus-js-client";
 import classNames from "classnames";
 import { relTags } from "../../config";
 import { InitialFetchRequest } from "../../interfaces";
@@ -92,7 +92,7 @@ export class Instances extends Component<InstancesRouteProps, InstancesState> {
     headers,
   }: InitialFetchRequest): Promise<InstancesData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     return {
       federatedInstancesResponse: await client.getFederatedInstances(),

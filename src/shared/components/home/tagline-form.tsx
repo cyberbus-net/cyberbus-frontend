@@ -1,6 +1,6 @@
 import { capitalizeFirstLetter } from "@utils/helpers";
 import { Component, InfernoMouseEvent, linkEvent } from "inferno";
-import { EditSite, Tagline } from "lemmy-js-client";
+import { EditSite, Tagline } from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 import { Icon, Spinner } from "../common/icon";
 import { MarkdownTextArea } from "../common/markdown-textarea";

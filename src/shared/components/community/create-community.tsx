@@ -3,7 +3,7 @@ import { Component } from "inferno";
 import {
   CreateCommunity as CreateCommunityI,
   GetSiteResponse,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { HttpService, I18NextService, UserService } from "../../services";
 import { HtmlTags } from "../common/html-tags";
 import { CommunityForm } from "./community-form";

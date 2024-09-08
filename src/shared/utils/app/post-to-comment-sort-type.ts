@@ -1,4 +1,4 @@
-import { CommentSortType, SortType } from "lemmy-js-client";
+import { CommentSortType, SortType } from "@cyberbus-net/cyberbus-js-client";
 
 export default function postToCommentSortType(sort: SortType): CommentSortType {
   switch (sort) {

@@ -5,7 +5,10 @@ import type { Request, Response } from "express";
 import { StaticRouter, matchPath } from "inferno-router";
 import { Match } from "inferno-router/dist/Route";
 import { renderToString } from "inferno-server";
-import { GetSiteResponse, LemmyHttp } from "lemmy-js-client";
+import {
+  GetSiteResponse,
+  CyberbusHttp,
+} from "@cyberbus-net/cyberbus-js-client";
 import App from "../../shared/components/app/app";
 import {
   InitialFetchRequest,
@@ -53,7 +56,7 @@ export default async (req: Request, res: Response) => {
     const auth = getJwtCookie(req.headers);
 
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
 
     const { path, url } = req;

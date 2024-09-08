@@ -1,5 +1,5 @@
 import { editListImmutable } from "@utils/helpers";
-import { PrivateMessageReportView } from "lemmy-js-client";
+import { PrivateMessageReportView } from "@cyberbus-net/cyberbus-js-client";
 
 export default function editPrivateMessageReport(
   data: PrivateMessageReportView,

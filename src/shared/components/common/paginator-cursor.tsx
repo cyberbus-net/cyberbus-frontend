@@ -1,6 +1,6 @@
 import { Component, linkEvent } from "inferno";
 import { I18NextService } from "../../services";
-import { PaginationCursor } from "lemmy-js-client";
+import { PaginationCursor } from "@cyberbus-net/cyberbus-js-client";
 
 interface PaginatorCursorProps {
   nextPage?: PaginationCursor;

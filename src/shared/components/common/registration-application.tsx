@@ -3,7 +3,7 @@ import { T } from "inferno-i18next-dess";
 import {
   ApproveRegistrationApplication,
   RegistrationApplicationView,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { mdToHtml } from "../../markdown";
 import { I18NextService } from "../../services";
 import { PersonListing } from "../person/person-listing";

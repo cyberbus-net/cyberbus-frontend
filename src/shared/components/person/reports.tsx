@@ -17,7 +17,7 @@ import {
   CommentReportResponse,
   CommentReportView,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ListCommentReports,
   ListCommentReportsResponse,
   ListPostReports,
@@ -31,7 +31,7 @@ import {
   ResolveCommentReport,
   ResolvePostReport,
   ResolvePrivateMessageReport,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../../config";
 import { InitialFetchRequest } from "../../interfaces";
 import {
@@ -592,7 +592,7 @@ export class Reports extends Component<ReportsRouteProps, ReportsState> {
     site,
   }: InitialFetchRequest): Promise<ReportsData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const unresolved_only = true;
     const page = 1;

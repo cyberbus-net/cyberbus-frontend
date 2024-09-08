@@ -6,8 +6,8 @@ import {
   GetPersonDetails,
   GetPersonDetailsResponse,
   GetSiteResponse,
-  LemmyHttp,
-} from "lemmy-js-client";
+  CyberbusHttp,
+} from "@cyberbus-net/cyberbus-js-client";
 import { InitialFetchRequest } from "../../interfaces";
 import { FirstLoadService, I18NextService } from "../../services";
 import {
@@ -91,7 +91,7 @@ export class CreatePrivateMessage extends Component<
     match,
   }: InitialFetchRequest<CreatePrivateMessagePathProps>): Promise<CreatePrivateMessageData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const person_id = getRecipientIdFromProps({ match });
 

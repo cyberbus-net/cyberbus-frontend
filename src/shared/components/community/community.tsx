@@ -65,7 +65,7 @@ import {
   GetPostsResponse,
   GetSiteResponse,
   HidePost,
-  LemmyHttp,
+  CyberbusHttp,
   LockPost,
   MarkCommentReplyAsRead,
   MarkPersonMentionAsRead,
@@ -83,7 +83,7 @@ import {
   SortType,
   SuccessResponse,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../../config";
 import {
   CommentViewType,
@@ -311,7 +311,7 @@ export class Community extends Component<CommunityRouteProps, State> {
     CommunityProps
   >): Promise<CommunityData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
 
     const communityForm: GetCommunity = {

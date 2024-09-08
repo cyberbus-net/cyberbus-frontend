@@ -7,7 +7,7 @@ import {
   CreatePostLike,
   LocalUserVoteDisplayMode,
   PostAggregates,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { VoteContentType, VoteType } from "../../interfaces";
 import { I18NextService, UserService } from "../../services";
 import { Icon, Spinner } from "../common/icon";

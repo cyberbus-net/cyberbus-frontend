@@ -1,4 +1,4 @@
-import { Comment, CommentAggregates } from "lemmy-js-client";
+import { Comment, CommentAggregates } from "@cyberbus-net/cyberbus-js-client";
 
 export default interface WithComment {
   comment: Comment;

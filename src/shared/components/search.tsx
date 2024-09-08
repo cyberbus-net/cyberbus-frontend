@@ -35,7 +35,7 @@ import {
   GetPersonDetails,
   GetPersonDetailsResponse,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ListCommunitiesResponse,
   ListingType,
   PersonView,
@@ -46,7 +46,7 @@ import {
   SearchResponse,
   SearchType,
   SortType,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../config";
 import { CommentViewType, InitialFetchRequest } from "../interfaces";
 import { FirstLoadService, I18NextService } from "../services";
@@ -475,7 +475,7 @@ export class Search extends Component<SearchRouteProps, SearchState> {
     },
   }: InitialFetchRequest<SearchPathProps, SearchProps>): Promise<SearchData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     let communityResponse: RequestState<GetCommunityResponse> = EMPTY_REQUEST;
     if (community_id) {

@@ -1,4 +1,4 @@
-import { PostView } from "lemmy-js-client";
+import { PostView } from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 export default function nsfwCheck(

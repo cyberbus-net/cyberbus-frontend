@@ -2,7 +2,7 @@ import { showAvatars } from "@utils/app";
 import { hostname } from "@utils/helpers";
 import { Component } from "inferno";
 import { Link } from "inferno-router";
-import { Community } from "lemmy-js-client";
+import { Community } from "@cyberbus-net/cyberbus-js-client";
 import { relTags } from "../../config";
 import { PictrsImage } from "../common/pictrs-image";
 

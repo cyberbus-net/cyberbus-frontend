@@ -1,4 +1,4 @@
-import { Language } from "lemmy-js-client";
+import { Language } from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 /**

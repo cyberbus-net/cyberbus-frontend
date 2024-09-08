@@ -1,4 +1,7 @@
-import { CommunityModeratorView, PersonView } from "lemmy-js-client";
+import {
+  CommunityModeratorView,
+  PersonView,
+} from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 export default function canMod(

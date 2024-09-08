@@ -7,7 +7,7 @@ import {
   CreateComment,
   EditComment,
   Language,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { CommentNodeI } from "../../interfaces";
 import { I18NextService, UserService } from "../../services";
 import { Icon } from "../common/icon";

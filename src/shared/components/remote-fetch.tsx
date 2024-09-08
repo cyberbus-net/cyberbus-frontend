@@ -5,9 +5,9 @@ import { RouteDataResponse } from "@utils/types";
 import { Component, linkEvent } from "inferno";
 import {
   CommunityView,
-  LemmyHttp,
+  CyberbusHttp,
   ResolveObjectResponse,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { InitialFetchRequest } from "../interfaces";
 import { FirstLoadService, HttpService, I18NextService } from "../services";
 import {
@@ -243,7 +243,7 @@ export class RemoteFetch extends Component<
     RemoteFetchProps
   >): Promise<RemoteFetchData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const data: RemoteFetchData = { resolveObjectRes: EMPTY_REQUEST };
 

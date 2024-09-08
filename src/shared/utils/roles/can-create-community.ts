@@ -1,5 +1,5 @@
 import { amAdmin } from "@utils/roles";
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 export default function canCreateCommunity(

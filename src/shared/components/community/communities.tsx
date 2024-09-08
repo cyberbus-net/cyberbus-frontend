@@ -12,12 +12,12 @@ import { Component, linkEvent } from "inferno";
 import {
   CommunityResponse,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ListCommunities,
   ListCommunitiesResponse,
   ListingType,
   SortType,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { InitialFetchRequest } from "../../interfaces";
 import { FirstLoadService, I18NextService } from "../../services";
 import {
@@ -334,7 +334,7 @@ export class Communities extends Component<
     CommunitiesProps
   >): Promise<CommunitiesData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const listCommunitiesForm: ListCommunities = {
       type_: listingType,

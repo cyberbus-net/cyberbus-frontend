@@ -29,7 +29,7 @@ import {
   GetModlogResponse,
   GetPersonDetails,
   GetPersonDetailsResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ModAddCommunityView,
   ModAddView,
   ModBanFromCommunityView,
@@ -42,7 +42,7 @@ import {
   ModTransferCommunityView,
   ModlogActionType,
   Person,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../config";
 import { InitialFetchRequest } from "../interfaces";
 import { FirstLoadService, I18NextService } from "../services";
@@ -1098,7 +1098,7 @@ export class Modlog extends Component<ModlogRouteProps, ModlogState> {
     site,
   }: InitialFetchRequest<ModlogPathProps, ModlogProps>): Promise<ModlogData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const communityId = getIdFromString(urlCommunityId);
     const modId = !site.site_view.local_site.hide_modlog_mod_names

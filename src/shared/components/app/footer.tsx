@@ -1,5 +1,5 @@
 import { Component } from "inferno";
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { statusUrl, frontendRepo, backendRepo } from "../../config";
 import { I18NextService } from "../../services";
 import { VERSION } from "../../version";

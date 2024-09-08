@@ -1,4 +1,4 @@
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { setupEmojiDataModel, setupMarkdown } from "../../markdown";
 import { UserService } from "../../services";
 

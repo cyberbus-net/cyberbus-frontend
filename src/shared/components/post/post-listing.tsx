@@ -33,7 +33,7 @@ import {
   RemovePost,
   SavePost,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { relTags, torrentHelpUrl } from "../../config";
 import { IsoDataOptionalSite, VoteContentType } from "../../interfaces";
 import { mdToHtml, mdToHtmlInline } from "../../markdown";

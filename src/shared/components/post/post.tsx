@@ -65,7 +65,7 @@ import {
   GetPostResponse,
   GetSiteResponse,
   HidePost,
-  LemmyHttp,
+  CyberbusHttp,
   LockPost,
   MarkCommentReplyAsRead,
   PostResponse,
@@ -80,7 +80,7 @@ import {
   SavePost,
   SuccessResponse,
   TransferCommunity,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { commentTreeMaxDepth } from "../../config";
 import {
   CommentNodeI,
@@ -357,7 +357,7 @@ export class Post extends Component<PostRouteProps, PostState> {
     query: { sort },
   }: InitialFetchRequest<PostPathProps, PostProps>): Promise<PostData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     const postId = getIdFromProps({ match });
     const commentId = getCommentIdFromProps({ match });

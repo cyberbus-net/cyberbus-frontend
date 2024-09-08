@@ -12,10 +12,10 @@ import {
   EditSite,
   GetFederatedInstancesResponse,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ListMediaResponse,
   PersonView,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { InitialFetchRequest } from "../../interfaces";
 import { removeFromEmojiDataModel, updateEmojiDataModel } from "../../markdown";
 import { FirstLoadService, I18NextService } from "../../services";
@@ -130,7 +130,7 @@ export class AdminSettings extends Component<
     headers,
   }: InitialFetchRequest): Promise<AdminSettingsData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     return {
       bannedRes: await client.getBannedPersons(),

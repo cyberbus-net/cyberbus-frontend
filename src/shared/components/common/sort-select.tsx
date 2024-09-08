@@ -1,6 +1,6 @@
 import { randomStr } from "@utils/helpers";
 import { Component, linkEvent } from "inferno";
-import { SortType } from "lemmy-js-client";
+import { SortType } from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 
 interface SortSelectProps {

@@ -1,4 +1,7 @@
-import { GetSiteResponse, LocalUserVoteDisplayMode } from "lemmy-js-client";
+import {
+  GetSiteResponse,
+  LocalUserVoteDisplayMode,
+} from "@cyberbus-net/cyberbus-js-client";
 
 export default function voteDisplayMode(
   siteRes: GetSiteResponse,

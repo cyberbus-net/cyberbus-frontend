@@ -4,7 +4,7 @@ import {
   CommentAggregates,
   LocalUserVoteDisplayMode,
   PostAggregates,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 import { tippyMixin } from "../mixins/tippy-mixin";
 import { Icon } from "./icon";

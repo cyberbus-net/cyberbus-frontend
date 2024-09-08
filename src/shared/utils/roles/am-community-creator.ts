@@ -1,4 +1,4 @@
-import { CommunityModeratorView } from "lemmy-js-client";
+import { CommunityModeratorView } from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 export default function amCommunityCreator(

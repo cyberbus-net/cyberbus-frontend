@@ -1,7 +1,7 @@
 import { capitalizeFirstLetter } from "@utils/helpers";
 import classNames from "classnames";
 import { Component, FormEventHandler, linkEvent } from "inferno";
-import { EditSite, LocalSiteRateLimit } from "lemmy-js-client";
+import { EditSite, LocalSiteRateLimit } from "@cyberbus-net/cyberbus-js-client";
 import { I18NextService } from "../../services";
 import { Icon, Spinner } from "../common/icon";
 import Tabs from "../common/tabs";

@@ -1,4 +1,4 @@
-import { CommunityId } from "lemmy-js-client";
+import { CommunityId } from "@cyberbus-net/cyberbus-js-client";
 import { UserService } from "../../services";
 
 export default function amMod(

@@ -1,7 +1,7 @@
 import { setIsoData } from "@utils/app";
 import { capitalizeFirstLetter, validEmail } from "@utils/helpers";
 import { Component, linkEvent } from "inferno";
-import { GetSiteResponse } from "lemmy-js-client";
+import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { HttpService, I18NextService } from "../../services";
 import { toast } from "../../toast";
 import { HtmlTags } from "../common/html-tags";

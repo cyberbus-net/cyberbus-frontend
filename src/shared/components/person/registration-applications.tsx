@@ -7,10 +7,10 @@ import { Component, linkEvent } from "inferno";
 import {
   ApproveRegistrationApplication,
   GetSiteResponse,
-  LemmyHttp,
+  CyberbusHttp,
   ListRegistrationApplicationsResponse,
   RegistrationApplicationView,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { fetchLimit } from "../../config";
 import { InitialFetchRequest } from "../../interfaces";
 import { FirstLoadService, I18NextService, UserService } from "../../services";
@@ -255,7 +255,7 @@ export class RegistrationApplications extends Component<
     headers,
   }: InitialFetchRequest): Promise<RegistrationApplicationsData> {
     const client = wrapClient(
-      new LemmyHttp(getHttpBaseInternal(), { headers }),
+      new CyberbusHttp(getHttpBaseInternal(), { headers }),
     );
     return {
       listRegistrationApplicationsResponse: headers["Authorization"]

@@ -1,6 +1,6 @@
 import { getHttpBaseInternal } from "@utils/env";
 import type { Request, Response } from "express";
-import { LemmyHttp } from "lemmy-js-client";
+import { CyberbusHttp } from "@cyberbus-net/cyberbus-js-client";
 import { wrapClient } from "../../shared/services/HttpService";
 import generateManifestJson from "../utils/generate-manifest-json";
 
@@ -9,7 +9,7 @@ let manifest: Awaited<ReturnType<typeof generateManifestJson>> | undefined =
 
 export default async (_req: Request, res: Response) => {
   if (!manifest) {
-    const client = wrapClient(new LemmyHttp(getHttpBaseInternal()));
+    const client = wrapClient(new CyberbusHttp(getHttpBaseInternal()));
     const site = await client.getSite();
 
     if (site.state === "success") {

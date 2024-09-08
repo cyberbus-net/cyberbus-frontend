@@ -7,7 +7,7 @@ import {
   MarkPrivateMessageAsRead,
   Person,
   PrivateMessageView,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import { mdToHtml } from "../../markdown";
 import { I18NextService, UserService } from "../../services";
 import { Icon, Spinner } from "../common/icon";

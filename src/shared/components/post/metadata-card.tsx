@@ -1,5 +1,5 @@
 import { Component } from "inferno";
-import { Post } from "lemmy-js-client";
+import { Post } from "@cyberbus-net/cyberbus-js-client";
 import * as sanitizeHtml from "sanitize-html";
 import { relTags } from "../../config";
 import { Icon } from "../common/icon";

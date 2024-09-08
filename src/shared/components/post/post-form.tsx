@@ -24,7 +24,7 @@ import {
   LocalUserVoteDisplayMode,
   PostView,
   SearchResponse,
-} from "lemmy-js-client";
+} from "@cyberbus-net/cyberbus-js-client";
 import {
   archiveTodayUrl,
   ghostArchiveUrl,
