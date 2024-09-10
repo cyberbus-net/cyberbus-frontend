@@ -396,6 +396,7 @@ export class Signup extends Component<
       password,
       password_verify,
       username,
+      invite_code,
     } = i.state.form;
     if (username && password && password_verify) {
       i.setState({ registerRes: LOADING_REQUEST });
@@ -410,6 +411,7 @@ export class Signup extends Component<
         captcha_answer,
         honeypot,
         answer,
+        invite_code,
       });
       switch (registerRes.state) {
         case "failed": {

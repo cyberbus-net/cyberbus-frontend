@@ -1,7 +1,7 @@
 {
   "name": "cyberbus-frontend",
   "description": "Frontend for cyberbus",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "karminski <code.karminski@outlook.com>",
   "license": "AGPL-3.0",
   "scripts": {
@@ -20,7 +20,7 @@
     "translations:init": "git submodule init && pnpm translations:update",
     "translations:update": "git submodule update --remote --recursive"
   },
-  "repository": "https://github.com/LemmyNet/lemmy-ui",
+  "repository": "https://github.com/cyberbus-net/cyberbus-frontend",
   "engines": {
     "node": ">=8.9.0"
   },
@@ -32,7 +32,7 @@
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/runtime": "^7.25.4",
-    "@cyberbus-net/cyberbus-js-client": "0.1.1",
+    "@cyberbus-net/cyberbus-js-client": "0.1.2",
     "@emoji-mart/data": "^1.2.1",
     "autosize": "^6.0.1",
     "babel-loader": "^9.1.3",
