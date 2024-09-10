@@ -27,6 +27,7 @@ interface State {
     email?: string;
     password?: string;
     password_verify?: string;
+    invite_code?: string;
     show_nsfw: boolean;
     captcha_uuid?: string;
     captcha_answer?: string;
@@ -99,6 +100,7 @@ export class Setup extends Component<
   }
 
   registerUser() {
+    const siteView = this.state.siteRes.site_view;
     return (
       <form onSubmit={linkEvent(this, this.handleRegisterSubmit)}>
         <h2 className="h5 mb-3">{I18NextService.i18n.t("setup_admin")}</h2>
@@ -155,6 +157,31 @@ export class Setup extends Component<
           />
         </div>
         <div className="mb-3 row">
+          <label
+            className="col-sm-2 col-form-label"
+            htmlFor="register-invite-code"
+          >
+            {I18NextService.i18n.t("invite_code")}
+          </label>
+          <div className="col-sm-10">
+            <input
+              type="text"
+              id="register-invite-code"
+              className="form-control"
+              placeholder={
+                siteView.local_site.require_invite_code
+                  ? I18NextService.i18n.t("required")
+                  : I18NextService.i18n.t("optional")
+              }
+              value={this.state.form.invite_code}
+              onInput={linkEvent(this, this.handleRegisterInviteCodeChange)}
+              required={siteView.local_site.require_invite_code}
+              minLength={6}
+            />
+          </div>
+        </div>
+
+        <div className="mb-3 row">
           <div className="col-sm-10">
             <button type="submit" className="btn btn-secondary">
               {this.state.registerRes.state === "loading" ? (
@@ -177,6 +204,7 @@ export class Setup extends Component<
       password_verify,
       password,
       email,
+      invite_code,
       show_nsfw,
       captcha_uuid,
       captcha_answer,
@@ -190,6 +218,7 @@ export class Setup extends Component<
         password,
         password_verify,
         email,
+        invite_code,
         show_nsfw,
         captcha_uuid,
         captcha_answer,
@@ -234,6 +263,11 @@ export class Setup extends Component<
 
   handleRegisterPasswordVerifyChange(i: Setup, event: any) {
     i.state.form.password_verify = event.target.value;
+    i.setState(i.state);
+  }
+
+  handleRegisterInviteCodeChange(i: Setup, event: any) {
+    i.state.form.invite_code = event.target.value;
     i.setState(i.state);
   }
 }
