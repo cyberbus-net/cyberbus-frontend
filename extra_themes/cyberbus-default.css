@@ -11317,3 +11317,37 @@ a.text-neutral-content:visited {
   background-image: linear-gradient(-247.23deg, #6610f2, #4af2c8);
   border: 0px !important;
 }
+
+/* badges */
+.badge-gold {
+  background-color: gold;
+  color: black;
+}
+
+.badge-silver {
+  background-color: silver;
+  color: black;
+}
+
+.badge-bronze {
+  background-color: bronze;
+  color: white;
+}
+
+.badge-default {
+  background-color: gray;
+  color: white;
+}
+
+.badge-icon {
+  display: inline-block;
+  width: 16px;
+  /* Adjust size as needed */
+  height: 16px;
+  margin-right: 4px;
+  /* Space between icon and text */
+}
+
+.badge-text {
+  vertical-align: middle;
+}
