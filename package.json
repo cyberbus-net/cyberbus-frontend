@@ -32,7 +32,7 @@
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/runtime": "^7.25.4",
-    "@cyberbus-net/cyberbus-js-client": "0.1.2",
+    "@cyberbus-net/cyberbus-js-client": "0.1.3",
     "@emoji-mart/data": "^1.2.1",
     "autosize": "^6.0.1",
     "babel-loader": "^9.1.3",

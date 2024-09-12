@@ -30,8 +30,8 @@ importers:
         specifier: ^7.25.4
         version: 7.25.6
       '@cyberbus-net/cyberbus-js-client':
-        specifier: 0.1.2
-        version: 0.1.2(eslint@9.9.1)
+        specifier: 0.1.3
+        version: 0.1.3(eslint@9.9.1)
       '@emoji-mart/data':
         specifier: ^1.2.1
         version: 1.2.1
@@ -951,8 +951,8 @@ packages:
     resolution: {integrity: sha512-zQ1ijeeCXVEh+aNL0RlmkPkG8HUiDcU2pzQQFjtbntgAczRASFzj4H+6+bV+dy1ntKR14I/DypeuRG1uma98iQ==}
     engines: {node: '>=6.9.0'}
 
-  '@cyberbus-net/cyberbus-js-client@0.1.2':
-    resolution: {integrity: sha512-AiUx59IzjFRzg9SX3apf8Vd5gKD47j3FWFihQJo0bXWDzQtMaA8ujwccu58Ftgp4ynSbWwMKuRjhreejdqlA9g==}
+  '@cyberbus-net/cyberbus-js-client@0.1.3':
+    resolution: {integrity: sha512-odcwc+V5OjHjYgmwbkiAQNWHsk3z+accQDSXBXu5S1ezesic1/kO+np47007TZ+PeRwSRveYFUKq4lFEnEU7zA==}
 
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
@@ -5524,7 +5524,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@cyberbus-net/cyberbus-js-client@0.1.2(eslint@9.9.1)':
+  '@cyberbus-net/cyberbus-js-client@0.1.3(eslint@9.9.1)':
     dependencies:
       eslint-config-prettier: 9.1.0(eslint@9.9.1)
       eslint-scope: 8.0.2
