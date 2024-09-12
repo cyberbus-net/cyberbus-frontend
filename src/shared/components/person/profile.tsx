@@ -96,7 +96,7 @@ import { CommunityLink } from "../community/community-link";
 import { PersonDetails } from "./person-details";
 import { PersonListing } from "./person-listing";
 import { Karma } from "./karma";
-import { TorphyCasePanel } from "./torphy-case-panel";
+import { TrophyCasePanel } from "./trophy-case-panel";
 import { Homelab } from "./homelab";
 import { getHttpBaseInternal } from "../../utils/env";
 import { IRoutePropsWithFetch } from "../../routes";
@@ -466,9 +466,8 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
         const personDetailsState = this.state.personDetailsRes.state;
         const personDetailsRes =
           personDetailsState === "success" && this.state.personDetailsRes.data;
-        const torphyCase =
-          UserService.Instance.myUserInfo?.local_user_view.local_user
-            .trophy_case;
+        const trophyCase = personRes.trophy_case;
+        console.log(personRes);
 
         return (
           <div className="row">
@@ -550,7 +549,7 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                   <Karma pv={personRes.person_view} />
                   <Moderates moderates={personRes.moderates} />
                   <Homelab />
-                  <TorphyCasePanel torphyCase={torphyCase} />
+                  <TrophyCasePanel trophyCase={trophyCase} />
                   {this.amCurrentUser && <Follows />}
                 </div>
               </div>
