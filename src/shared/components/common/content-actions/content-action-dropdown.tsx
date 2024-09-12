@@ -161,8 +161,7 @@ export default class ContentActionDropdown extends Component<
     const creatorBannedFromLocal = creator.banned;
     const showToggleAdmin = !creatorBannedFromLocal && creator.local;
     const canAppointCommunityMod =
-      (amMod(community.id) || (amAdmin() && community.local)) &&
-      !creator_banned_from_community;
+      amAdmin() && community.local && !creator_banned_from_community;
 
     const modHistoryUserTranslation = I18NextService.i18n.t(
       "user_moderation_history",
