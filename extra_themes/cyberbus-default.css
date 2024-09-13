@@ -3052,21 +3052,21 @@ fieldset:disabled a.btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #33077c;
-  border-color: #33077c;
+  background-color: #d8486a;
+  border-color: #d8486a;
 }
 
 .btn-danger:hover {
   color: #fff;
-  background-color: #240557;
-  border-color: #1f044b;
+  background-color: #cc3333;
+  border-color: #cc3333;
 }
 
 .btn-danger:focus,
 .btn-danger.focus {
   color: #fff;
-  background-color: #240557;
-  border-color: #1f044b;
+  background-color: #cc3333;
+  border-color: #cc3333;
   box-shadow: 0 0 0 0.2rem rgba(82, 44, 143, 0.5);
 }
 
