@@ -17,6 +17,9 @@ WORKDIR /usr/src/app
 ENV npm_config_target_platform=linux
 ENV npm_config_target_libc=musl
 
+#Copy themes
+COPY extra_themes extra_themes
+
 # Cache deps
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm i
