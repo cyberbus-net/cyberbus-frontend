@@ -117,7 +117,7 @@ export async function createSsrHtml(
     </style>
 
     <!-- Required meta tags -->
-    <meta name="Description" content="Lemmy">
+    <meta name="Description" content="Cyberbus is a professional forum focused on hardware, servers, 10G networks, storage, NAS, hacking, and related topics">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link
@@ -149,6 +149,15 @@ export async function createSsrHtml(
   
       <div id='root'>${root}</div>
       <script defer src='${getStaticDir()}/js/client.js'></script>
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-GGRZVRXJRF"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'G-GGRZVRXJRF');
+      </script>
     </body>
   </html>
   `;
