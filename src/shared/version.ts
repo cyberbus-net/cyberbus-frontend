@@ -1,1 +1,1 @@
-export const VERSION = "unknown version" as string;
+export const VERSION = "0.1.6" as string;
