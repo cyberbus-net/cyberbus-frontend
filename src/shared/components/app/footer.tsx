@@ -21,13 +21,11 @@ export class Footer extends Component<FooterProps, any> {
             <li className="nav-item">
               <span className="nav-link">©cyberbus</span>
             </li>
-            {this.props.site?.version !== VERSION && (
-              <li className="nav-item">
-                <a target="_blank" className="nav-link" href={frontendRepo}>
-                  frontend: {VERSION}
-                </a>
-              </li>
-            )}
+            <li className="nav-item">
+              <a target="_blank" className="nav-link" href={frontendRepo}>
+                frontend: {VERSION}
+              </a>
+            </li>
             <li className="nav-item">
               <a target="_blank" className="nav-link" href={backendRepo}>
                 backend: {this.props.site?.version}
