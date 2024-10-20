@@ -12,6 +12,9 @@ export function toast(text: string, background: ThemeColor = "success") {
       gravity: "bottom",
       position: "left",
       duration: 5000,
+      style: {
+        borderRadius: "0.5rem",
+      },
     }).showToast();
   }
 }
@@ -31,14 +34,17 @@ export function pictrsDeleteToast(filename: string, deleteUrl: string) {
       },
     );
 
-    const backgroundColor = `var(--bs-light)`;
-
     const toast = Toastify({
       text: clickToDeleteText,
-      backgroundColor: backgroundColor,
+      backgroundColor: "#6F42C1",
       gravity: "top",
       position: "right",
       duration: 10000,
+      style: {
+        background: "#6F42C1",
+        borderRadius: "0.5rem",
+        color: "#FFFFFF",
+      },
       onClick: () => {
         if (toast) {
           fetch(deleteUrl).then(res => {
