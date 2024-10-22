@@ -10,7 +10,8 @@ jobs:
       steps:
         - uses: actions/checkout@v4
           with:
-            submodules: 'true'          
+            submodules: 'true'
+            fetch-depth: 0  # 获取所有历史记录和标签
         - name: login to docker hub
           id: docker-hub
           env:
@@ -18,14 +19,20 @@ jobs:
             password: ${{secrets.DOCKERHUB_PASSWORD}}
           run: |
             docker login -u $username -p $password 
+        - name: Get latest tag
+          id: get-latest-tag
+          run: echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
         - name: build the docker image
           id: build-docker-image
           run: |
             ls -la 
-            docker build . -f Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/cyberbus-frontend:latest --build-arg RUST_RELEASE_MODE=release
+            docker build . -f Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/cyberbus-frontend:${{ steps.get-latest-tag.outputs.LATEST_TAG }} --build-arg RUST_RELEASE_MODE=release
         - name: push the docker image
           id: push-docker-image
-          run: docker push ${{secrets.DOCKERHUB_USERNAME}}/cyberbus-frontend:latest
+          run: |
+            docker push ${{secrets.DOCKERHUB_USERNAME}}/cyberbus-frontend:${{ steps.get-latest-tag.outputs.LATEST_TAG }}
+            docker tag ${{secrets.DOCKERHUB_USERNAME}}/cyberbus-frontend:${{ steps.get-latest-tag.outputs.LATEST_TAG }} ${{secrets.DOCKERHUB_USERNAME}}/cyberbus-frontend:latest
+            docker push ${{secrets.DOCKERHUB_USERNAME}}/cyberbus-frontend:latest
     actions-timeline:
       needs: [build]
       runs-on: ubuntu-latest

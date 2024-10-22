@@ -41,6 +41,7 @@ interface State {
     honeypot?: string;
     answer?: string;
     invite_code?: string;
+    agreeTerms: boolean;
   };
   captchaPlaying: boolean;
   siteRes: GetSiteResponse;
@@ -59,6 +60,7 @@ export class Signup extends Component<
     captchaRes: EMPTY_REQUEST,
     form: {
       show_nsfw: !!this.isoData.site_res.site_view.site.content_warning,
+      agreeTerms: false,
     },
     captchaPlaying: false,
     siteRes: this.isoData.site_res,
@@ -300,7 +302,35 @@ export class Signup extends Component<
         />
         <div className="mb-3 row">
           <div className="col-sm-10">
-            <button type="submit" className="btn btn-secondary">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="agreeTerms"
+                checked={this.state.form.agreeTerms}
+                onChange={linkEvent(this, this.handleAgreeTermsChange)}
+                required
+              />
+              <label className="form-check-label" htmlFor="agreeTerms">
+                {I18NextService.i18n.t("i_agree_to_tos")}{" "}
+                <a
+                  href="https://github.com/cyberbus-net/cyberbus-policies/blob/main/user-agreement.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {I18NextService.i18n.t("terms_of_service")}
+                </a>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="mb-3 row">
+          <div className="col-sm-10">
+            <button
+              type="submit"
+              className="btn btn-secondary"
+              disabled={!this.state.form.agreeTerms}
+            >
               {this.state.registerRes.state === "loading" ? (
                 <Spinner />
               ) : (
@@ -529,5 +559,10 @@ export class Signup extends Component<
 
   captchaPngSrc(captcha: CaptchaResponse) {
     return `data:image/png;base64,${captcha.png}`;
+  }
+
+  handleAgreeTermsChange(i: Signup, event: any) {
+    i.state.form.agreeTerms = event.target.checked;
+    i.setState(i.state);
   }
 }

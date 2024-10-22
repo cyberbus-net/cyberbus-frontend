@@ -260,6 +260,13 @@ export class CreatePost extends Component<
         <div className="row">
           <div id="createPostForm" className="col-12 mb-4">
             <h1 className="h4 mb-4">{I18NextService.i18n.t("create_post")}</h1>
+            <p className=" mb-4">
+              {I18NextService.i18n.t("read_before_posting")}:{" "}
+              <a href="https://github.com/cyberbus-net/cyberbus-policies/blob/main/content-policy.md">
+                {I18NextService.i18n.t("content_policy")}
+              </a>
+            </p>
+
             <PostForm
               key={this.state.resetCounter}
               onCreate={this.handlePostCreate}

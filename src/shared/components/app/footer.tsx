@@ -36,6 +36,15 @@ export class Footer extends Component<FooterProps, any> {
                 {I18NextService.i18n.t("status")}
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                target="_blank"
+                className="nav-link"
+                href="https://github.com/cyberbus-net/cyberbus-policies/tree/main"
+              >
+                {I18NextService.i18n.t("terms_of_service")}
+              </a>
+            </li>
           </ul>
         </div>
       </footer>
