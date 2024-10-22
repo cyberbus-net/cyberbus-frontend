@@ -112,7 +112,10 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
             {siteView?.site.icon && showAvatars() && (
               <PictrsImage src={siteView.site.icon} siteIcon={true} />
             )}
-            {siteView?.site.name}
+            <span>
+              {">" + siteView?.site.name}
+              <span className="cursor-blink">_</span>
+            </span>
           </NavLink>
           {person && (
             <ul className="navbar-nav d-flex flex-row ms-auto d-md-none">

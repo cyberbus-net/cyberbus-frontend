@@ -23,17 +23,17 @@ export class Footer extends Component<FooterProps, any> {
             </li>
             <li className="nav-item">
               <a target="_blank" className="nav-link" href={frontendRepo}>
-                frontend: {VERSION}
+                [ frontend: {VERSION}
               </a>
             </li>
             <li className="nav-item">
               <a target="_blank" className="nav-link" href={backendRepo}>
-                backend: {this.props.site?.version}
+                backend: {this.props.site?.version + " ]"}
               </a>
             </li>
             <li className="nav-item">
               <a target="_blank" className="nav-link" href={statusUrl}>
-                {I18NextService.i18n.t("status")}
+                🟢 {I18NextService.i18n.t("status")}
               </a>
             </li>
             <li className="nav-item">
@@ -42,7 +42,7 @@ export class Footer extends Component<FooterProps, any> {
                 className="nav-link"
                 href="https://github.com/cyberbus-net/cyberbus-policies/tree/main"
               >
-                {I18NextService.i18n.t("terms_of_service")}
+                📜 {I18NextService.i18n.t("terms_of_service")}
               </a>
             </li>
           </ul>
