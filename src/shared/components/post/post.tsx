@@ -640,7 +640,7 @@ export class Post extends Component<PostRouteProps, PostState> {
         : randomStr();
 
     return (
-      <>
+      <div className="sort-radios">
         <div
           className="btn-group btn-group-toggle flex-wrap me-3 mb-2"
           role="group"
@@ -744,7 +744,7 @@ export class Post extends Component<PostRouteProps, PostState> {
             {I18NextService.i18n.t("chat")}
           </label>
         </div>
-      </>
+      </div>
     );
   }
 

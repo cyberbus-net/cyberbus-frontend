@@ -824,7 +824,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     } = this.postView;
 
     return (
-      <div className="d-flex align-items-center justify-content-start flex-wrap mt-2">
+      <div className="comments-line d-flex align-items-center justify-content-start flex-wrap mt-2">
         {this.isInteractable && (
           <VoteButtons
             voteContentType={VoteContentType.Post}

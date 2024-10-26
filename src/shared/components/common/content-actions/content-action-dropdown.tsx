@@ -139,6 +139,8 @@ export default class ContentActionDropdown extends Component<
     this.wrapHandler = this.wrapHandler.bind(this);
     this.handleDropdownToggleClick = this.handleDropdownToggleClick.bind(this);
     this.handleShareAsImage = this.handleShareAsImage.bind(this);
+    this.handleShareAsImageWithComment =
+      this.handleShareAsImageWithComment.bind(this);
   }
 
   render() {
@@ -539,7 +541,7 @@ export default class ContentActionDropdown extends Component<
                 <li>
                   <ActionButton
                     label={I18NextService.i18n.t("share_as_image")}
-                    onClick={this.handleShareAsImage}
+                    onClick={this.handleShareAsImageWithoutComment}
                     icon="image"
                     iconClass={classNames({ "text-warning": saved })}
                     noLoading
@@ -914,71 +916,77 @@ export default class ContentActionDropdown extends Component<
     };
   }
 
-  async handleShareAsImage() {
-    const element = document.querySelector(".post-listing-full");
-    if (element) {
-      try {
-        // wait for all images to load
-        await Promise.all(
-          Array.from(element.querySelectorAll("img")).map(img => {
-            if (img.complete) return Promise.resolve();
-            return new Promise((resolve, reject) => {
-              img.onload = resolve;
-              img.onerror = reject;
-            });
-          }),
-        );
+  async handleShareAsImage(includeComments: boolean = false) {
+    if (this.props.type === "post") {
+      const selector = includeComments
+        ? ".post-and-comments"
+        : ".post-listing-full";
+      const element = document.querySelector(selector);
+      const elementsToHide = document.querySelectorAll(
+        ".comment-form, .comments-line, .sort-radios, .comment-bottom-btns",
+      );
 
-        const canvas = await html2canvas(element as HTMLElement, {
-          useCORS: true,
-          allowTaint: true,
-        });
-        const dataUrl = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "shared-post.png";
-        link.click();
-      } catch (error) {
-        console.error("Failed to take screenshot:", error);
-        // you can add an error message to the user here
+      if (element) {
+        try {
+          // 创建一个临时样式表
+          const style = document.createElement("style");
+          style.innerHTML = `
+            .temp-hide {
+              display: none !important;
+            }
+          `;
+          document.head.appendChild(style);
+
+          // 隐藏指定元素
+          elementsToHide.forEach(el => el.classList.add("temp-hide"));
+
+          // 等待所有图片加载完成
+          await Promise.all(
+            Array.from(element.querySelectorAll("img")).map(img => {
+              if (img.complete) return Promise.resolve();
+              return new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = reject;
+              });
+            }),
+          );
+
+          const canvas = await html2canvas(element as HTMLElement, {
+            useCORS: true,
+            allowTaint: true,
+          });
+          const dataUrl = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = dataUrl;
+          link.download = `${this.props.postView.post.name}-shared-post${includeComments ? "-with-comments" : ""}.png`;
+          link.click();
+        } catch (error) {
+          console.error("截图失败:", error);
+          // 这里可以添加用户错误提示
+        } finally {
+          // 恢复隐藏的元素显示
+          elementsToHide.forEach(el => el.classList.remove("temp-hide"));
+          // 移除临时样式表
+          const tempStyle = document.head.querySelector("style:last-child");
+          if (tempStyle) {
+            document.head.removeChild(tempStyle);
+          }
+        }
+      } else {
+        console.error("未找到要截图的元素");
+        // 这里可以添加用户错误提示
       }
     } else {
-      console.error("No element found to take screenshot");
-      // you can add an error message to the user here
+      console.error("无法将评论分享为图片");
+      // 这里可以添加用户错误提示
     }
   }
 
-  async handleShareAsImageWithComment() {
-    const element = document.querySelector(".post-and-comments");
-    if (element) {
-      try {
-        // wait for all images to load
-        await Promise.all(
-          Array.from(element.querySelectorAll("img")).map(img => {
-            if (img.complete) return Promise.resolve();
-            return new Promise((resolve, reject) => {
-              img.onload = resolve;
-              img.onerror = reject;
-            });
-          }),
-        );
+  async handleShareAsImageWithoutComment() {
+    this.handleShareAsImage(false);
+  }
 
-        const canvas = await html2canvas(element as HTMLElement, {
-          useCORS: true,
-          allowTaint: true,
-        });
-        const dataUrl = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "shared-post-with-comment.png";
-        link.click();
-      } catch (error) {
-        console.error("Failed to take screenshot:", error);
-        // you can add an error message to the user here
-      }
-    } else {
-      console.error("No element found to take screenshot");
-      // you can add an error message to the user here
-    }
+  async handleShareAsImageWithComment() {
+    this.handleShareAsImage(true);
   }
 }
