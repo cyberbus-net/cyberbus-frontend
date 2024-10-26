@@ -25,6 +25,7 @@ import ModActionFormModal, {
 import { BanType, CommentNodeView, PurgeType } from "../../../interfaces";
 import { getApubName, hostname } from "@utils/helpers";
 import { tippyMixin } from "../../mixins/tippy-mixin";
+import html2canvas from "html2canvas";
 
 interface ContentActionDropdownPropsBase {
   onSave: () => Promise<void>;
@@ -137,6 +138,7 @@ export default class ContentActionDropdown extends Component<
     this.toggleViewVotesShow = this.toggleViewVotesShow.bind(this);
     this.wrapHandler = this.wrapHandler.bind(this);
     this.handleDropdownToggleClick = this.handleDropdownToggleClick.bind(this);
+    this.handleShareAsImage = this.handleShareAsImage.bind(this);
   }
 
   render() {
@@ -534,6 +536,24 @@ export default class ContentActionDropdown extends Component<
                     )}
                   </>
                 )}
+                <li>
+                  <ActionButton
+                    label={I18NextService.i18n.t("share_as_image")}
+                    onClick={this.handleShareAsImage}
+                    icon="image"
+                    iconClass={classNames({ "text-warning": saved })}
+                    noLoading
+                  />
+                </li>
+                <li>
+                  <ActionButton
+                    label={I18NextService.i18n.t("share_as_image_with_comment")}
+                    onClick={this.handleShareAsImageWithComment}
+                    icon="image"
+                    iconClass={classNames({ "text-warning": saved })}
+                    noLoading
+                  />
+                </li>
               </>
             )}
           </ul>
@@ -892,5 +912,73 @@ export default class ContentActionDropdown extends Component<
       await handler(arg);
       this.hideAllDialogs();
     };
+  }
+
+  async handleShareAsImage() {
+    const element = document.querySelector(".post-listing-full");
+    if (element) {
+      try {
+        // wait for all images to load
+        await Promise.all(
+          Array.from(element.querySelectorAll("img")).map(img => {
+            if (img.complete) return Promise.resolve();
+            return new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+          }),
+        );
+
+        const canvas = await html2canvas(element as HTMLElement, {
+          useCORS: true,
+          allowTaint: true,
+        });
+        const dataUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = "shared-post.png";
+        link.click();
+      } catch (error) {
+        console.error("Failed to take screenshot:", error);
+        // you can add an error message to the user here
+      }
+    } else {
+      console.error("No element found to take screenshot");
+      // you can add an error message to the user here
+    }
+  }
+
+  async handleShareAsImageWithComment() {
+    const element = document.querySelector(".post-and-comments");
+    if (element) {
+      try {
+        // wait for all images to load
+        await Promise.all(
+          Array.from(element.querySelectorAll("img")).map(img => {
+            if (img.complete) return Promise.resolve();
+            return new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+          }),
+        );
+
+        const canvas = await html2canvas(element as HTMLElement, {
+          useCORS: true,
+          allowTaint: true,
+        });
+        const dataUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = "shared-post-with-comment.png";
+        link.click();
+      } catch (error) {
+        console.error("Failed to take screenshot:", error);
+        // you can add an error message to the user here
+      }
+    } else {
+      console.error("No element found to take screenshot");
+      // you can add an error message to the user here
+    }
   }
 }

@@ -537,7 +537,7 @@ export class Post extends Component<PostRouteProps, PostState> {
         const siteRes = this.state.siteRes;
         return (
           <div className="row">
-            <main className="col-12 col-md-8 col-lg-8 mb-3">
+            <main className="post-and-comments col-12 col-md-8 col-lg-8 mb-3">
               <HtmlTags
                 title={this.documentTitle}
                 path={this.context.router.route.match.url}
