@@ -190,13 +190,17 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     const { post } = this.postView;
     const postUrl = `https://cyberbus.net/post/${post.id}`;
     this.setState({ postUrl: postUrl });
-    QRCode.toDataURL(postUrl, { width: 128, margin: 2 }, (err, url) => {
-      if (err) {
-        console.error("Error generating QR code:", err);
-      } else {
-        this.setState({ qrCodeDataUrl: url });
-      }
-    });
+    QRCode.toDataURL(
+      postUrl,
+      { width: 128, margin: 2, color: { dark: "#6f42c1", light: "#ffffff" } },
+      (err, url) => {
+        if (err) {
+          console.error("Error generating QR code:", err);
+        } else {
+          this.setState({ qrCodeDataUrl: url });
+        }
+      },
+    );
   }
 
   render() {
@@ -274,7 +278,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         )}
         {this.commentsLine()}
         {this.duplicatesLine()}
-        {this.qrCodeLine()}
       </div>
     );
   }
@@ -1096,6 +1099,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             onPurgeContent={this.handlePurgePost}
             onAppointAdmin={this.handleAppointAdmin}
             onHidePost={this.handleHidePost}
+            showShareAsImageOptions={this.props.showFull} // 新增这一行
           />
         )}
       </div>

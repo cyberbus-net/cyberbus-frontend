@@ -60,6 +60,7 @@ export type ContentPostProps = {
   onFeatureLocal: () => Promise<void>;
   onFeatureCommunity: () => Promise<void>;
   onHidePost: () => Promise<void>;
+  showShareAsImageOptions?: boolean;
 } & ContentActionDropdownPropsBase;
 
 type ContentActionDropdownProps = ContentCommentProps | ContentPostProps;
@@ -540,24 +541,31 @@ export default class ContentActionDropdown extends Component<
                     )}
                   </>
                 )}
-                <li>
-                  <ActionButton
-                    label={I18NextService.i18n.t("share_as_image")}
-                    onClick={this.handleShareAsImageWithoutComment}
-                    icon="image"
-                    iconClass={classNames({ "text-warning": saved })}
-                    noLoading
-                  />
-                </li>
-                <li>
-                  <ActionButton
-                    label={I18NextService.i18n.t("share_as_image_with_comment")}
-                    onClick={this.handleShareAsImageWithComment}
-                    icon="image"
-                    iconClass={classNames({ "text-warning": saved })}
-                    noLoading
-                  />
-                </li>
+                {this.props.type === "post" &&
+                  this.props.showShareAsImageOptions && (
+                    <>
+                      <li>
+                        <ActionButton
+                          label={I18NextService.i18n.t("share_as_image")}
+                          onClick={this.handleShareAsImageWithoutComment}
+                          icon="image"
+                          iconClass={classNames({ "text-warning": saved })}
+                          noLoading
+                        />
+                      </li>
+                      <li>
+                        <ActionButton
+                          label={I18NextService.i18n.t(
+                            "share_as_image_with_comment",
+                          )}
+                          onClick={this.handleShareAsImageWithComment}
+                          icon="image"
+                          iconClass={classNames({ "text-warning": saved })}
+                          noLoading
+                        />
+                      </li>
+                    </>
+                  )}
               </>
             )}
           </ul>
