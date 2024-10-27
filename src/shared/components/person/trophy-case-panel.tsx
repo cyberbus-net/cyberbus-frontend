@@ -9,8 +9,11 @@ interface TrophyCasePanelProps {
 // badge styles map
 const badgeStyles: { [key: string]: string } = {
   alpha_user: "badge-gold",
+  glorious_group_moderator: "badge-gold",
   closed_beta_user: "badge-silver",
+  x7d12_user: "badge-silver",
   open_beta_user: "badge-bronze",
+  public_open_beta_user: "badge-bronze",
 };
 
 const badgeIcons: { [key: string]: string } = {
