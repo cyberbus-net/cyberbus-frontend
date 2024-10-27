@@ -646,8 +646,6 @@ pre code {
 .container-lg,
 .container-xl {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -4715,7 +4713,6 @@ input[type="button"].btn-block {
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  height: 3.625rem;
   border-bottom: 1px solid var(--interface-gray);
 }
 
@@ -11098,7 +11095,7 @@ a.text-dark:focus {
 /* special config */
 
 .post-listing {
-  padding: 0.25rem 0rem !important;
+  padding: 0.25rem 0.25rem !important;
 }
 
 .post-listing-full {

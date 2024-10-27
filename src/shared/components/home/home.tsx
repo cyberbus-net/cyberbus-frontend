@@ -376,7 +376,6 @@ export class Home extends Component<HomeRouteProps, HomeState> {
                   )}
                 ></div>
               )}
-              <div className="d-block d-md-none">{this.mobileView}</div>
               {this.posts}
             </main>
             <aside className="d-none d-md-block col-md-4 col-lg-4">

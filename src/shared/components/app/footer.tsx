@@ -15,7 +15,7 @@ export class Footer extends Component<FooterProps, any> {
 
   render() {
     return (
-      <footer className="app-footer container-lg navbar navbar-expand-md navbar-light navbar-bg p-3">
+      <footer className="app-footer container-lg navbar navbar-expand-md navbar-light navbar-bg p-3 border-top">
         <div className="navbar-collapse">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
@@ -23,12 +23,12 @@ export class Footer extends Component<FooterProps, any> {
             </li>
             <li className="nav-item">
               <a target="_blank" className="nav-link" href={frontendRepo}>
-                [ frontend: {VERSION}
+                frontend: {VERSION}
               </a>
             </li>
             <li className="nav-item">
               <a target="_blank" className="nav-link" href={backendRepo}>
-                backend: {this.props.site?.version + " ]"}
+                backend: {this.props.site?.version}
               </a>
             </li>
             <li className="nav-item">
