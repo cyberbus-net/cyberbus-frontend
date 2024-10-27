@@ -11099,7 +11099,7 @@ a.text-dark:focus {
 }
 
 .post-listing-full {
-  padding: 0.25rem 1rem !important;
+  padding: 0.25rem 0rem !important;
 }
 
 .post-listing:hover {

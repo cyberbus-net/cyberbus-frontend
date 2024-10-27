@@ -1005,14 +1005,15 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         <div className="d-block d-sm-none">
           <article className="row post-container">
             <div className="col-12">
-              {this.createdLine()}
+              <div className="d-flex post-listing-nav-bar min-h-2rem mb-2 post-title-full">
+                {this.createdLine()}
+                {this.showMoreButtons()}
+              </div>
 
               {/* If it has a thumbnail, do a right aligned thumbnail */}
               {this.mobileThumbnail()}
 
-              {this.commentsLine(true)}
               {this.duplicatesLine()}
-              {this.qrCodeLine()}
             </div>
           </article>
         </div>
