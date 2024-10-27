@@ -467,7 +467,6 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
         const personDetailsRes =
           personDetailsState === "success" && this.state.personDetailsRes.data;
         const trophyCase = personRes.trophy_case;
-        console.log(personRes);
 
         return (
           <div className="row">
@@ -611,8 +610,8 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
     const { sort } = this.props;
     return (
       <div className="row align-items-center mb-3 g-3">
-        <div className="col-auto">{this.viewRadios}</div>
-        <div className="col-auto">
+        <div className="col-auto-without-padding">{this.viewRadios}</div>
+        <div className="col-auto-without-padding">
           <SortSelect
             sort={sort}
             onChange={this.handleSortChange}
