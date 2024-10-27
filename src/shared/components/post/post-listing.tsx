@@ -57,6 +57,7 @@ import { toast } from "../../toast";
 import isMagnetLink, {
   extractMagnetLinkDownloadName,
 } from "@utils/media/is-magnet-link";
+import QRCode from "qrcode";
 
 const postTruncateAtLines = 8;
 
@@ -67,6 +68,9 @@ type PostListingState = {
   showAdvanced: boolean;
   showBody: boolean;
   loading: boolean;
+  showQRCode: boolean;
+  postUrl: string;
+  qrCodeDataUrl: string;
 };
 
 interface PostListingProps {
@@ -118,6 +122,9 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     showAdvanced: false,
     showBody: true,
     loading: false,
+    showQRCode: false,
+    postUrl: "",
+    qrCodeDataUrl: "",
   };
 
   constructor(props: any, context: any) {
@@ -175,6 +182,23 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return this.props.post_view;
   }
 
+  componentDidMount() {
+    this.generateQRCode();
+  }
+
+  generateQRCode() {
+    const { post } = this.postView;
+    const postUrl = `https://cyberbus.net/post/${post.id}`;
+    this.setState({ postUrl: postUrl });
+    QRCode.toDataURL(postUrl, { width: 128, margin: 2 }, (err, url) => {
+      if (err) {
+        console.error("Error generating QR code:", err);
+      } else {
+        this.setState({ qrCodeDataUrl: url });
+      }
+    });
+  }
+
   render() {
     const post = this.postView.post;
 
@@ -207,6 +231,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           )}
           {this.commentsLine()}
           {this.duplicatesLine()}
+          {this.qrCodeLine()}
         </div>
       );
     }
@@ -249,6 +274,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         )}
         {this.commentsLine()}
         {this.duplicatesLine()}
+        {this.qrCodeLine()}
       </div>
     );
   }
@@ -824,41 +850,42 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     } = this.postView;
 
     return (
-      <div className="comments-line d-flex align-items-center justify-content-start flex-wrap mt-2">
-        {this.isInteractable && (
-          <VoteButtons
-            voteContentType={VoteContentType.Post}
-            id={this.postView.post.id}
-            onVote={this.props.onPostVote}
-            enableDownvotes={this.props.enableDownvotes}
-            voteDisplayMode={this.props.voteDisplayMode}
-            counts={this.postView.counts}
-            myVote={this.postView.my_vote}
-          />
-        )}
-        {this.commentsButton}
-        {canShare() && (
-          <button
-            className="btn btn-lg btn-link btn-animate text-muted py-0"
-            onClick={linkEvent(this, this.handleShare)}
-            type="button"
-          >
-            <Icon icon="share" inline />
-          </button>
-        )}
-
-        {mobile && this.isInteractable && (
-          <VoteButtonsCompact
-            voteContentType={VoteContentType.Post}
-            id={id}
-            onVote={onPostVote}
-            counts={counts}
-            enableDownvotes={enableDownvotes}
-            voteDisplayMode={voteDisplayMode}
-            myVote={my_vote}
-          />
-        )}
-      </div>
+      <>
+        <div className="comments-line d-flex align-items-center justify-content-start flex-wrap mt-2">
+          {this.isInteractable && (
+            <VoteButtons
+              voteContentType={VoteContentType.Post}
+              id={this.postView.post.id}
+              onVote={this.props.onPostVote}
+              enableDownvotes={this.props.enableDownvotes}
+              voteDisplayMode={this.props.voteDisplayMode}
+              counts={this.postView.counts}
+              myVote={this.postView.my_vote}
+            />
+          )}
+          {this.commentsButton}
+          {canShare() && (
+            <button
+              className="btn btn-lg btn-link btn-animate text-muted py-0"
+              onClick={linkEvent(this, this.handleShare)}
+              type="button"
+            >
+              <Icon icon="share" inline />
+            </button>
+          )}
+          {mobile && this.isInteractable && (
+            <VoteButtonsCompact
+              voteContentType={VoteContentType.Post}
+              id={id}
+              onVote={onPostVote}
+              counts={counts}
+              enableDownvotes={enableDownvotes}
+              voteDisplayMode={voteDisplayMode}
+              myVote={my_vote}
+            />
+          )}
+        </div>
+      </>
     );
   }
 
@@ -966,6 +993,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
               {this.commentsLine(true)}
               {this.duplicatesLine()}
+              {this.qrCodeLine()}
             </div>
           </article>
         </div>
@@ -1011,6 +1039,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
               {this.commentsLine(true)}
               {this.duplicatesLine()}
+              {this.qrCodeLine()}
             </div>
           </article>
         </div>
@@ -1388,5 +1417,25 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     } = this.props;
 
     return !(viewOnly || banned_from_community);
+  }
+
+  qrCodeLine() {
+    return (
+      <div className="qr-code-line mt-2 d-flex justify-content-center border-top border-light">
+        {this.state.qrCodeDataUrl && (
+          <div className="d-flex flex-column align-items-center">
+            <p className="qr-code-text text-center h6 mt-2">
+              From cyberbus with hack
+            </p>
+            <img
+              src={this.state.qrCodeDataUrl}
+              alt="Post QR Code"
+              className="qr-code-image mb-2 mt-2"
+            />
+            <p className="qr-code-text text-center">{this.state.postUrl}</p>
+          </div>
+        )}
+      </div>
+    );
   }
 }

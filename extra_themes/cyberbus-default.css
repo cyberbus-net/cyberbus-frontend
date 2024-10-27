@@ -11374,3 +11374,17 @@ a.text-neutral-content:visited {
   animation: blink 1s infinite;
   color: #5e37a6;
 }
+
+/* for post QRCode */
+.qr-code-image {
+  width: 128px;
+  height: 128px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.qr-code-text {
+  font-size: 0.75rem;
+  color: #6f42c1;
+}

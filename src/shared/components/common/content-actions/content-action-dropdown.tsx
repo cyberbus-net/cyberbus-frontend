@@ -139,6 +139,8 @@ export default class ContentActionDropdown extends Component<
     this.wrapHandler = this.wrapHandler.bind(this);
     this.handleDropdownToggleClick = this.handleDropdownToggleClick.bind(this);
     this.handleShareAsImage = this.handleShareAsImage.bind(this);
+    this.handleShareAsImageWithoutComment =
+      this.handleShareAsImageWithoutComment.bind(this);
     this.handleShareAsImageWithComment =
       this.handleShareAsImageWithComment.bind(this);
   }
