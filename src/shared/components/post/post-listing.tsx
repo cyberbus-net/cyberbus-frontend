@@ -892,6 +892,26 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     );
   }
 
+  qrCodeLine() {
+    return (
+      <div className="qr-code-line mt-2 d-flex justify-content-center border-top border-light">
+        {this.state.qrCodeDataUrl && (
+          <div className="d-flex flex-column align-items-center">
+            <p className="qr-code-text text-center h6 mt-2">
+              From cyberbus with hack
+            </p>
+            <img
+              src={this.state.qrCodeDataUrl}
+              alt="Post QR Code"
+              className="qr-code-image mb-2 mt-2"
+            />
+            <p className="qr-code-text text-center">{this.state.postUrl}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   public get linkTarget(): string {
     return UserService.Instance.myUserInfo?.local_user_view.local_user
       .open_links_in_new_tab
@@ -956,11 +976,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   mobileThumbnail() {
     return (
       <div className="row">
-        <div className="col-9">{this.postTitleLine()}</div>
-        <div className="col-3 mobile-thumbnail-container">
-          {/* Post thumbnail */}
-          {this.thumbnail()}
-        </div>
+        <div className="">{this.postTitleLine()}</div>
       </div>
     );
   }
@@ -1034,15 +1050,13 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {/* The mobile view*/}
         <div className="d-block d-sm-none">
           <article className="row post-container">
-            <div className="col-12">
+            <div className="">
               {this.createdLineForPostListing()}
 
               {/* If it has a thumbnail, do a right aligned thumbnail */}
               {this.mobileThumbnail()}
 
-              {this.commentsLine(true)}
               {this.duplicatesLine()}
-              {this.qrCodeLine()}
             </div>
           </article>
         </div>
@@ -1421,25 +1435,5 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     } = this.props;
 
     return !(viewOnly || banned_from_community);
-  }
-
-  qrCodeLine() {
-    return (
-      <div className="qr-code-line mt-2 d-flex justify-content-center border-top border-light">
-        {this.state.qrCodeDataUrl && (
-          <div className="d-flex flex-column align-items-center">
-            <p className="qr-code-text text-center h6 mt-2">
-              From cyberbus with hack
-            </p>
-            <img
-              src={this.state.qrCodeDataUrl}
-              alt="Post QR Code"
-              className="qr-code-image mb-2 mt-2"
-            />
-            <p className="qr-code-text text-center">{this.state.postUrl}</p>
-          </div>
-        )}
-      </div>
-    );
   }
 }

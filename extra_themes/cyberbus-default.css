@@ -11098,7 +11098,7 @@ a.text-dark:focus {
 /* special config */
 
 .post-listing {
-  padding: 0.25rem 1rem !important;
+  padding: 0.25rem 0rem !important;
 }
 
 .post-listing-full {
