@@ -968,7 +968,18 @@ export default class ContentActionDropdown extends Component<
           const dataUrl = canvas.toDataURL("image/png");
           const link = document.createElement("a");
           link.href = dataUrl;
-          link.download = `${this.props.postView.post.name}-shared-post${includeComments ? "-with-comments" : ""}.png`;
+
+          // 过滤文件名
+          const filteredName = this.props.postView.post.name
+            .replace(/[<>:"/\\|?*\s]/g, "_") // 替换文件系统不允许的字符和空白字符
+            .split("")
+            .filter(char => char.charCodeAt(0) > 31) // 移除所有控制字符
+            .join("")
+            .replace(/_+/g, "_") // 将多个连续下划线替换为单个下划线
+            .replace(/^\.+/, "") // 移除开头的点号
+            .substring(0, 255); // 限制文件名长度（Windows 的最大长度限制）
+
+          link.download = `${filteredName}-shared-post${includeComments ? "-with-comments" : ""}.png`;
           link.click();
         } catch (error) {
           console.error("截图失败:", error);
