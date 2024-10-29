@@ -1004,7 +1004,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {/* The mobile view*/}
         <div className="d-block d-sm-none">
           <article className="row post-container">
-            <div className="col-12">
+            <div className="col-auto-without-padding">
               <div className="d-flex post-listing-nav-bar min-h-2rem mb-2 post-title-full">
                 {this.createdLine()}
                 {this.showMoreButtons()}

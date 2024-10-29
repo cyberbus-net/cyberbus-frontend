@@ -936,13 +936,32 @@ export default class ContentActionDropdown extends Component<
         ".comment-form, .comments-line, .sort-radios, .comment-bottom-btns",
       );
 
+      // 检查是否为移动设备
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
       if (element) {
         try {
-          // 创建一个临时样式表
+          // 创建临时样式表
           const style = document.createElement("style");
           style.innerHTML = `
             .temp-hide {
               display: none !important;
+            }
+            ${
+              !isMobile
+                ? `
+            /* 临时调整字体大小的样式（仅桌面端） */
+            .post-and-comments, .post-listing-full {
+              font-size: 1.5rem !important;
+              padding: 0.5rem 1rem !important;
+            }
+            .post-title h1 {
+              font-size: 3rem !important;
+              padding: 3rem 0rem !important;
+              color: #6F42C1 !important;
+            }
+            `
+                : ""
             }
           `;
           document.head.appendChild(style);
@@ -971,19 +990,18 @@ export default class ContentActionDropdown extends Component<
 
           // 过滤文件名
           const filteredName = this.props.postView.post.name
-            .replace(/[<>:"/\\|?*\s]/g, "_") // 替换文件系统不允许的字符和空白字符
+            .replace(/[<>:"/\\|?*\s]/g, "_")
             .split("")
-            .filter(char => char.charCodeAt(0) > 31) // 移除所有控制字符
+            .filter(char => char.charCodeAt(0) > 31)
             .join("")
-            .replace(/_+/g, "_") // 将多个连续下划线替换为单个下划线
-            .replace(/^\.+/, "") // 移除开头的点号
-            .substring(0, 255); // 限制文件名长度（Windows 的最大长度限制）
+            .replace(/_+/g, "_")
+            .replace(/^\.+/, "")
+            .substring(0, 255);
 
           link.download = `${filteredName}-shared-post${includeComments ? "-with-comments" : ""}.png`;
           link.click();
         } catch (error) {
           console.error("截图失败:", error);
-          // 这里可以添加用户错误提示
         } finally {
           // 恢复隐藏的元素显示
           elementsToHide.forEach(el => el.classList.remove("temp-hide"));
@@ -995,11 +1013,9 @@ export default class ContentActionDropdown extends Component<
         }
       } else {
         console.error("未找到要截图的元素");
-        // 这里可以添加用户错误提示
       }
     } else {
       console.error("无法将评论分享为图片");
-      // 这里可以添加用户错误提示
     }
   }
 
