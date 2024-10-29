@@ -11394,3 +11394,18 @@ a.text-neutral-content:visited {
   font-size: 0.75rem;
   color: #6f42c1;
 }
+
+/* for content wrap */
+
+/* 针对代码块的特殊处理 */
+.md-div pre {
+  display: block;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.md-div table {
+  display: block;
+  overflow-x: auto;
+  white-space: pre;
+}
