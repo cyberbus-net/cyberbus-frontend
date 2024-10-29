@@ -60,6 +60,7 @@ import isMagnetLink, {
 import QRCode from "qrcode";
 
 const postTruncateAtLines = 8;
+const postTruncateAtLinks = 2;
 
 type PostListingState = {
   showEdit: boolean;
@@ -287,15 +288,21 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     return input.replace(newlineRegex, "...");
   }
 
-  truncateAtNLine(body: string | undefined, nline: number): string {
+  truncateAtNLine(
+    body: string | undefined,
+    nline: number,
+    nlink: number,
+  ): string {
     // Handle undefined or null body
     if (body === undefined || body === null) {
       return "";
     }
+
     const markdownCodeBlockStart = "```";
     const markdownCodeBlockEnd = "```";
 
     let lineCount = 0;
+    let linkCount = 0;
     let inCodeBlock = false;
     let inBlockquote = false;
     let inList = false;
@@ -305,6 +312,22 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
     while (i < body.length) {
       const remainingText = body.substring(i);
+
+      // 简单检查当前行是否包含http链接
+      const nextLineBreak = remainingText.search(/(?:\r\n|\r|\n)/);
+      const currentLine =
+        nextLineBreak === -1
+          ? remainingText
+          : remainingText.substring(0, nextLineBreak);
+
+      if (currentLine.includes("http")) {
+        linkCount++;
+        // 如果链接数量超过限制，在当前行结束时截断
+        if (linkCount >= nlink) {
+          result += currentLine + "\n";
+          return this.replaceTrailingNewline(result);
+        }
+      }
 
       // Find indices for line breaks, code block start, code block end, blockquote start, list start, and table start
       const nextLineBreakIndex = remainingText.search(/(?:\r\n|\r|\n)/);
@@ -326,7 +349,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         nextListStartIndex === -1 &&
         nextTableStartIndex === -1
       ) {
-        // No more significant syntax elements
         result += remainingText;
         break;
       }
@@ -334,7 +356,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
       if (inCodeBlock) {
         // Handle text within code block
         if (nextCodeBlockEndIndex !== -1) {
-          // Found the end of the code block
           result += remainingText.substring(
             0,
             nextCodeBlockEndIndex + markdownCodeBlockEnd.length,
@@ -342,7 +363,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           i += nextCodeBlockEndIndex + markdownCodeBlockEnd.length;
           inCodeBlock = false;
         } else {
-          // Continue within the code block
           result += remainingText;
           break;
         }
@@ -428,9 +448,14 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           inTable = true;
         }
       }
+
+      // 在每次循环结束时检查是否需要因为链接数量而截断
+      if (linkCount > nlink) {
+        return this.replaceTrailingNewline(result);
+      }
     }
 
-    // If less than nline breaks, return the whole body
+    // 如果少于nline行，返回整个内容
     if (lineCount >= nline) {
       return this.replaceTrailingNewline(result);
     }
@@ -442,7 +467,11 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     if (this.props.showFull) {
       body = this.postView.post.body;
     } else {
-      body = this.truncateAtNLine(this.postView.post.body, postTruncateAtLines);
+      body = this.truncateAtNLine(
+        this.postView.post.body,
+        postTruncateAtLines,
+        postTruncateAtLinks,
+      );
     }
     return body ? (
       <article className="my-2">
