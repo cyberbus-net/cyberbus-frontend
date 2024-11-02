@@ -4,11 +4,15 @@ import * as THREE from "three";
 
 interface TrophyDisplayProps {
   trophy: Trophy | null;
+  debug?: boolean;
 }
 
 interface TrophyDisplayState {
   fps: number;
   isAutoRotating: boolean;
+  isExploded: boolean;
+  explosionProgress: number;
+  rotationCenter: THREE.Vector3;
 }
 
 export class TrophyDisplay extends Component<
@@ -22,10 +26,16 @@ export class TrophyDisplay extends Component<
   private badge3D: THREE.Group | null = null;
   private animationFrameId: number | null = null;
   private controls: OrbitControls | null = null;
+  private readonly INITIAL_Z_OFFSET = -0.04;
+  private readonly EXPLODED_Z_OFFSET = -5;
+  private explosionAnimationId: number | null = null;
 
   state = {
     fps: 0,
     isAutoRotating: true,
+    isExploded: false,
+    explosionProgress: 0,
+    rotationCenter: new THREE.Vector3(0, 0, 0),
   };
 
   componentDidMount() {
@@ -44,9 +54,15 @@ export class TrophyDisplay extends Component<
     if (this.controls) {
       this.controls.dispose();
     }
+    if (this.explosionAnimationId) {
+      cancelAnimationFrame(this.explosionAnimationId);
+    }
   }
 
-  async componentDidUpdate(prevProps: TrophyDisplayProps) {
+  async componentDidUpdate(
+    prevProps: TrophyDisplayProps,
+    prevState: TrophyDisplayState,
+  ) {
     console.log("Scene status:", {
       hasScene: !!this.scene,
       hasCamera: !!this.camera,
@@ -80,6 +96,19 @@ export class TrophyDisplay extends Component<
       } catch (error) {
         console.error("Error creating badge:", error);
       }
+    }
+
+    if (
+      prevState.explosionProgress !== this.state.explosionProgress &&
+      this.badge3D
+    ) {
+      const increments = this.getCurrentIncrements();
+      this.badge3D.children.forEach((child, index) => {
+        if (child instanceof THREE.Mesh) {
+          const offsetIndex = this.badge3D!.children.length - 1 - index;
+          child.position.setZ(offsetIndex * increments.height);
+        }
+      });
     }
   }
 
@@ -135,10 +164,6 @@ export class TrophyDisplay extends Component<
     const mainLight = new THREE.DirectionalLight(0xffffff, 2.0);
     mainLight.position.set(5, 5, 5);
 
-    // 填充光（从反方向照射）
-    const fillLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    fillLight.position.set(-5, -2, -5);
-
     // 顶部点光源
     const topLight = new THREE.PointLight(0xffffff, 1.0, 10);
     topLight.position.set(0, 5, 0);
@@ -150,7 +175,6 @@ export class TrophyDisplay extends Component<
     // 添加所有光源
     this.scene.add(ambientLight);
     this.scene.add(mainLight);
-    this.scene.add(fillLight);
     this.scene.add(topLight);
     this.scene.add(frontLight);
 
@@ -186,7 +210,9 @@ export class TrophyDisplay extends Component<
     const centerX = (minX + maxX) / 2;
     const centerY = (minY + maxY) / 2;
 
-    const HEIGHT_INCREMENT = -5;
+    const HEIGHT_INCREMENT = -0.04;
+    const X_INCREMENT = -0.04;
+    const Y_INCREMENT = -0.04;
     const totalPaths = svgData.paths.length;
 
     svgData.paths.forEach((path, pathIndex) => {
@@ -194,10 +220,6 @@ export class TrophyDisplay extends Component<
       const shapes = path.toShapes(true);
 
       shapes.forEach(shape => {
-        // 创建一个新的变换矩阵
-        const matrix = new THREE.Matrix4();
-        matrix.makeScale(-1, -1, 1); // 水平和垂直翻转
-
         const geometry = new THREE.ExtrudeGeometry(shape, {
           depth: 2,
           bevelEnabled: true,
@@ -207,47 +229,38 @@ export class TrophyDisplay extends Component<
           curveSegments: 12,
         });
 
-        // 应用变换
-        geometry.applyMatrix4(matrix);
-
-        // 将几何体移动到中心
         geometry.translate(-centerX, -centerY, 0);
 
         const offsetIndex = totalPaths - 1 - pathIndex;
 
-        const frontMaterial = new THREE.MeshStandardMaterial({
+        const material = new THREE.MeshStandardMaterial({
           color: fillColor || 0xffffff,
           metalness: 0.3,
           roughness: 0.7,
-          side: THREE.FrontSide,
+          side: THREE.DoubleSide,
           polygonOffset: true,
           polygonOffsetFactor: offsetIndex,
           polygonOffsetUnits: 1,
         });
 
-        const backMaterial = new THREE.MeshStandardMaterial({
-          color: fillColor || 0xffffff,
-          metalness: 0.3,
-          roughness: 0.7,
-          side: THREE.BackSide,
-          polygonOffset: true,
-          polygonOffsetFactor: offsetIndex,
-          polygonOffsetUnits: 1,
-        });
-
-        const mesh = new THREE.Mesh(geometry, [frontMaterial, backMaterial]);
-        mesh.position.z = offsetIndex * HEIGHT_INCREMENT;
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = Math.PI;
+        mesh.position.set(
+          offsetIndex * X_INCREMENT,
+          offsetIndex * Y_INCREMENT,
+          offsetIndex *
+            (this.state.isExploded ? this.EXPLODED_Z_OFFSET : HEIGHT_INCREMENT),
+        );
 
         group.add(mesh);
       });
     });
 
-    // 计算整体边界框
+    // 计算整体边界框和居中处理
     const box = new THREE.Box3().setFromObject(group);
     const center = new THREE.Vector3();
     box.getCenter(center);
 
-    // 更新所有子网格的几何体顶点位置
     group.children.forEach(child => {
       if (child instanceof THREE.Mesh) {
         const geometry = child.geometry;
@@ -255,31 +268,45 @@ export class TrophyDisplay extends Component<
       }
     });
 
-    // 重置组的位置（因为我们已经移动了几何体）
     group.position.set(0, 0, 0);
 
-    // 添加边界框辅助器（用于调试）
-    const boxAfterCentering = new THREE.Box3().setFromObject(group);
-    const boxHelper = new THREE.Box3Helper(boxAfterCentering, 0xff0000);
-    group.add(boxHelper);
+    // 只在 debug 模式下添加辅助器
+    if (this.props.debug) {
+      // 添加边界框辅助器
+      const boxAfterCentering = new THREE.Box3().setFromObject(group);
+      const boxHelper = new THREE.Box3Helper(boxAfterCentering, 0xff0000);
+      group.add(boxHelper);
 
-    // 添加坐标轴辅助器（用于调试）
-    const axesHelper = new THREE.AxesHelper(5);
-    group.add(axesHelper);
+      // 添加坐标轴辅助器
+      const axesHelper = new THREE.AxesHelper(5);
+      group.add(axesHelper);
 
-    // 输出调试信息
-    const size = new THREE.Vector3();
-    boxAfterCentering.getSize(size);
-    const finalCenter = new THREE.Vector3();
-    boxAfterCentering.getCenter(finalCenter);
-    console.log("Box dimensions after centering:", {
-      size: size,
-      center: finalCenter,
-      min: boxAfterCentering.min,
-      max: boxAfterCentering.max,
-    });
+      // 输出调试信息
+      const size = new THREE.Vector3();
+      boxAfterCentering.getSize(size);
+      const finalCenter = new THREE.Vector3();
+      boxAfterCentering.getCenter(finalCenter);
+      console.log("Box dimensions after centering:", {
+        size: size,
+        center: finalCenter,
+        min: boxAfterCentering.min,
+        max: boxAfterCentering.max,
+      });
+    }
 
     return group;
+  }
+
+  private updateRotationCenter() {
+    if (!this.badge3D) return;
+
+    // 计算当前模型的边界框
+    const box = new THREE.Box3().setFromObject(this.badge3D);
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+
+    // 更新旋转中心
+    this.setState({ rotationCenter: center });
   }
 
   private animate = () => {
@@ -292,26 +319,91 @@ export class TrophyDisplay extends Component<
     )
       return;
 
-    // 只在没有用户交互时自动旋转
-    if (this.state.isAutoRotating && this.badge3D) {
-      this.badge3D.rotation.y += 0.01;
-    }
+    // 将模型移动到原点
+    this.badge3D.position.sub(this.state.rotationCenter);
 
-    this.controls.update(); // 更新控制器
+    // 应用旋转
+    this.badge3D.rotation.y += 0.005;
+
+    // 恢复原始位置
+    this.badge3D.position.add(this.state.rotationCenter);
+
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
     this.animationFrameId = requestAnimationFrame(this.animate);
+  };
+
+  private handleDoubleClick = () => {
+    console.log("Double clicked!"); // 添加调试日志
+    this.setState(
+      prevState => ({
+        isExploded: !prevState.isExploded,
+        explosionProgress: prevState.isExploded ? 1 : 0,
+      }),
+      () => {
+        console.log("State updated:", this.state); // 添加调试日志
+        if (this.explosionAnimationId) {
+          cancelAnimationFrame(this.explosionAnimationId);
+        }
+        this.animateExplosion();
+      },
+    );
+  };
+
+  private animateExplosion = () => {
+    const { isExploded, explosionProgress } = this.state;
+    const targetProgress = isExploded ? 1 : 0;
+    const speed = isExploded ? 0.03 : 0.05;
+
+    let newProgress = explosionProgress;
+    if (isExploded) {
+      newProgress = Math.min(1, explosionProgress + speed);
+    } else {
+      newProgress = Math.max(0, explosionProgress - speed);
+    }
+
+    this.setState({ explosionProgress: newProgress }, () => {
+      // 在每次爆炸动画更新后重新计算旋转中心
+      this.updateRotationCenter();
+
+      if (newProgress !== targetProgress) {
+        this.explosionAnimationId = requestAnimationFrame(
+          this.animateExplosion,
+        );
+      }
+    });
+  };
+
+  private getCurrentIncrements() {
+    const { explosionProgress } = this.state;
+    const currentZ =
+      this.INITIAL_Z_OFFSET +
+      (this.EXPLODED_Z_OFFSET - this.INITIAL_Z_OFFSET) * explosionProgress;
+    return { x: 0, y: 0, height: currentZ };
+  }
+
+  private handleKeyDown = (event: KeyboardEvent) => {
+    if (event.code === "Space" || event.code === "Enter") {
+      this.handleDoubleClick();
+    }
   };
 
   render() {
     return (
       <div
         ref={ref => (this.container = ref)}
+        onClick={this.handleDoubleClick}
+        onKeyDown={this.handleKeyDown}
+        role="button"
+        tabIndex={0}
         style={{
           width: "100%",
           height: "600px",
-          border: "1px solid #ddd", // 添加边框以便于调试
+          border: "1px solid #ddd",
           backgroundColor: "#f8f9fa",
+          cursor: "pointer",
         }}
+        aria-label="3D Trophy Display"
       />
     );
   }
