@@ -12,6 +12,7 @@ import {
 } from "../common/route-data";
 import { HttpService } from "../../services/HttpService";
 import { setIsoData } from "@utils/app";
+import { getBadgeIcon } from "./trophy-utils";
 
 interface TrophyCasePathProps {
   username: string;
@@ -99,7 +100,11 @@ export class TrophyCase extends Component<
   }
 
   handleTrophySelect(trophy: Trophy) {
-    this.setState({ selectedTrophy: trophy });
+    const trophyWithSvg = {
+      ...trophy,
+      badgeSvg: getBadgeIcon(trophy.name),
+    };
+    this.setState({ selectedTrophy: trophyWithSvg });
   }
 
   static async fetchInitialData(
