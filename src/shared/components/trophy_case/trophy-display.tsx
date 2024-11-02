@@ -80,11 +80,9 @@ export class TrophyDisplay extends Component<
   private initThreeJS() {
     if (!this.container) return;
 
-    // 初始化场景
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xf8f9fa); // 设置背景色
+    this.scene.background = new THREE.Color(0xf8f9fa);
 
-    // 设置相机
     this.camera = new THREE.PerspectiveCamera(
       75,
       this.container.clientWidth / this.container.clientHeight,
@@ -93,50 +91,87 @@ export class TrophyDisplay extends Component<
     );
     this.camera.position.z = 5;
 
-    // 设置渲染器
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+    });
     this.renderer.setSize(
       this.container.clientWidth,
       this.container.clientHeight,
     );
     this.container.appendChild(this.renderer.domElement);
 
-    // 添加环境光和平行光
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(0, 1, 1);
-    this.scene.add(ambientLight, directionalLight);
+    // 增强光照效果
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+
+    directionalLight1.position.set(1, 1, 1);
+    directionalLight2.position.set(-1, -1, -1);
+
+    this.scene.add(ambientLight, directionalLight1, directionalLight2);
   }
 
-  private async createBadge3D(svgData: string) {
-    const { SVGLoader } = await import(
-      "three/examples/jsm/loaders/SVGLoader.js"
-    );
+  private async createBadge3D(svgString: string) {
+    // 动态导入 SVGLoader
+    const { SVGLoader } = await import("three/examples/jsm/loaders/SVGLoader");
+
+    // 创建SVG加载器
     const loader = new SVGLoader();
-    const svgPaths = loader.parse(svgData).paths;
-
+    const svgData = loader.parse(svgString);
     const group = new THREE.Group();
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xffd700,
-      metalness: 0.8,
-      roughness: 0.2,
-    });
 
-    // Create extruded geometry from SVG paths
-    svgPaths.forEach(path => {
+    // 遍历SVG中的所有路径
+    svgData.paths.forEach(path => {
+      // 获取SVG中的样式
+      const fillColor = path.userData?.style.fill;
+      const strokeColor = path.userData?.style.stroke;
+
+      // 为每个路径创建形状
       const shapes = path.toShapes(true);
       shapes.forEach(shape => {
+        // 创建拉伸几何体
         const geometry = new THREE.ExtrudeGeometry(shape, {
-          depth: 0.2,
+          depth: 2,
           bevelEnabled: true,
-          bevelThickness: 0.05,
-          bevelSize: 0.05,
+          bevelThickness: 0.2,
+          bevelSize: 0.1,
           bevelSegments: 3,
         });
+
+        // 创建材质，使用SVG中定义的颜色
+        const material = new THREE.MeshPhongMaterial({
+          color: fillColor || 0xffffff,
+          emissive: 0x000000,
+          specular: 0x111111,
+          shininess: 30,
+          side: THREE.DoubleSide,
+          flatShading: true,
+        });
+
+        // 如果有描边，添加描边材质
+        if (strokeColor) {
+          const strokeMaterial = new THREE.LineBasicMaterial({
+            color: strokeColor,
+          });
+          const edges = new THREE.EdgesGeometry(geometry);
+          const line = new THREE.LineSegments(edges, strokeMaterial);
+          group.add(line);
+        }
+
+        // 创建网格并添加到组中
         const mesh = new THREE.Mesh(geometry, material);
         group.add(mesh);
       });
     });
+
+    // 居中模型
+    const box = new THREE.Box3().setFromObject(group);
+    const center = box.getCenter(new THREE.Vector3());
+    group.position.sub(center);
+
+    // 调整模型方向
+    group.scale.y *= -1;
 
     return group;
   }
