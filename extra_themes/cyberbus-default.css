@@ -5968,6 +5968,15 @@ a.badge-dark.focus {
   margin: 0 0.25rem;
 }
 
+.list-group-item-without-border {
+  position: relative;
+  display: block;
+  padding: 0.75rem 1rem;
+  background-color: #f9fafa;
+  margin: 0 0.25rem;
+  border-radius: 0.5rem;
+}
+
 .list-group-item:first-child {
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
@@ -11413,8 +11422,7 @@ a.text-neutral-content:visited {
 /* trophy case page*/
 .trophy-case {
   .trophy-display-container {
-    height: 800px;
-    background: #f8f9fa;
+    height: 500px;
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -11440,6 +11448,21 @@ a.text-neutral-content:visited {
 
 .trophy-display {
   position: relative;
+  display: block;
+  padding: 0.75rem 1rem;
+  background-color: #f9fafa;
+  margin: 0 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.trophy-display-content {
+  position: relative;
+  display: block;
+  padding: 0.75rem 1rem;
+  background-color: #f9fafa;
+  margin: 0 0.25rem;
+  border-radius: 0.5rem;
+  color: #6f42c1;
 }
 
 .fps-counter {

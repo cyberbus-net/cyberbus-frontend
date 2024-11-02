@@ -15,7 +15,7 @@ export class TrophyList extends Component<TrophyListProps> {
 
     if (!Array.isArray(trophies) || trophies.length === 0) {
       return (
-        <div className="list-group-item">
+        <div className="list-group-item-without-border mt-4">
           <ul className="list-inline mb-2">
             <li className="list-inline-item badge text-bg-secondary">
               {I18NextService.i18n.t("you_have_no_trophy")}
@@ -26,7 +26,7 @@ export class TrophyList extends Component<TrophyListProps> {
     }
 
     return (
-      <div className="list-group-item">
+      <div className="list-group-item-without-border mt-4">
         <ul className="list-inline mb-2">
           {trophies.map((trophy, index) => (
             <li key={index} className="list-inline-item">

@@ -1,6 +1,8 @@
 import { Component } from "inferno";
 import { Trophy } from "@cyberbus-net/cyberbus-js-client";
 import * as THREE from "three";
+import { getBadgeDescription, formatDate } from "./trophy-utils";
+import { I18NextService } from "../../services";
 
 interface TrophyDisplayProps {
   trophy: Trophy | null;
@@ -63,25 +65,12 @@ export class TrophyDisplay extends Component<
     prevProps: TrophyDisplayProps,
     prevState: TrophyDisplayState,
   ) {
-    console.log("Scene status:", {
-      hasScene: !!this.scene,
-      hasCamera: !!this.camera,
-      hasRenderer: !!this.renderer,
-      containerSize: this.container
-        ? {
-            width: this.container.clientWidth,
-            height: this.container.clientHeight,
-          }
-        : null,
-    });
-
     if (prevProps.trophy !== this.props.trophy && this.props.trophy?.badgeSvg) {
       try {
         if (this.scene && this.badge3D) {
           this.scene.remove(this.badge3D);
         }
         this.badge3D = await this.createBadge3D(this.props.trophy.badgeSvg);
-        console.log("New badge3D created:", this.badge3D);
 
         if (this.scene && this.badge3D) {
           this.scene.add(this.badge3D);
@@ -116,7 +105,6 @@ export class TrophyDisplay extends Component<
     if (!this.container) return;
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xf8f9fa);
 
     this.camera = new THREE.PerspectiveCamera(
       45,
@@ -286,12 +274,6 @@ export class TrophyDisplay extends Component<
       boxAfterCentering.getSize(size);
       const finalCenter = new THREE.Vector3();
       boxAfterCentering.getCenter(finalCenter);
-      console.log("Box dimensions after centering:", {
-        size: size,
-        center: finalCenter,
-        min: boxAfterCentering.min,
-        max: boxAfterCentering.max,
-      });
     }
 
     return group;
@@ -334,14 +316,12 @@ export class TrophyDisplay extends Component<
   };
 
   private handleDoubleClick = () => {
-    console.log("Double clicked!"); // 添加调试日志
     this.setState(
       prevState => ({
         isExploded: !prevState.isExploded,
         explosionProgress: prevState.isExploded ? 1 : 0,
       }),
       () => {
-        console.log("State updated:", this.state); // 添加调试日志
         if (this.explosionAnimationId) {
           cancelAnimationFrame(this.explosionAnimationId);
         }
@@ -389,22 +369,34 @@ export class TrophyDisplay extends Component<
   };
 
   render() {
+    const description = this.props.trophy
+      ? I18NextService.i18n.t(getBadgeDescription(this.props.trophy.name))
+      : "";
+
     return (
-      <div
-        ref={ref => (this.container = ref)}
-        onClick={this.handleDoubleClick}
-        onKeyDown={this.handleKeyDown}
-        role="button"
-        tabIndex={0}
-        style={{
-          width: "100%",
-          height: "600px",
-          border: "1px solid #ddd",
-          backgroundColor: "#f8f9fa",
-          cursor: "pointer",
-        }}
-        aria-label="3D Trophy Display"
-      />
+      <div style={{ width: "100%" }}>
+        <div
+          ref={ref => (this.container = ref)}
+          onClick={this.handleDoubleClick}
+          onKeyDown={this.handleKeyDown}
+          role="button"
+          tabIndex={0}
+          style={{
+            width: "100%",
+            height: "500px",
+            cursor: "pointer",
+          }}
+          aria-label="3D Trophy Display"
+        />
+        {description && (
+          <div className="trophy-display-content">{description}</div>
+        )}
+        {this.props.trophy && (
+          <div className="trophy-display-content">
+            {`${I18NextService.i18n.t("rewarded_at")}: ${formatDate(this.props.trophy.rewarded_at)}`}
+          </div>
+        )}
+      </div>
     );
   }
 }

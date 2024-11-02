@@ -158,17 +158,15 @@ export class TrophyCase extends Component<
         <div className="row">
           <div className="col-12">
             <h1 className="h4">{I18NextService.i18n.t("trophy_case")}</h1>
-
-            <div className="trophy-display-container mb-4">
-              <TrophyDisplay trophy={selectedTrophy} />
-            </div>
-
             <div className="trophy-list-container">
               <TrophyList
                 username={username}
                 onTrophySelect={this.handleTrophySelect}
                 trophies={trophies}
               />
+            </div>
+            <div className="trophy-display-container mb-4">
+              <TrophyDisplay trophy={selectedTrophy} />
             </div>
           </div>
         </div>
