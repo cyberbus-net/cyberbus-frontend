@@ -11413,7 +11413,7 @@ a.text-neutral-content:visited {
 /* trophy case page*/
 .trophy-case {
   .trophy-display-container {
-    height: 400px;
+    height: 800px;
     background: #f8f9fa;
     border-radius: 8px;
     display: flex;
