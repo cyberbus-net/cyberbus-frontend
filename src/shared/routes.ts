@@ -75,6 +75,11 @@ import {
 import { InitialFetchRequest, RouteData } from "./interfaces";
 import { GetSiteResponse } from "@cyberbus-net/cyberbus-js-client";
 import { Inferno } from "inferno";
+import {
+  TrophyCase,
+  TrophyCaseFetchConfig,
+  getTrophyCaseQueryParams,
+} from "./components/trophy_case/trophy-case";
 
 export interface IRoutePropsWithFetch<
   DataT extends RouteData,
@@ -230,4 +235,11 @@ export const routes: IRoutePropsWithFetch<RouteData, any, any>[] = [
     fetchInitialData: RemoteFetch.fetchInitialData,
     getQueryParams: getRemoteFetchQueryParams,
   } as RemoteFetchFetchConfig,
+  {
+    path: `/trophy_case/u/:username`,
+    component: TrophyCase,
+    fetchInitialData: TrophyCase.fetchInitialData,
+    getQueryParams: getTrophyCaseQueryParams,
+    mountedSameRouteNavKey: "trophy_case",
+  } as TrophyCaseFetchConfig,
 ];

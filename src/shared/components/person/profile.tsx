@@ -96,7 +96,7 @@ import { CommunityLink } from "../community/community-link";
 import { PersonDetails } from "./person-details";
 import { PersonListing } from "./person-listing";
 import { Karma } from "./karma";
-import { TrophyCasePanel } from "./trophy-case-panel";
+import { TrophyCasePanel } from "../trophy_case/trophy-case-panel";
 import { Homelab } from "./homelab";
 import { getHttpBaseInternal } from "../../utils/env";
 import { IRoutePropsWithFetch } from "../../routes";
