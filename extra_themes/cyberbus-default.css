@@ -11340,12 +11340,12 @@ a.text-neutral-content:visited {
 }
 
 .badge-silver {
-  background-color: silver;
+  background-color: #dcdddd;
   color: black;
 }
 
 .badge-bronze {
-  background-color: bronze;
+  background-color: #752100;
   color: white;
 }
 
