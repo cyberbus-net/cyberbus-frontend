@@ -60,7 +60,7 @@ import isMagnetLink, {
 import QRCode from "qrcode";
 
 const postTruncateAtLines = 8;
-const postTruncateAtLinks = 2;
+const postTruncateAtLinks = 1;
 
 type PostListingState = {
   showEdit: boolean;
