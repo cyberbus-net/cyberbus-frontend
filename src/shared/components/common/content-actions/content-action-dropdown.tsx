@@ -957,6 +957,7 @@ export default class ContentActionDropdown extends Component<
             }
             .post-title h1 {
               font-size: 3rem !important;
+              line-height: 3rem !important;
               padding: 3rem 0rem !important;
               color: #6F42C1 !important;
             }
