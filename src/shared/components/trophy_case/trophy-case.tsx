@@ -28,6 +28,8 @@ interface TrophyCaseState {
   selectedTrophy: Trophy | null;
   trophies: Trophy[];
   isIsomorphic: boolean;
+  user_display_name: string;
+  user_avatar?: string;
 }
 
 interface TrophyCaseQueryProps {
@@ -38,7 +40,12 @@ interface TrophyCaseQueryProps {
 interface TrophyCaseData extends RouteData {
   trophyCase: {
     trophies: Trophy[];
-    // other properties...
+    person_view?: {
+      person: {
+        display_name: string;
+        avatar?: string;
+      };
+    };
   } | null;
 }
 
@@ -63,11 +70,15 @@ export class TrophyCase extends Component<
   ) {
     super(props, context);
 
-    const serverTrophies = this.isoData?.routeData?.trophyCase?.trophies || [];
+    const serverData = this.isoData?.routeData?.trophyCase;
+    const serverTrophies = serverData?.trophies || [];
+
     this.state = {
       selectedTrophy: null,
       trophies: serverTrophies,
       isIsomorphic: true,
+      user_display_name: serverData?.person_view?.person?.display_name || "",
+      user_avatar: serverData?.person_view?.person?.avatar,
     };
 
     this.handleTrophySelect = this.handleTrophySelect.bind(this);
@@ -98,9 +109,16 @@ export class TrophyCase extends Component<
         username: username,
       });
 
-      if (token === this.fetchUserDataToken && personRes.state === "success") {
+      if (token !== this.fetchUserDataToken) return;
+
+      if (personRes.state === "success") {
+        const { person_view, trophy_case } = personRes.data;
+
         this.setState({
-          trophies: personRes.data.trophy_case.trophies,
+          trophies: trophy_case.trophies,
+          user_display_name: person_view.person.display_name,
+          user_avatar: person_view.person.avatar,
+          isIsomorphic: false,
         });
       }
     } catch (error) {
@@ -130,7 +148,17 @@ export class TrophyCase extends Component<
 
     return {
       trophyCase:
-        personRes.state === "success" ? personRes.data.trophy_case : null,
+        personRes.state === "success"
+          ? {
+              trophies: personRes.data.trophy_case.trophies,
+              person_view: {
+                person: {
+                  display_name: personRes.data.person_view.person.display_name,
+                  avatar: personRes.data.person_view.person.avatar,
+                },
+              },
+            }
+          : null,
     };
   }
 
@@ -143,7 +171,8 @@ export class TrophyCase extends Component<
 
   render() {
     const { username } = this.props.match.params;
-    const { trophies, selectedTrophy } = this.state;
+    const { trophies, selectedTrophy, user_display_name, user_avatar } =
+      this.state;
 
     if (trophies.length === 0) {
       return (
@@ -166,7 +195,24 @@ export class TrophyCase extends Component<
         />
         <div className="row">
           <div className="col-12">
-            <h1 className="h4">{I18NextService.i18n.t("trophy_case")}</h1>
+            <div className="user-info d-flex align-items-center">
+              <a
+                href={`/u/${username}`}
+                className="d-flex align-items-center text-decoration-none"
+              >
+                {user_avatar && (
+                  <img
+                    src={user_avatar}
+                    alt={username}
+                    className="user-avatar img-icon circle-icon me-2"
+                  />
+                )}
+                <h1 className="h4 mb-0">{user_display_name}</h1>
+                <h1 className="h4 mb-0">
+                  - {I18NextService.i18n.t("trophy_case")}
+                </h1>
+              </a>
+            </div>
             <div className="trophy-list-container">
               <TrophyList
                 username={username}
