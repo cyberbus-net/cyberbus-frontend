@@ -11367,6 +11367,29 @@ a.text-neutral-content:visited {
   vertical-align: middle;
 }
 
+.trophy-badge {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .badge-icon {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover .badge-icon {
+    transform: scale(1.1);
+  }
+}
+
 /* navbar cursor blink */
 #navTitle {
   color: #5e37a6;

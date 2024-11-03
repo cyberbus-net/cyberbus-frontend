@@ -548,7 +548,10 @@ export class Profile extends Component<ProfileRouteProps, ProfileState> {
                   <Karma pv={personRes.person_view} />
                   <Moderates moderates={personRes.moderates} />
                   <Homelab />
-                  <TrophyCasePanel trophyCase={trophyCase} />
+                  <TrophyCasePanel
+                    trophyCase={trophyCase}
+                    username={personRes.person_view.person.name}
+                  />
                   {this.amCurrentUser && <Follows />}
                 </div>
               </div>

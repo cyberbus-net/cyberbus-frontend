@@ -77,6 +77,15 @@ export class TrophyCase extends Component<
     if (!this.isoData?.routeData?.trophyCase) {
       await this.fetchUserData();
     }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const trophyName = urlParams.get("trophy");
+    if (trophyName && this.state.trophies.length > 0) {
+      const trophy = this.state.trophies.find(t => t.name === trophyName);
+      if (trophy) {
+        this.handleTrophySelect(trophy);
+      }
+    }
   }
 
   fetchUserDataToken?: symbol;
