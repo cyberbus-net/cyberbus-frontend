@@ -156,6 +156,11 @@ function localInstanceLinkParser(md: MarkdownIt) {
   });
 }
 
+// 添加一个工具函数来包装图片HTML
+function wrapImageWithContainer(imgHtml: string): string {
+  return `<div class="img-container">${imgHtml}</div>`;
+}
+
 export function setupMarkdown() {
   const markdownItConfig: MarkdownIt.Options = {
     html: false,
@@ -202,30 +207,31 @@ export function setupMarkdown() {
     env: any,
     self: Renderer,
   ) {
-    //Provide custom renderer for our emojis to allow us to add a css class and force size dimensions on them.
     const item = tokens[idx] as any;
     let title = item.attrs.length >= 3 ? item.attrs[2][1] : "";
     const splitTitle = title.split(/ (.*)/, 2);
     const isEmoji = splitTitle[0] === "emoji";
+
+    // 如果是表情符号，使用原来的渲染方式
     if (isEmoji) {
       title = splitTitle[1];
+      const customEmoji = customEmojisLookup.get(title);
+      if (customEmoji) {
+        return `<img class="icon icon-emoji" src="${customEmoji.custom_emoji.image_url}" title="${customEmoji.custom_emoji.shortcode}" alt="${customEmoji.custom_emoji.alt_text}"/>`;
+      }
     }
-    const customEmoji = customEmojisLookup.get(title);
-    const isLocalEmoji = customEmoji !== undefined;
-    if (!isLocalEmoji) {
-      const imgElement =
-        defaultImageRenderer?.(tokens, idx, options, env, self) ?? "";
-      if (imgElement) {
-        return `<span class='${
-          isEmoji ? "icon icon-emoji" : ""
-        }'>${imgElement}</span>`;
-      } else return "";
+
+    // 对于普通图片，添加容器和加载事件
+    const imgElement =
+      defaultImageRenderer?.(tokens, idx, options, env, self) ?? "";
+    if (imgElement) {
+      const imgWithLoadEvent = imgElement.replace(
+        "<img",
+        "<img onload=\"this.parentElement.classList.toggle('overflow-image', this.naturalHeight > 540)\"",
+      );
+      return wrapImageWithContainer(imgWithLoadEvent);
     }
-    return `<img class="icon icon-emoji" src="${
-      customEmoji!.custom_emoji.image_url
-    }" title="${customEmoji!.custom_emoji.shortcode}" alt="${
-      customEmoji!.custom_emoji.alt_text
-    }"/>`;
+    return "";
   };
   md.renderer.rules.table_open = function () {
     return '<table class="table">';

@@ -3827,6 +3827,7 @@ input[type="button"].btn-block {
   position: relative;
   flex: 1 1 auto;
 }
+
 .btn-group > .btn-check:checked + .btn,
 .btn-group > .btn-check:focus + .btn,
 .btn-group > .btn:hover,
@@ -11116,6 +11117,68 @@ a.text-dark:focus {
   padding: 0.25rem 0.25rem !important;
 }
 
+/* 非完整模式下的图片容器 */
+.img-container {
+  position: relative;
+  max-height: 540px;
+  overflow: hidden;
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+
+/* 非完整模式下的图片 */
+.img-container img {
+  display: block;
+  max-height: 540px;
+  width: auto;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  border-radius: 0;
+}
+
+/* 完整模式下的图片容器 */
+.post-listing-full .img-container {
+  position: relative;
+  max-height: none;
+  /* 移除高度限制 */
+  overflow: visible;
+  /* 允许内容溢出 */
+  margin: 1rem 0;
+  border-radius: 0;
+}
+
+/* 完整模式下的图片 */
+.post-listing-full .img-container img {
+  display: block;
+  max-height: none;
+  /* 移除高度限制 */
+  width: auto;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  border-radius: 8px;
+}
+
+.img-container.overflow-image {
+  position: relative;
+}
+
+.img-container.overflow-image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--before-bg);
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px) brightness(0.8);
+  z-index: 1;
+  border-radius: 8px;
+}
+
 .post-listing-full {
   padding: 0.25rem 0rem !important;
 }
@@ -11211,6 +11274,7 @@ a.text-neutral-content:visited {
 .vote-indicator {
   padding: 0 0.5rem;
 }
+
 .post-button-background:hover {
   background: var(--button-hover-gray) !important;
 }
@@ -11394,6 +11458,7 @@ a.text-neutral-content:visited {
 #navTitle {
   color: #5e37a6;
 }
+
 @keyframes blink {
   0% {
     opacity: 0;

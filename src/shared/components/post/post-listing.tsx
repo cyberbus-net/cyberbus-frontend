@@ -481,6 +481,18 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           <div
             className="md-div"
             dangerouslySetInnerHTML={mdToHtml(body, () => this.forceUpdate())}
+            ref={el => {
+              if (el && !this.props.showFull) {
+                // 处理所有图片容器
+                const containers = el.getElementsByClassName("img-container");
+                Array.from(containers).forEach(container => {
+                  const img = container.querySelector("img");
+                  if (img) {
+                    img.onload = () => this.handleImageLoad(img, container);
+                  }
+                });
+              }
+            }}
           />
         )}
       </article>
@@ -1465,5 +1477,14 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     } = this.props;
 
     return !(viewOnly || banned_from_community);
+  }
+
+  private handleImageLoad(img: HTMLImageElement, container: Element) {
+    // 只有在非完整显示模式下才应用图片截断效果
+    if (!this.props.showFull && img.naturalHeight > 540) {
+      container.classList.add("overflow-image");
+      // 只需要设置一个背景变量即可
+      container.style.setProperty("--before-bg", `url(${img.src})`);
+    }
   }
 }
