@@ -80,6 +80,7 @@ import {
   TrophyCaseFetchConfig,
   getTrophyCaseQueryParams,
 } from "./components/trophy_case/trophy-case";
+import { ResendVerifyEmail } from "./components/home/resend-verify-email";
 
 export interface IRoutePropsWithFetch<
   DataT extends RouteData,
@@ -242,4 +243,8 @@ export const routes: IRoutePropsWithFetch<RouteData, any, any>[] = [
     getQueryParams: getTrophyCaseQueryParams,
     mountedSameRouteNavKey: "trophy_case",
   } as TrophyCaseFetchConfig,
+  {
+    path: `/resend_verify_email`,
+    component: ResendVerifyEmail,
+  },
 ];

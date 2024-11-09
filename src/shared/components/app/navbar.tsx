@@ -451,6 +451,16 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                       {I18NextService.i18n.t("sign_up")}
                     </NavLink>
                   </li>
+                  <li className="nav-item">
+                    <NavLink
+                      to="/resend_verify_email"
+                      className="nav-link"
+                      title={I18NextService.i18n.t("resend_verify_email")}
+                      onMouseUp={linkEvent(this, handleCollapseClick)}
+                    >
+                      {I18NextService.i18n.t("resend_verify_email")}
+                    </NavLink>
+                  </li>
                 </>
               )}
             </ul>
