@@ -218,6 +218,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               {this.showBody && post.url && post.embed_title && (
                 <MetadataCard post={post} />
               )}
+              {this.showBody && this.videoBlock}
               {this.showBody && this.body()}
             </>
           ) : (
@@ -255,6 +256,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               {this.showBody && post.url && post.embed_title && (
                 <MetadataCard post={post} />
               )}
+              {this.showBody && this.videoBlock}
               {this.showBody && this.body()}
             </a>
           </>
