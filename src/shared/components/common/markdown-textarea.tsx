@@ -431,7 +431,7 @@ export class MarkdownTextArea extends Component<
     const res = await HttpService.client.uploadImage({ image });
     if (res.state === "success") {
       if (res.data.msg === "ok") {
-        const imageMarkdown = `![](${res.data.url})`;
+        const imageMarkdown = `![](${res.data.url})\n`;
         const textarea: HTMLTextAreaElement = document.getElementById(
           i.id,
         ) as HTMLTextAreaElement;
