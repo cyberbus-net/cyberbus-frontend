@@ -102,10 +102,13 @@ import {
 import { RouteComponentProps } from "inferno-router/dist/Route";
 import { IRoutePropsWithFetch } from "../../routes";
 import { isBrowser, snapToTop } from "@utils/browser";
+import { debounce } from "lodash";
 
 interface HomeState {
   postsRes: RequestState<GetPostsResponse>;
   commentsRes: RequestState<GetCommentsResponse>;
+  posts: PostView[];
+  isLoading: boolean;
   showSubscribedMobile: boolean;
   showSidebarMobile: boolean;
   subscribedCollapsed: boolean;
@@ -205,7 +208,10 @@ export type HomeFetchConfig = IRoutePropsWithFetch<
 @tippyMixin
 export class Home extends Component<HomeRouteProps, HomeState> {
   private isoData = setIsoData<HomeData>(this.context);
+  private initialNextPage?: PaginationCursor;
   state: HomeState = {
+    posts: [],
+    isLoading: false,
     postsRes: EMPTY_REQUEST,
     commentsRes: EMPTY_REQUEST,
     siteRes: this.isoData.site_res,
@@ -262,14 +268,17 @@ export class Home extends Component<HomeRouteProps, HomeState> {
     this.handleFeaturePost = this.handleFeaturePost.bind(this);
     this.handleHidePost = this.handleHidePost.bind(this);
 
-    // Only fetch the data if coming from another route
     if (FirstLoadService.isFirstLoad) {
       const { commentsRes, postsRes } = this.isoData.routeData;
+
+      this.initialNextPage =
+        postsRes.state === "success" ? postsRes.data.next_page : undefined;
 
       this.state = {
         ...this.state,
         commentsRes,
         postsRes,
+        posts: postsRes.state === "success" ? postsRes.data.posts : [],
         isIsomorphic: true,
       };
     }
@@ -513,19 +522,25 @@ export class Home extends Component<HomeRouteProps, HomeState> {
           {this.selects}
           <hr className="my-2" />
           {this.listings}
-          <PaginatorCursor
-            nextPage={this.getNextPage}
-            onNext={this.handlePageNext}
-          />
+
+          {/* 底部区域 */}
+          <div className="d-flex flex-column align-items-center gap-2">
+            {/* 使用静态 nextPage */}
+            <PaginatorCursor
+              nextPage={this.initialNextPage}
+              onNext={this.handlePageNext}
+            />
+
+            {/* 加载提示 */}
+            {this.state.isLoading && <PostsLoadingSkeleton />}
+          </div>
         </div>
       </div>
     );
   }
 
-  get getNextPage(): PaginationCursor | undefined {
-    return this.state.postsRes.state === "success"
-      ? this.state.postsRes.data.next_page
-      : undefined;
+  get staticNextPage(): PaginationCursor | undefined {
+    return this.initialNextPage;
   }
 
   get listings() {
@@ -539,10 +554,9 @@ export class Home extends Component<HomeRouteProps, HomeState> {
         case "loading":
           return <PostsLoadingSkeleton />;
         case "success": {
-          const posts = this.state.postsRes.data.posts;
           return (
             <PostListings
-              posts={posts}
+              posts={this.state.posts}
               showCommunity
               removeDuplicates
               enableDownvotes={enableDownvotes(siteRes)}
@@ -646,7 +660,10 @@ export class Home extends Component<HomeRouteProps, HomeState> {
         show_hidden: showHidden === "true",
       });
       if (token === this.fetchDataToken) {
-        this.setState({ postsRes });
+        this.setState({
+          postsRes,
+          posts: postsRes.state === "success" ? postsRes.data.posts : [],
+        });
       }
     } else {
       this.setState({ commentsRes: LOADING_REQUEST, postsRes: EMPTY_REQUEST });
@@ -985,5 +1002,62 @@ export class Home extends Component<HomeRouteProps, HomeState> {
       }
       return s;
     });
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  handleScroll = debounce(() => {
+    if (
+      window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 500 &&
+      !this.state.isLoading &&
+      this.getNextPage
+    ) {
+      this.loadMorePosts();
+    }
+  }, 200);
+
+  async loadMorePosts() {
+    const { listingType, sort, showHidden } = this.props;
+
+    this.setState({ isLoading: true });
+
+    try {
+      const postsRes = await HttpService.client.getPosts({
+        page_cursor: this.getNextPage,
+        limit: fetchLimit,
+        sort,
+        saved_only: false,
+        type_: listingType,
+        show_hidden: showHidden === "true",
+      });
+
+      if (postsRes.state === "success") {
+        this.setState(prevState => ({
+          posts: [...prevState.posts, ...postsRes.data.posts],
+          postsRes: {
+            ...postsRes,
+            data: {
+              ...postsRes.data,
+              next_page: postsRes.data.next_page,
+            },
+          },
+        }));
+      }
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+
+  get getNextPage(): PaginationCursor | undefined {
+    return this.state.postsRes.state === "success"
+      ? this.state.postsRes.data.next_page
+      : undefined;
   }
 }
