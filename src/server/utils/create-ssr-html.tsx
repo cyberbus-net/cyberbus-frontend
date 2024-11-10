@@ -2,11 +2,9 @@ import { getStaticDir } from "@utils/env";
 import { Helmet } from "inferno-helmet";
 import { renderToString } from "inferno-server";
 import serialize from "serialize-javascript";
-import sharp from "sharp";
 import { favIconPngUrl, favIconUrl } from "../../shared/config";
 import { IsoDataOptionalSite } from "../../shared/interfaces";
 import { buildThemeList } from "./build-themes-list";
-import { fetchIconPng } from "./fetch-icon-png";
 import { findTranslationChunkNames } from "../../shared/services/I18NextService";
 import { findDateFnsChunkNames } from "../../shared/utils/app/setup-date-fns";
 
@@ -31,32 +29,7 @@ export async function createSsrHtml(
     customHtmlHeaderScriptTag,
     `<script nonce="${cspNonce}"`,
   );
-
-  if (!appleTouchIcon) {
-    try {
-      appleTouchIcon = site?.site_view.site.icon
-        ? `data:image/png;base64,${await sharp(
-            await fetchIconPng(site.site_view.site.icon),
-          )
-            .resize(180, 180)
-            .extend({
-              bottom: 20,
-              top: 20,
-              left: 20,
-              right: 20,
-              background: "#222222",
-            })
-            .png()
-            .toBuffer()
-            .then(buf => buf.toString("base64"))}`
-        : favIconPngUrl;
-    } catch {
-      console.log(
-        "Could not fetch site logo for apple touch icon. Using default icon.",
-      );
-      appleTouchIcon = favIconPngUrl;
-    }
-  }
+  appleTouchIcon = favIconPngUrl;
 
   const erudaStr =
     process.env["LEMMY_UI_DEBUG"] === "true"
@@ -129,8 +102,8 @@ export async function createSsrHtml(
   
     <!-- Web app manifest -->
     <link rel="manifest" href="/manifest.webmanifest" />
-    <!-- <link rel="apple-touch-icon" href=${appleTouchIcon} /> -->
-    <!-- <link rel="apple-touch-startup-image" href=${appleTouchIcon} /> -->
+    <link rel="apple-touch-icon" href=${appleTouchIcon} />
+    <link rel="apple-touch-startup-image" href=${appleTouchIcon} />
   
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="${getStaticDir()}/styles/styles.css" />
