@@ -490,6 +490,9 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
                 Array.from(containers).forEach(container => {
                   const img = container.querySelector("img");
                   if (img) {
+                    // 使用静态方法生成缩略图URL
+                    img.src = PictrsImage.getThumbnailUrl(img.src);
+                    // 保留原有的图片加载处理逻辑
                     img.onload = () => this.handleImageLoad(img, container);
                   }
                 });
@@ -551,16 +554,19 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
   get img() {
     const { post } = this.postView;
+    const url = post.url;
+    const thumbnail = post.thumbnail_url;
+    const imageSrc = url && isImage(url) ? url : thumbnail;
 
     if (this.isoData.showAdultConsentModal) {
       return <></>;
     }
 
-    if (this.imageSrc) {
+    if (imageSrc) {
       return (
         <>
           <div className="my-2 d-none d-sm-block">
-            <PictrsImage src={this.imageSrc} alt={post.alt_text} />
+            <PictrsImage src={imageSrc} alt={post.alt_text} />
           </div>
         </>
       );

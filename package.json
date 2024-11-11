@@ -1,7 +1,7 @@
 {
   "name": "cyberbus-frontend",
   "description": "Frontend for cyberbus",
-  "version": "0.2.23",
+  "version": "0.2.24",
   "author": "karminski <code.karminski@outlook.com>",
   "license": "AGPL-3.0",
   "scripts": {

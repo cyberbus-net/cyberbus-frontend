@@ -7,7 +7,7 @@ import { IsoData } from "../../interfaces";
 import { getStaticDir } from "@utils/env";
 
 const iconThumbnailSize = 96;
-const thumbnailSize = 256;
+const thumbnailSize = 2160;
 
 interface PictrsImageProps {
   src: string;
@@ -143,5 +143,25 @@ export class PictrsImage extends Component<PictrsImageProps, PictrsImageState> {
       return "";
     }
     return this.props.alt || "";
+  }
+
+  // 添加静态方法用于生成缩略图URL
+  static getThumbnailUrl(src: string): string {
+    let url: URL | undefined;
+    try {
+      url = new URL(src);
+    } catch {
+      return src;
+    }
+
+    // If there's no match, then it's not a pictrs image
+    if (!url.pathname.includes("/pictrs/image/")) {
+      return src;
+    }
+
+    url.searchParams.set("format", "webp");
+    url.searchParams.set("thumbnail", thumbnailSize.toString());
+
+    return url.href;
   }
 }
