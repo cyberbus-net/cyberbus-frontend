@@ -475,6 +475,24 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         postTruncateAtLinks,
       );
     }
+
+    // 在 markdown 转 HTML 之前预处理图片链接
+    const processMarkdown = (markdown: string): string => {
+      if (!markdown || this.props.showFull) return markdown;
+
+      return markdown.replace(
+        /!\[([^\]]*)\]\(([^)]+)\)/g,
+        (match, alt, url) => {
+          // 只处理 pictrs 的图片 URL
+          if (url.includes("/pictrs/")) {
+            const thumbnailUrl = PictrsImage.getThumbnailUrl(url);
+            return `![${alt}](${thumbnailUrl})`;
+          }
+          return match; // 不是 pictrs 的图片保持原样
+        },
+      );
+    };
+
     return body ? (
       <article className="my-2">
         {this.state.viewSource ? (
@@ -482,16 +500,16 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         ) : (
           <div
             className="md-div"
-            dangerouslySetInnerHTML={mdToHtml(body, () => this.forceUpdate())}
+            dangerouslySetInnerHTML={mdToHtml(processMarkdown(body), () =>
+              this.forceUpdate(),
+            )}
             ref={el => {
               if (el && !this.props.showFull) {
-                // 处理所有图片容器
+                // 现在只需要处理图片容器的样式
                 const containers = el.getElementsByClassName("img-container");
                 Array.from(containers).forEach(container => {
                   const img = container.querySelector("img");
                   if (img) {
-                    // 使用静态方法生成缩略图URL
-                    img.src = PictrsImage.getThumbnailUrl(img.src);
                     // 保留原有的图片加载处理逻辑
                     img.onload = () => this.handleImageLoad(img, container);
                   }
