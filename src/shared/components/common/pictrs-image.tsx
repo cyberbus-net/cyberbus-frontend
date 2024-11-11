@@ -7,7 +7,7 @@ import { IsoData } from "../../interfaces";
 import { getStaticDir } from "@utils/env";
 
 const iconThumbnailSize = 96;
-const thumbnailSize = 2160;
+const thumbnailSize = 760;
 
 interface PictrsImageProps {
   src: string;
