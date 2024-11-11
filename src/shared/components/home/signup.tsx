@@ -175,7 +175,7 @@ export class Signup extends Component<
 
         <div className="mb-3 row">
           <label className="col-sm-2 col-form-label" htmlFor="register-email">
-            {I18NextService.i18n.t("email")}
+            {I18NextService.i18n.t("email_with_comment")}
           </label>
           <div className="col-sm-10">
             <input
