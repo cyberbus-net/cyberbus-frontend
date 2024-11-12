@@ -300,6 +300,30 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
       return "";
     }
 
+    // 首先提取所有图片链接
+    const extractImages = (text: string): string[] => {
+      const images: string[] = [];
+
+      // 匹配 Markdown 图片语法
+      const mdImageRegex = /!\[.*?\]\((.*?)\)/g;
+      let match;
+      while ((match = mdImageRegex.exec(text)) !== null) {
+        images.push(match[0]);
+      }
+
+      // 匹配普通图片 URL
+      const urlImageRegex =
+        /https?:\/\/\S+\.(avif|jpg|jpeg|png|gif|webp)($|\?)\S*/gi;
+      while ((match = urlImageRegex.exec(text)) !== null) {
+        images.push(match[0]);
+      }
+
+      return images;
+    };
+
+    const allImages = extractImages(body);
+
+    // 原有的截断逻辑
     const markdownCodeBlockStart = "```";
     const markdownCodeBlockEnd = "```";
 
@@ -462,11 +486,28 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
       }
     }
 
-    // 如果少于nline行，返回整个内容
+    // 在返回结果之前，如果有图片且没有包含在截断的文本中，追加第一张图片
+    const appendImage = (truncatedText: string): string => {
+      if (allImages.length === 0) return truncatedText;
+
+      // 检查截断的文本中是否已经包含了图片
+      const hasImageInTruncated = extractImages(truncatedText).length > 0;
+      if (!hasImageInTruncated) {
+        // 追加两个换行符和第一张图片
+        return truncatedText + "\n\n" + allImages[0];
+      }
+      return truncatedText;
+    };
+
+    // 修改所有的 return 语句
     if (lineCount >= nline) {
-      return this.replaceTrailingNewline(result);
+      return appendImage(this.replaceTrailingNewline(result));
     }
-    return result;
+    if (linkCount > nlink) {
+      return appendImage(this.replaceTrailingNewline(result));
+    }
+
+    return appendImage(result);
   }
 
   body() {
