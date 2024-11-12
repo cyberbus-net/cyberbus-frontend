@@ -323,6 +323,19 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
 
     const allImages = extractImages(body);
 
+    // 定义 appendImage 函数在这里
+    const appendImage = (truncatedText: string): string => {
+      if (allImages.length === 0) return truncatedText;
+
+      // 检查截断的文本中是否已经包含了图片
+      const hasImageInTruncated = extractImages(truncatedText).length > 0;
+      if (!hasImageInTruncated) {
+        // 追加两个换行符和第一张图片
+        return truncatedText + "\n\n" + allImages[0];
+      }
+      return truncatedText;
+    };
+
     // 原有的截断逻辑
     const markdownCodeBlockStart = "```";
     const markdownCodeBlockEnd = "```";
@@ -347,17 +360,46 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           : remainingText.substring(0, nextLineBreak);
 
       // 检查 Markdown 图片语法和普通图片 URL
-      const hasImageLink =
-        /!\[.*?\]\(.*?\)/.test(currentLine) || // Markdown 图片
-        /\.(avif|jpg|jpeg|png|gif|webp)($|\?)/.test(currentLine.toLowerCase()); // 普通图片 URL
+      const mdImageRegex = /!\[.*?\]\((.*?)\)/g;
+      const urlImageRegex =
+        /https?:\/\/\S+\.(avif|jpg|jpeg|png|gif|webp)($|\?)\S*/gi;
 
-      if (hasImageLink) {
+      let match;
+      let lastIndex = 0;
+
+      // 处理 Markdown 图片
+      while ((match = mdImageRegex.exec(currentLine)) !== null) {
         linkCount++;
-        // 如果图片链接数量超过限制，在当前行结束时截断
+        result += currentLine.substring(
+          lastIndex,
+          match.index + match[0].length,
+        );
+        lastIndex = match.index + match[0].length;
+
         if (linkCount >= nlink) {
-          result += currentLine + "\n";
-          return this.replaceTrailingNewline(result);
+          return appendImage(this.replaceTrailingNewline(result));
         }
+      }
+
+      // 处理普通图片 URL
+      while ((match = urlImageRegex.exec(currentLine)) !== null) {
+        linkCount++;
+        result += currentLine.substring(
+          lastIndex,
+          match.index + match[0].length,
+        );
+        lastIndex = match.index + match[0].length;
+
+        if (linkCount >= nlink) {
+          return appendImage(this.replaceTrailingNewline(result));
+        }
+      }
+
+      // 添加当前行剩余的内容
+      if (nextLineBreak !== -1) {
+        result += currentLine.substring(lastIndex) + "\n";
+      } else {
+        result += currentLine.substring(lastIndex);
       }
 
       // Find indices for line breaks, code block start, code block end, blockquote start, list start, and table start
@@ -485,19 +527,6 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         return this.replaceTrailingNewline(result);
       }
     }
-
-    // 在返回结果之前，如果有图片且没有包含在截断的文本中，追加第一张图片
-    const appendImage = (truncatedText: string): string => {
-      if (allImages.length === 0) return truncatedText;
-
-      // 检查截断的文本中是否已经包含了图片
-      const hasImageInTruncated = extractImages(truncatedText).length > 0;
-      if (!hasImageInTruncated) {
-        // 追加两个换行符和第一张图片
-        return truncatedText + "\n\n" + allImages[0];
-      }
-      return truncatedText;
-    };
 
     // 修改所有的 return 语句
     if (lineCount >= nline) {
