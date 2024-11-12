@@ -315,16 +315,21 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     while (i < body.length) {
       const remainingText = body.substring(i);
 
-      // 简单检查当前行是否包含http链接
+      // 检查当前行是否包含图片链接
       const nextLineBreak = remainingText.search(/(?:\r\n|\r|\n)/);
       const currentLine =
         nextLineBreak === -1
           ? remainingText
           : remainingText.substring(0, nextLineBreak);
 
-      if (currentLine.includes("http")) {
+      // 检查 Markdown 图片语法和普通图片 URL
+      const hasImageLink =
+        /!\[.*?\]\(.*?\)/.test(currentLine) || // Markdown 图片
+        /\.(avif|jpg|jpeg|png|gif|webp)($|\?)/.test(currentLine.toLowerCase()); // 普通图片 URL
+
+      if (hasImageLink) {
         linkCount++;
-        // 如果链接数量超过限制，在当前行结束时截断
+        // 如果图片链接数量超过限制，在当前行结束时截断
         if (linkCount >= nlink) {
           result += currentLine + "\n";
           return this.replaceTrailingNewline(result);
