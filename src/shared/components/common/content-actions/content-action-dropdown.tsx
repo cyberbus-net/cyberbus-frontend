@@ -61,6 +61,7 @@ export type ContentPostProps = {
   onFeatureCommunity: () => Promise<void>;
   onHidePost: () => Promise<void>;
   showShareAsImageOptions?: boolean;
+  showEdit?: boolean;
 } & ContentActionDropdownPropsBase;
 
 type ContentActionDropdownProps = ContentCommentProps | ContentPostProps;
@@ -240,7 +241,7 @@ export default class ContentActionDropdown extends Component<
                     />
                   </li>
                 )}
-                {this.amCreator ? (
+                {this.amCreator && this.props.showEdit ? (
                   <>
                     <li>
                       <ActionButton

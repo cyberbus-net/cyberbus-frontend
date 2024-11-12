@@ -1228,6 +1228,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
             onAppointAdmin={this.handleAppointAdmin}
             onHidePost={this.handleHidePost}
             showShareAsImageOptions={this.props.showFull} // 新增这一行
+            showEdit={this.props.showFull}
           />
         )}
       </div>
