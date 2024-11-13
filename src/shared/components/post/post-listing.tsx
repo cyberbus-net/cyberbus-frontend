@@ -72,6 +72,7 @@ type PostListingState = {
   showQRCode: boolean;
   postUrl: string;
   qrCodeDataUrl: string;
+  enlargedImageUrl: string | null;
 };
 
 interface PostListingProps {
@@ -126,6 +127,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
     showQRCode: false,
     postUrl: "",
     qrCodeDataUrl: "",
+    enlargedImageUrl: null,
   };
 
   constructor(props: any, context: any) {
@@ -346,7 +348,7 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           ? remainingText
           : remainingText.substring(0, nextLineBreak);
 
-      // 检查 Markdown 图片语法和普通图片 URL
+      // 检查 Markdown 图片语法普通图片 URL
       const hasImageLink =
         /!\[.*?\]\(.*?\)/.test(currentLine) || // Markdown 图片
         /\.(avif|jpg|jpeg|png|gif|webp)($|\?)/.test(currentLine.toLowerCase()); // 普通图片 URL
@@ -544,25 +546,51 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
         {this.state.viewSource ? (
           <pre>{body}</pre>
         ) : (
-          <div
-            className="md-div"
-            dangerouslySetInnerHTML={mdToHtml(processMarkdown(body), () =>
-              this.forceUpdate(),
-            )}
-            ref={el => {
-              if (el && !this.props.showFull) {
-                // 现在只需要处理图片容器的样式
-                const containers = el.getElementsByClassName("img-container");
-                Array.from(containers).forEach(container => {
-                  const img = container.querySelector("img");
-                  if (img) {
-                    // 保留原有的图片加载处理逻辑
-                    img.onload = () => this.handleImageLoad(img, container);
+          <>
+            <div
+              className="md-div"
+              dangerouslySetInnerHTML={mdToHtml(processMarkdown(body), () =>
+                this.forceUpdate(),
+              )}
+              ref={el => {
+                if (el) {
+                  if (!this.props.showFull) {
+                    const containers =
+                      el.getElementsByClassName("img-container");
+                    Array.from(containers).forEach(container => {
+                      const img = container.querySelector("img");
+                      if (img) {
+                        img.onload = () => this.handleImageLoad(img, container);
+                      }
+                    });
+                  } else {
+                    const images = el.getElementsByTagName("img");
+                    Array.from(images).forEach(img => {
+                      img.style.cursor = "pointer";
+                      img.onclick = this.handleImageClick;
+                    });
                   }
-                });
-              }
-            }}
-          />
+                }
+              }}
+            />
+            {this.state.enlargedImageUrl && (
+              <button
+                className="enlarged-image-overlay"
+                onClick={this.handleOverlayClick}
+                onKeyDown={this.handleKeyDown}
+                aria-label="Close enlarged image"
+                type="button"
+              >
+                <div className="enlarged-image-container">
+                  <img
+                    src={this.state.enlargedImageUrl}
+                    alt="Enlarged"
+                    className="enlarged-image"
+                  />
+                </div>
+              </button>
+            )}
+          </>
         )}
       </article>
     ) : (
@@ -1560,4 +1588,25 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
       container.style.setProperty("--before-bg", `url(${img.src})`);
     }
   }
+
+  handleImageClick = (e: MouseEvent) => {
+    if (!this.props.showFull) return;
+
+    const img = e.target as HTMLImageElement;
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ enlargedImageUrl: img.src });
+  };
+
+  handleOverlayClick = (e: MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      this.setState({ enlargedImageUrl: null });
+    }
+  };
+
+  handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      this.setState({ enlargedImageUrl: null });
+    }
+  };
 }
