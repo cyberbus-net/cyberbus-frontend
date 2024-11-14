@@ -159,7 +159,7 @@ export class PictrsImage extends Component<PictrsImageProps, PictrsImageState> {
       return src;
     }
 
-    url.searchParams.set("format", "webp");
+    url.searchParams.set("format", "avif");
     url.searchParams.set("thumbnail", thumbnailSize.toString());
 
     return url.href;
