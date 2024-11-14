@@ -505,7 +505,7 @@ export class Signup extends Component<
   }
 
   handleRegisterInviteCodeChange(i: Signup, event: any) {
-    i.state.form.invite_code = event.target.value;
+    i.state.form.invite_code = event.target.value.trim();
     i.setState(i.state);
   }
 
