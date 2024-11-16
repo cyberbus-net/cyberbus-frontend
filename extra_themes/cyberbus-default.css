@@ -11126,6 +11126,10 @@ a.text-dark:focus {
   margin: 1rem 0;
   border-radius: 8px;
   background: #f0f0f0; /* 占位背景色 */
+  /* 添加 Flexbox 布局 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 非完整模式下的图片 */
@@ -11133,10 +11137,11 @@ a.text-dark:focus {
   display: block;
   max-height: 540px;
   width: auto;
-  margin: 0 auto;
+  margin: 0;
   position: relative;
   z-index: 2;
   border-radius: 0;
+  object-fit: contain; /* 确保图片保持比例 */
 }
 
 .image-container img[width][height] {
