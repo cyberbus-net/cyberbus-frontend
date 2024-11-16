@@ -23,6 +23,8 @@ interface PictrsImageProps {
   hoverStyle?: boolean;
   circleIcon?: boolean;
   siteIcon?: boolean;
+  width?: number | string;
+  height?: number | string;
 }
 
 interface PictrsImageState {
@@ -61,6 +63,8 @@ export class PictrsImage extends Component<PictrsImageProps, PictrsImageState> {
       circleIcon,
       hoverStyle,
       siteIcon,
+      width,
+      height,
     } = this.props;
 
     const { src } = this.state;
@@ -81,6 +85,15 @@ export class PictrsImage extends Component<PictrsImageProps, PictrsImageState> {
             alt={this.alt()}
             title={this.alt()}
             loading="lazy"
+            style={{
+              width: width !== undefined ? width : undefined,
+              height:
+                height !== undefined
+                  ? height
+                  : width !== undefined
+                    ? "auto"
+                    : undefined,
+            }}
             className={classNames("overflow-hidden pictrs-image", {
               "img-fluid": !(icon || iconOverlay),
               banner,

@@ -11119,11 +11119,13 @@ a.text-dark:focus {
 
 /* 非完整模式下的图片容器 */
 .img-container {
+  width: 100%;
   position: relative;
   max-height: 540px;
   overflow: hidden;
   margin: 1rem 0;
   border-radius: 8px;
+  background: #f0f0f0; /* 占位背景色 */
 }
 
 /* 非完整模式下的图片 */
@@ -11135,6 +11137,11 @@ a.text-dark:focus {
   position: relative;
   z-index: 2;
   border-radius: 0;
+}
+
+.image-container img[width][height] {
+  width: auto;
+  max-width: 100%;
 }
 
 /* 完整模式下的图片容器 */

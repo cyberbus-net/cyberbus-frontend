@@ -225,9 +225,16 @@ export function setupMarkdown() {
     const imgElement =
       defaultImageRenderer?.(tokens, idx, options, env, self) ?? "";
     if (imgElement) {
-      const imgWithLoadEvent = imgElement.replace(
+      // 使用占位图片技术
+      const imgWithAttributes = imgElement.replace(
         "<img",
-        "<img onload=\"this.parentElement.classList.toggle('overflow-image', this.naturalHeight > 540)\"",
+        `<img loading="lazy" 
+             style="max-width: 100%; height: auto;" 
+             onload="this.style.opacity='1'"`,
+      );
+      const imgWithLoadEvent = imgWithAttributes.replace(
+        "/>",
+        `onload="this.parentElement.classList.toggle('overflow-image', this.naturalHeight > 540); this.style.opacity='1'"/>`,
       );
       return wrapImageWithContainer(imgWithLoadEvent);
     }
