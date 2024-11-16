@@ -156,9 +156,32 @@ function localInstanceLinkParser(md: MarkdownIt) {
   });
 }
 
-// 添加一个工具函数来包装图片HTML
-function wrapImageWithContainer(imgHtml: string): string {
-  return `<div class="img-container">${imgHtml}</div>`;
+// 更新包装函数以接受宽高比参数
+// 0.7105263157895 是 760/540, 即列表页宽度/列表页最大高度
+function wrapImageWithContainer(
+  imgHtml: string,
+  aspectRatio: number = 0.7105263157895,
+): string {
+  return `<div class="img-container" style="aspect-ratio: ${aspectRatio};">${imgHtml}</div>`;
+}
+
+// 添加获取图片宽高比的函数
+function getImageAspectRatio(url: string): Promise<number> {
+  return new Promise(resolve => {
+    if (typeof window === "undefined") {
+      resolve(16 / 9); // 在非浏览器环境中返回默认值
+      return;
+    }
+
+    const img = new window.Image();
+    img.onload = function () {
+      resolve(img.width / img.height);
+    };
+    img.onerror = function () {
+      resolve(16 / 9); // 默认宽高比
+    };
+    img.src = url;
+  });
 }
 
 export function setupMarkdown() {
@@ -212,7 +235,7 @@ export function setupMarkdown() {
     const splitTitle = title.split(/ (.*)/, 2);
     const isEmoji = splitTitle[0] === "emoji";
 
-    // 如果是表情符号，使用原来的渲染方式
+    // 处理表情符号
     if (isEmoji) {
       title = splitTitle[1];
       const customEmoji = customEmojisLookup.get(title);
@@ -221,21 +244,40 @@ export function setupMarkdown() {
       }
     }
 
-    // 对于普通图片，添加容器和加载事件
+    // 处理普通图片
     const imgElement =
       defaultImageRenderer?.(tokens, idx, options, env, self) ?? "";
     if (imgElement) {
-      // 使用占位图片技术
+      // 获取图片URL
+      const srcMatch = imgElement.match(/src="([^"]+)"/);
+      const imgUrl = srcMatch ? srcMatch[1] : "";
+
+      // 创建带有占位符的图片元素
       const imgWithAttributes = imgElement.replace(
         "<img",
         `<img loading="lazy" 
-             style="max-width: 100%; height: auto;" 
+             style="max-width: 100%; height: auto; transition: opacity 0.3s;" 
              onload="this.style.opacity='1'"`,
       );
+
       const imgWithLoadEvent = imgWithAttributes.replace(
         "/>",
         `onload="this.parentElement.classList.toggle('overflow-image', this.naturalHeight > 540); this.style.opacity='1'"/>`,
       );
+
+      // 异步获取图片宽高比并更新容器
+      if (typeof window !== "undefined") {
+        getImageAspectRatio(imgUrl).then(aspectRatio => {
+          document.querySelectorAll(`img[src="${imgUrl}"]`).forEach(img => {
+            const container = img.closest(".img-container");
+            if (container) {
+              container.setAttribute("style", `aspect-ratio: ${aspectRatio};`);
+            }
+          });
+        });
+      }
+
+      // 使用默认宽高比先渲染容器
       return wrapImageWithContainer(imgWithLoadEvent);
     }
     return "";
