@@ -11172,6 +11172,27 @@ a.text-dark:focus {
   border-radius: 8px;
 }
 
+/* 评论内部的图片 */
+.comment-content .img-container {
+  position: relative;
+  max-height: none;
+  /* 移除高度限制 */
+  overflow: visible;
+  /* 允许内容溢出 */
+  margin: 1rem 0;
+  border-radius: 0;
+}
+.comment-content .img-container img {
+  display: block;
+  max-height: none;
+  /* 移除高度限制 */
+  width: auto;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  border-radius: 8px;
+}
+
 .img-container.overflow-image {
   position: relative;
 }
