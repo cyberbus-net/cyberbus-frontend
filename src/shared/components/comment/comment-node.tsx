@@ -66,6 +66,7 @@ type CommentNodeState = {
   downvoteLoading: boolean;
   readLoading: boolean;
   fetchChildrenLoading: boolean;
+  enlargedImageUrl: string | null;
 };
 
 interface CommentNodeProps {
@@ -123,6 +124,7 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
     downvoteLoading: false,
     readLoading: false,
     fetchChildrenLoading: false,
+    enlargedImageUrl: null,
   };
 
   constructor(props: any, context: any) {
@@ -146,6 +148,9 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
     this.handlePurgePerson = this.handlePurgePerson.bind(this);
     this.handlePurgeComment = this.handlePurgeComment.bind(this);
     this.handleTransferCommunity = this.handleTransferCommunity.bind(this);
+    this.handleImageClick = this.handleImageClick.bind(this);
+    this.handleOverlayClick = this.handleOverlayClick.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   get commentView(): CommentNodeView {
@@ -244,18 +249,46 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                   {this.state.viewSource ? (
                     <pre>{this.commentUnlessRemoved}</pre>
                   ) : (
-                    <div
-                      className="md-div"
-                      dangerouslySetInnerHTML={
-                        this.props.hideImages
-                          ? mdToHtmlNoImages(this.commentUnlessRemoved, () =>
-                              this.forceUpdate(),
-                            )
-                          : mdToHtml(this.commentUnlessRemoved, () =>
-                              this.forceUpdate(),
-                            )
-                      }
-                    />
+                    <>
+                      <div
+                        className="md-div"
+                        dangerouslySetInnerHTML={
+                          this.props.hideImages
+                            ? mdToHtmlNoImages(this.commentUnlessRemoved, () =>
+                                this.forceUpdate(),
+                              )
+                            : mdToHtml(this.commentUnlessRemoved, () =>
+                                this.forceUpdate(),
+                              )
+                        }
+                        ref={el => {
+                          if (el) {
+                            const images = el.getElementsByTagName("img");
+                            Array.from(images).forEach(img => {
+                              img.style.cursor = "pointer";
+                              img.onclick = this.handleImageClick;
+                            });
+                          }
+                        }}
+                      />
+                      {this.state.enlargedImageUrl && (
+                        <button
+                          className="enlarged-image-overlay"
+                          onClick={this.handleOverlayClick}
+                          onKeyDown={this.handleKeyDown}
+                          aria-label="Close enlarged image"
+                          type="button"
+                        >
+                          <div className="enlarged-image-container">
+                            <img
+                              src={this.state.enlargedImageUrl}
+                              alt="Enlarged"
+                              className="enlarged-image"
+                            />
+                          </div>
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
                 <div className="comment-bottom-btns d-flex justify-content-start column-gap-1.5 flex-wrap text-muted fw-bold mt-1 align-items-center">
@@ -690,4 +723,23 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
       saved_only: false,
     });
   }
+
+  handleImageClick = (e: MouseEvent) => {
+    const img = e.target as HTMLImageElement;
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ enlargedImageUrl: img.src });
+  };
+
+  handleOverlayClick = (e: MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      this.setState({ enlargedImageUrl: null });
+    }
+  };
+
+  handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      this.setState({ enlargedImageUrl: null });
+    }
+  };
 }

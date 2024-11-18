@@ -157,10 +157,10 @@ function localInstanceLinkParser(md: MarkdownIt) {
 }
 
 // 更新包装函数以接受宽高比参数
-// 0.7105263157895 是 760/540, 即列表页宽度/列表页最大高度
+// 1.407407407407 是 760/540, 即列表页宽度/列表页最大高度
 function wrapImageWithContainer(
   imgHtml: string,
-  aspectRatio: number = 0.7105263157895,
+  aspectRatio: number = 1.407407407407,
 ): string {
   return `<div class="img-container" style="aspect-ratio: ${aspectRatio};">${imgHtml}</div>`;
 }
