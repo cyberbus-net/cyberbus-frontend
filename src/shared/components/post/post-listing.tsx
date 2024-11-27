@@ -1152,7 +1152,12 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               </div>
 
               {/* If it has a thumbnail, do a right aligned thumbnail */}
-              {this.mobileThumbnail()}
+              <a
+                href={`/post/${post.id}`}
+                className="text-neutral-content visited:text-neutral-content-weak"
+              >
+                {this.mobileThumbnail()}
+              </a>
 
               {this.duplicatesLine()}
             </div>
@@ -1196,7 +1201,12 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
               {this.createdLineForPostListing()}
 
               {/* If it has a thumbnail, do a right aligned thumbnail */}
-              {this.mobileThumbnail()}
+              <a
+                href={`/post/${post.id}`}
+                className="text-neutral-content visited:text-neutral-content-weak"
+              >
+                {this.mobileThumbnail()}
+              </a>
 
               {this.duplicatesLine()}
             </div>
