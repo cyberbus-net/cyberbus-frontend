@@ -112,7 +112,7 @@ export class ResendVerifyEmail extends Component<
     return (
       <div>
         <form onSubmit={linkEvent(this, handleResendSubmit)}>
-          <h1 className="h4 mb-4">
+          <h1 className="h4 text-center mb-3">
             {I18NextService.i18n.t("resend_verify_email")}
           </h1>
           <div className="mb-3 row">
@@ -132,10 +132,10 @@ export class ResendVerifyEmail extends Component<
             </div>
           </div>
           <div className="mb-3 row">
-            <div className="col-sm-10">
+            <div className="col-12">
               <button
                 type="submit"
-                className="btn btn-secondary"
+                className="btn btn-secondary float-end d-inline-block"
                 disabled={
                   this.state.countdown > 0 ||
                   this.state.resendRes.state === "loading"

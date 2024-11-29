@@ -238,7 +238,7 @@ export class Login extends Component<LoginRouteProps, State> {
             <div className="col-12">
               <button
                 type="submit"
-                className="btn btn-secondary login-button float-end d-inline-block"
+                className="btn btn-secondary float-end d-inline-block"
               >
                 {this.state.loginRes.state === "loading" ? (
                   <Spinner />
