@@ -586,6 +586,9 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
                   id="site-tab-pane"
                 >
                   <div className="mb-3 row">
+                    <p className="text-muted">
+                      {I18NextService.i18n.t("post_image_or_video_blurb")}
+                    </p>
                     <div className="">
                       <textarea
                         value={this.state.form.name}
