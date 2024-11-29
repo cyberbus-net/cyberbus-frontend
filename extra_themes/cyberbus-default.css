@@ -11628,3 +11628,19 @@ a.text-neutral-content:visited {
   object-fit: contain;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
+
+/* login page */
+.login {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+  border-radius: 1rem; /* Added rounded corners */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.password-toggle-button {
+  border-radius: 0 0.375rem 0.375rem 0 !important;
+  border-top: 1px solid #ced4da !important;
+  border-right: 1px solid #ced4da !important;
+  border-bottom: 1px solid #ced4da !important;
+}

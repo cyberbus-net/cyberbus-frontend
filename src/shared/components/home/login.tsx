@@ -203,7 +203,8 @@ export class Login extends Component<LoginRouteProps, State> {
     return (
       <div>
         <form onSubmit={linkEvent(this, handleLoginSubmit)}>
-          <h1 className="h4 mb-4">{I18NextService.i18n.t("login")}</h1>
+          <h1 className="h4 text-center">{I18NextService.i18n.t("login")}</h1>
+          <p className="text-muted text-center">Be Curious, Not Judgmental</p>
           <div className="mb-3 row">
             <label
               className="col-sm-2 col-form-label"
@@ -234,8 +235,11 @@ export class Login extends Component<LoginRouteProps, State> {
             />
           </div>
           <div className="mb-3 row">
-            <div className="col-sm-10">
-              <button type="submit" className="btn btn-secondary">
+            <div className="col-12">
+              <button
+                type="submit"
+                className="btn btn-secondary login-button float-end d-inline-block"
+              >
                 {this.state.loginRes.state === "loading" ? (
                   <Spinner />
                 ) : (

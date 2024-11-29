@@ -93,7 +93,7 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
             <div className="input-group">
               <input
                 type={show ? "text" : "password"}
-                className="form-control"
+                className="form-control border-end-0"
                 aria-describedby={id}
                 autoComplete={isNew ? "new-password" : "current-password"}
                 onInput={onInput}
@@ -105,7 +105,7 @@ class PasswordInput extends Component<PasswordInputProps, PasswordInputState> {
                 maxLength={isNew ? 60 : undefined}
               />
               <button
-                className="btn btn-outline-dark"
+                className="btn btn-outline-dark password-toggle-button border-start-0"
                 type="button"
                 id={id}
                 onClick={linkEvent(this, handleToggleShow)}
