@@ -27,6 +27,9 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 
 const serverPath = path.resolve("./dist");
+const publicPath = path.join(process.cwd(), "public");
+
+server.use(express.static(publicPath));
 
 if (
   !process.env["LEMMY_UI_DISABLE_CSP"] &&
@@ -43,7 +46,6 @@ if (
   server.use(setDefaultCsp);
   server.use(setCacheControl);
 } else {
-  // In debug mode, don't use the maxAge and immutable, or it breaks live reload for dev
   server.use(getStaticDir(), express.static(serverPath));
 }
 

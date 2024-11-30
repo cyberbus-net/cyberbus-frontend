@@ -1,6 +1,8 @@
 import { Site } from "@cyberbus-net/cyberbus-js-client";
 import { fetchIconPng } from "./fetch-icon-png";
 import { getStaticDir } from "@utils/env";
+import path from "path";
+import fs from "fs/promises";
 
 type Icon = { sizes: string; src: string; type: string; purpose: string };
 const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
@@ -27,25 +29,27 @@ export default async function (site: Site) {
       const icon = site.icon ? await fetchIconPng(site.icon) : null;
 
       if (icon) {
+        // 修改保存路径到 public 根目录
+        const iconDir = path.join(process.cwd(), "public");
+        await fs.mkdir(iconDir, { recursive: true });
+
         icons = await Promise.all(
           iconSizes.map(async size => {
             const sharp = (await import("sharp")).default;
-            const src = `data:image/png:base64,${await sharp(icon)
-              .resize(size, size)
-              .png()
-              .toBuffer()
-              .then(buf => buf.toString("base64"))}`;
+            const fileName = `icon-${size}x${size}.png`;
+            const filePath = path.join(iconDir, fileName);
 
-            return mapIcon(src, size);
+            await sharp(icon).resize(size, size).png().toFile(filePath);
+
+            // 修改引用路径，直接从根路径引用
+            return mapIcon(`/${fileName}`, size);
           }),
         );
       } else {
         icons = generateDefaultIcons();
       }
-    } catch {
-      console.log(
-        `Failed to fetch site logo for manifest icon. Using default icon`,
-      );
+    } catch (error) {
+      console.error("Error generating manifest icons:", error);
       icons = generateDefaultIcons();
     }
   }
