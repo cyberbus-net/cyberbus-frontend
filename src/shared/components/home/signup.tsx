@@ -138,7 +138,7 @@ export class Signup extends Component<
         className="was-validated"
         onSubmit={linkEvent(this, this.handleRegisterSubmit)}
       >
-        <h1 className="h4 mb-4">{this.titleName(siteView)}</h1>
+        <h1 className="h4 text-center mb-4">{this.titleName(siteView)}</h1>
 
         {this.isLemmyMl && (
           <div className="mb-3 row">
@@ -155,7 +155,7 @@ export class Signup extends Component<
             className="col-sm-2 col-form-label"
             htmlFor="register-username"
           >
-            {I18NextService.i18n.t("username_for_signup")}
+            {I18NextService.i18n.t("username")}
           </label>
 
           <div className="col-sm-10">
@@ -170,12 +170,15 @@ export class Signup extends Component<
               pattern="[a-zA-Z0-9_]+"
               title={I18NextService.i18n.t("community_reqs")}
             />
+            <p className="text-muted mb-0">
+              {I18NextService.i18n.t("username_for_signup")}
+            </p>
           </div>
         </div>
 
         <div className="mb-3 row">
           <label className="col-sm-2 col-form-label" htmlFor="register-email">
-            {I18NextService.i18n.t("email_with_comment")}
+            {I18NextService.i18n.t("email")}
           </label>
           <div className="col-sm-10">
             <input
@@ -193,6 +196,9 @@ export class Signup extends Component<
               required={siteView.local_site.require_email_verification}
               minLength={3}
             />
+            <p className="text-muted mb-0">
+              {I18NextService.i18n.t("email_with_comment")}
+            </p>
             {!siteView.local_site.require_email_verification &&
               this.state.form.email &&
               !validEmail(this.state.form.email) && (
@@ -325,10 +331,10 @@ export class Signup extends Component<
           </div>
         </div>
         <div className="mb-3 row">
-          <div className="col-sm-10">
+          <div className="col-12">
             <button
               type="submit"
-              className="btn btn-secondary"
+              className="btn btn-secondary float-end d-inline-block"
               disabled={!this.state.form.agreeTerms}
             >
               {this.state.registerRes.state === "loading" ? (
@@ -350,35 +356,45 @@ export class Signup extends Component<
       case "success": {
         const res = this.state.captchaRes.data;
         return (
-          <div className="mb-3 row">
-            <label className="col-sm-2" htmlFor="register-captcha">
-              <span className="me-2">
+          <>
+            <div className="mb-3 row">
+              <label
+                className="col-sm-2 col-form-label"
+                htmlFor="register-captcha"
+              >
                 {I18NextService.i18n.t("enter_code")}
-              </span>
+              </label>
+
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="register-captcha"
+                  value={this.state.form.captcha_answer}
+                  onInput={linkEvent(
+                    this,
+                    this.handleRegisterCaptchaAnswerChange,
+                  )}
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-3 row">
+              <label className="col-sm-2 col-form-label">
+                {I18NextService.i18n.t("captcha")}
+              </label>
+              {this.showCaptcha(res)}
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary col-sm-1 btn-refresh-captcha"
                 onClick={linkEvent(this, this.handleRegenCaptcha)}
                 aria-label={I18NextService.i18n.t("captcha")}
               >
                 <Icon icon="refresh-cw" classes="icon-refresh-cw" />
               </button>
-            </label>
-            {this.showCaptcha(res)}
-            <div className="col-sm-6">
-              <input
-                type="text"
-                className="form-control"
-                id="register-captcha"
-                value={this.state.form.captcha_answer}
-                onInput={linkEvent(
-                  this,
-                  this.handleRegisterCaptchaAnswerChange,
-                )}
-                required
-              />
+              <div className="col-sm-10"></div>
             </div>
-          </div>
+          </>
         );
       }
     }

@@ -2634,6 +2634,22 @@ textarea.form-control.is-valid {
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
+/* 为未验证状态的密码输入框按钮添加样式 */
+.was-validated .password-input-group .btn {
+  border-color: #ced4da;
+}
+
+/* 为验证失败状态的密码输入框按钮添加样式 */
+.was-validated .password-input-group.is-invalid .btn,
+.was-validated .form-control:invalid ~ .btn {
+  border-color: #33077c !important;
+}
+
+/* 为验证成功状态的密码输入框按钮添加样式 */
+.was-validated .password-input-group.is-valid .btn,
+.was-validated .form-control:valid ~ .btn {
+  border-color: #007bff !important;
+}
 .was-validated .form-control:invalid:focus,
 .form-control.is-invalid:focus {
   border-color: #33077c;
@@ -11646,9 +11662,21 @@ a.text-neutral-content:visited {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
+.home-signup {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+  border-radius: 1rem; /* Added rounded corners */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
 .password-toggle-button {
   border-radius: 0 0.375rem 0.375rem 0 !important;
   border-top: 1px solid #ced4da !important;
   border-right: 1px solid #ced4da !important;
   border-bottom: 1px solid #ced4da !important;
+}
+
+.btn-refresh-captcha {
+  max-height: 2.5rem;
 }
