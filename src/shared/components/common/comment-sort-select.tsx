@@ -42,9 +42,7 @@ export class CommentSortSelect extends Component<
           className="sort-select form-select d-inline-block w-auto me-2 mb-2"
           aria-label={I18NextService.i18n.t("sort_type")}
         >
-          <option disabled aria-hidden="true">
-            {I18NextService.i18n.t("sort_type")}
-          </option>
+          <option disabled>{I18NextService.i18n.t("sort_type")}</option>
           <option value={"Hot"}>{I18NextService.i18n.t("hot")}</option>,
           <option value={"Controversial"}>
             {I18NextService.i18n.t("controversial")}

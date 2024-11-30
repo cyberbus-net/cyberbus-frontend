@@ -877,7 +877,7 @@ export class Modlog extends Component<ModlogRouteProps, ModlogState> {
               className="form-select"
               aria-label="action"
             >
-              <option disabled aria-hidden="true">
+              <option disabled>
                 {I18NextService.i18n.t("filter_by_action")}
               </option>
               <option value={"All"}>{I18NextService.i18n.t("all")}</option>

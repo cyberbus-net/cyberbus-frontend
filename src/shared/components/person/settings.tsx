@@ -402,7 +402,6 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
             .replace(/:|-/g, "")}.json`}
           className="d-none"
           href="javascript:void(0)"
-          aria-hidden="true"
         />
         <HtmlTags
           title={this.documentTitle}
@@ -857,15 +856,13 @@ export class Settings extends Component<SettingsRouteProps, SettingsState> {
                 onChange={linkEvent(this, this.handleInterfaceLangChange)}
                 className="form-select d-inline-block w-auto"
               >
-                <option disabled aria-hidden="true" selected>
+                <option disabled selected>
                   {I18NextService.i18n.t("interface_language")}
                 </option>
                 <option value="browser">
                   {I18NextService.i18n.t("browser_default")}
                 </option>
-                <option disabled aria-hidden="true">
-                  ──
-                </option>
+                <option disabled>──</option>
                 {languages
                   .sort((a, b) => a.code.localeCompare(b.code))
                   .map(lang => (

@@ -41,9 +41,7 @@ export class SortSelect extends Component<SortSelectProps, SortSelectState> {
           className="sort-select form-select d-inline-block w-auto me-2"
           aria-label={I18NextService.i18n.t("sort_type")}
         >
-          <option disabled aria-hidden="true">
-            {I18NextService.i18n.t("sort_type")}
-          </option>
+          <option disabled>{I18NextService.i18n.t("sort_type")}</option>
           {!this.props.hideHot && [
             <option key={"Hot"} value={"Hot"}>
               {I18NextService.i18n.t("hot")}
@@ -68,9 +66,7 @@ export class SortSelect extends Component<SortSelectProps, SortSelectState> {
               {I18NextService.i18n.t("new_comments")}
             </option>,
           ]}
-          <option disabled aria-hidden="true">
-            ─────
-          </option>
+          <option disabled>─────</option>
           <option value={"TopHour"}>{I18NextService.i18n.t("top_hour")}</option>
           <option value={"TopDay"}>{I18NextService.i18n.t("top_day")}</option>
           <option value={"TopWeek"}>{I18NextService.i18n.t("top_week")}</option>
