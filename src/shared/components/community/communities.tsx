@@ -173,7 +173,9 @@ export class Communities extends Component<
           <h1 className="h4 mb-3 ml-3">
             {I18NextService.i18n.t("list_of_communities")}
           </h1>
-          <div className="row g-3 align-items-center mb-2">
+
+          {/* selection */}
+          <div className="row g-3 align-items-center mb-2 d-none d-md-flex">
             <div className="col-auto">
               <ListingTypeSelect
                 type_={listingType}
