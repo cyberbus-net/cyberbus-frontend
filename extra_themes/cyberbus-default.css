@@ -11680,3 +11680,21 @@ a.text-neutral-content:visited {
 .btn-refresh-captcha {
   max-height: 2.5rem;
 }
+
+.banner-icon-header img {
+  aspect-ratio: 16 / 9;
+}
+
+/* community card */
+
+.community-card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.25rem;
+  color: #495057;
+  border-top: 1px solid #e1e1e1;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

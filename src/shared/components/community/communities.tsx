@@ -3,7 +3,6 @@ import {
   getPageFromString,
   getQueryParams,
   getQueryString,
-  numToSI,
   resourcesSettled,
 } from "@utils/helpers";
 import type { QueryParams } from "@utils/types";
@@ -32,15 +31,14 @@ import { Spinner } from "../common/icon";
 import { ListingTypeSelect } from "../common/listing-type-select";
 import { Paginator } from "../common/paginator";
 import { SortSelect } from "../common/sort-select";
-import { CommunityLink } from "./community-link";
 
 import { communityLimit } from "../../config";
-import { SubscribeButton } from "../common/subscribe-button";
 import { getHttpBaseInternal } from "../../utils/env";
 import { RouteComponentProps } from "inferno-router/dist/Route";
 import { IRoutePropsWithFetch } from "../../routes";
 import { scrollMixin } from "../mixins/scroll-mixin";
 import { isBrowser } from "@utils/browser";
+import { CommunityCard } from "./community-card";
 
 type CommunitiesData = RouteDataResponse<{
   listCommunitiesResponse: ListCommunitiesResponse;
@@ -138,7 +136,7 @@ export class Communities extends Component<
     }`;
   }
 
-  renderListingsTable() {
+  renderListingsCard() {
     switch (this.state.listCommunitiesResponse.state) {
       case "loading":
         return (
@@ -148,70 +146,16 @@ export class Communities extends Component<
         );
       case "success": {
         return (
-          <table id="community_table" className="table table-sm table-hover">
-            <thead className="pointer">
-              <tr>
-                <th>{I18NextService.i18n.t("name")}</th>
-                <th className="text-right">
-                  {I18NextService.i18n.t("subscribers")}
-                </th>
-                <th className="text-right">
-                  {I18NextService.i18n.t("users")} /{" "}
-                  {I18NextService.i18n.t("month")}
-                </th>
-                <th className="text-right d-none d-lg-table-cell">
-                  {I18NextService.i18n.t("posts")}
-                </th>
-                <th className="text-right d-none d-lg-table-cell">
-                  {I18NextService.i18n.t("comments")}
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.listCommunitiesResponse.data.communities.map(cv => (
-                <tr key={cv.community.id}>
-                  <td>
-                    <CommunityLink community={cv.community} />
-                  </td>
-                  <td className="text-right">
-                    {numToSI(cv.counts.subscribers)}
-                  </td>
-                  <td className="text-right">
-                    {numToSI(cv.counts.users_active_month)}
-                  </td>
-                  <td className="text-right d-none d-lg-table-cell">
-                    {numToSI(cv.counts.posts)}
-                  </td>
-                  <td className="text-right d-none d-lg-table-cell">
-                    {numToSI(cv.counts.comments)}
-                  </td>
-                  <td className="text-right">
-                    <SubscribeButton
-                      communityView={cv}
-                      onFollow={linkEvent(
-                        {
-                          i: this,
-                          communityId: cv.community.id,
-                          follow: true,
-                        },
-                        this.handleFollow,
-                      )}
-                      onUnFollow={linkEvent(
-                        {
-                          i: this,
-                          communityId: cv.community.id,
-                          follow: false,
-                        },
-                        this.handleFollow,
-                      )}
-                      isLink
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {this.state.listCommunitiesResponse.data.communities.map(cv => (
+              <div className="col" key={cv.community.id}>
+                <CommunityCard
+                  community_view={cv}
+                  onFollow={this.handleFollow}
+                />
+              </div>
+            ))}
+          </div>
         );
       }
     }
@@ -244,7 +188,7 @@ export class Communities extends Component<
             <div className="col-auto">{this.searchForm()}</div>
           </div>
 
-          <div className="table-responsive">{this.renderListingsTable()}</div>
+          <div className="table-responsive">{this.renderListingsCard()}</div>
           <Paginator
             page={page}
             onChange={this.handlePageChange}
