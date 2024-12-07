@@ -43,7 +43,7 @@ export class CommunityCard extends Component<
     const { community, counts } = community_view;
 
     return (
-      <div className="card h-100">
+      <div className="card h-100 community-card">
         {showIcon && (
           <a href={`/c/${community.name}`} className="text-decoration-none">
             <BannerIconHeader banner={community.banner} icon={community.icon} />

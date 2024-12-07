@@ -11687,6 +11687,15 @@ a.text-neutral-content:visited {
 
 /* community card */
 
+.community-card {
+  transition: box-shadow 0.3s ease;
+}
+
+.community-card:hover {
+  box-shadow: 0 0 15px rgba(102, 16, 242, 0.3);
+  /* 使用主题色 #6610f2 的半透明版本 */
+}
+
 .community-card-body {
   flex: 1 1 auto;
   min-height: 1px;

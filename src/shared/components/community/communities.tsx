@@ -148,7 +148,7 @@ export class Communities extends Component<
         return (
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {this.state.listCommunitiesResponse.data.communities.map(cv => (
-              <div className="col" key={cv.community.id}>
+              <div className="col mt-2 mb-4" key={cv.community.id}>
                 <CommunityCard
                   community_view={cv}
                   onFollow={this.handleFollow}
@@ -170,7 +170,7 @@ export class Communities extends Component<
           path={this.context.router.route.match.url}
         />
         <div>
-          <h1 className="h4 mb-4">
+          <h1 className="h4 mb-3 ml-3">
             {I18NextService.i18n.t("list_of_communities")}
           </h1>
           <div className="row g-3 align-items-center mb-2">
