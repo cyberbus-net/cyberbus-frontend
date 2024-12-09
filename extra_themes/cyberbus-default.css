@@ -11551,7 +11551,6 @@ a.text-neutral-content:visited {
 }
 
 .md-div table {
-  display: block;
   overflow-x: auto;
   white-space: pre;
 }
