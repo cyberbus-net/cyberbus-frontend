@@ -63,7 +63,13 @@ const listener = server.listen(Number(port), hostname, () => {
 
   setupDateFns();
   console.log(
-    `Lemmy-ui v${VERSION} started listening on http://${hostname}:${port}`,
+    `  ██████╗██╗   ██╗██████╗ ███████╗██████╗ ██████╗ ██╗   ██╗███████╗\n`,
+    `██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██║   ██║██╔════╝\n`,
+    `██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝██████╔╝██║   ██║███████╗\n`,
+    `██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗██╔══██╗██║   ██║╚════██║\n`,
+    `╚██████╗   ██║   ██████╔╝███████╗██║  ██║██████╔╝╚██████╔╝███████║\n`,
+    ` ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚══════╝ - frontend v${VERSION}\n`,
+    `cyberbus-frontend v${VERSION} started listening on http://${hostname}:${port}`,
   );
 });
 
